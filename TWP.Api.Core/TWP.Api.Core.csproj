@@ -6,8 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\TWP.Api.Core\TWP.Api.Core.csproj" />
-  </ItemGroup>
-
 </Project>
