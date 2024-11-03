@@ -10,9 +10,14 @@ namespace TWP.Api.Infrastructure.DbEntities
         public string Name { get; set; }
 
         /// <summary>
-        /// Physical dice used to randomly select an entry in the table.
+        /// Type of physical dice used to randomly select an entry in the table.
         /// </summary>
-        public string DiceType { get; set; }
+        public DiceTypeEnum DiceType { get; set; }
+
+        /// <summary>
+        /// Number of physical dice used to randomly select an entry in the table.
+        /// </summary>
+        public int NumberOfDiceType { get; set; }
 
         /// <summary>
         /// Maximum number of rerolls allowed for this table.
@@ -46,7 +51,6 @@ namespace TWP.Api.Infrastructure.DbEntities
 
         
         //Navigation Property
-
         public List<RollTableEntryDbEntity> RollTableEntries { get; set; }
     }
 }
