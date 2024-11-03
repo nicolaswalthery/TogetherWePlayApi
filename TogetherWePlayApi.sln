@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34525.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TWP.Api", "TogetherWePlayApi\TWP.Api.csproj", "{59F93D97-1D9A-488B-B80F-B8AD1063E33E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{BBE18A9F-A8BD-4204-B979-DF35D5012046}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{59F93D97-1D9A-488B-B80F-B8AD1063E33E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59F93D97-1D9A-488B-B80F-B8AD1063E33E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59F93D97-1D9A-488B-B80F-B8AD1063E33E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59F93D97-1D9A-488B-B80F-B8AD1063E33E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBE18A9F-A8BD-4204-B979-DF35D5012046}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBE18A9F-A8BD-4204-B979-DF35D5012046}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBE18A9F-A8BD-4204-B979-DF35D5012046}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBE18A9F-A8BD-4204-B979-DF35D5012046}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A0903F9A-4027-4278-A7AB-8B1F0335CF02}
+	EndGlobalSection
+EndGlobal
