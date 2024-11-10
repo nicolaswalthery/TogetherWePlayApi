@@ -1,4 +1,4 @@
-﻿namespace TWP.Api.Infrastructure.DbEntities
+﻿namespace TWP.Api.Core.DbEntities
 {
     public abstract class Entity
     {
