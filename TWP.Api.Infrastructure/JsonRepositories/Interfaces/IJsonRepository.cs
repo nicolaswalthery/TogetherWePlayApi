@@ -2,7 +2,7 @@
 {
     public interface IJsonRepository<TReturn>
     {
-        TReturn Get(string fileName);
-        IEnumerable<TReturn> GetAll(string folderPath);
+        string GetJsonFile(string folderPath);
+        IList<TReturn> GetAll(string folderPath);
     }
 }
