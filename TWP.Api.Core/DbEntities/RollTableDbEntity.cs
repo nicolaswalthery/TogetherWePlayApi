@@ -1,6 +1,6 @@
 ﻿using TWP.Api.Core.Enums;
 
-namespace TWP.Api.Infrastructure.DbEntities
+namespace TWP.Api.Core.DbEntities
 {
     public class RollTableDbEntity : Entity
     {
