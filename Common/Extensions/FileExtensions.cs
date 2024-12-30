@@ -6,7 +6,7 @@
         {
             try
             {
-                string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"../{folderName}/{fileName}.json");
+                string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $".../{folderName}/{fileName}.json");
 
                 string jsonContent = File.ReadAllText(filePath);
 

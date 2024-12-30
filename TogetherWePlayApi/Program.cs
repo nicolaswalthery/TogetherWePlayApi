@@ -1,5 +1,7 @@
+using TogetherWePlayApi.Controllers;
 using TWP.Api.Application.BusinessLayers;
 using TWP.Api.Application.BusinessLayers.Interfaces;
+using TWP.Api.Controllers.Interfaces;
 using TWP.Api.Infrastructure.JsonRepositories;
 using TWP.Api.Infrastructure.JsonRepositories.Interfaces;
 
@@ -9,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddTransient<JsonRepositoryBase>();
 builder.Services.AddTransient<IMonsterActivitiesJsonRepository, MonsterActivitiesJsonRepository>();
 builder.Services.AddTransient<IDndEncounterBusinessLayer, DndEncounterBusinessLayer>();
+builder.Services.AddTransient<IDndController, DndController>();
 
 builder.Services.AddControllers()
                 .AddJsonOptions(options =>
