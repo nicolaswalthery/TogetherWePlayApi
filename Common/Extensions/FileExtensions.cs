@@ -1,4 +1,6 @@
-﻿namespace Common.Extensions
+﻿using static System.Net.Mime.MediaTypeNames;
+
+namespace Common.Extensions
 {
     public static class FileExtensions
     {
@@ -6,7 +8,12 @@
         {
             try
             {
-                string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $".../{folderName}/{fileName}.json");
+                //string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"/{folderName}/{fileName}.json");
+                string filePath = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\");
+                //Path.GetFullPath(Path.Combine(baseDirectory, @"..\..\..\"))
+                //var jsonSaveFilePath = Directory.GetFiles(Path.Combine(Application.dataPath, $"../Saves/"), $"{saveJsonFileToLoad}.json").FirstOrDefault();
+                //if (String.IsNullOrWhiteSpace(jsonSaveFilePath))
+                //    throw new Exception($"{saveJsonFileToLoad} not found in the save files !");
 
                 string jsonContent = File.ReadAllText(filePath);
 
