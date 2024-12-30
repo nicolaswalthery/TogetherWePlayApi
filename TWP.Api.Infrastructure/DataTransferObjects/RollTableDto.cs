@@ -2,7 +2,7 @@
 
 namespace TWP.Api.Infrastructure.DbEntities
 {
-    public class RollTableEntryJsonStaticDataDTO
+    public class RollTableDto
     {
         /// <summary>
         /// Name of the roll table.
@@ -51,6 +51,6 @@ namespace TWP.Api.Infrastructure.DbEntities
 
         
         //Navigation Property
-        public List<RollTableEntryJsonStaticDataDTO> RollTableEntries { get; set; }
+        public List<RollTableEntryDto> RollTableEntries { get; set; }
     }
 }

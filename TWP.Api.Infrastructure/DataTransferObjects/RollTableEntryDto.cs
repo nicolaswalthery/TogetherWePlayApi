@@ -2,7 +2,7 @@
 
 namespace TWP.Api.Infrastructure.DbEntities
 {
-    public class RollTableEntryJsonStaticDataDTO
+    public class RollTableEntryDto
     {
         /// <summary>
         /// Minimum roll value to select this entry
