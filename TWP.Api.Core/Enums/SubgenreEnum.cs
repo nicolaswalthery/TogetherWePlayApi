@@ -2,5 +2,6 @@
 {
     public enum SubgenreEnum
     {
+        DarkFantasy
     }
 }

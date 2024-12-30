@@ -1,8 +1,23 @@
+using TWP.Api.Application.BusinessLayers;
+using TWP.Api.Application.BusinessLayers.Interfaces;
+using TWP.Api.Infrastructure.JsonRepositories;
+using TWP.Api.Infrastructure.JsonRepositories.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddTransient<JsonRepositoryBase>();
+builder.Services.AddTransient<IMonsterActivitiesJsonRepository, MonsterActivitiesJsonRepository>();
+builder.Services.AddTransient<IDndEncounterBusinessLayer, DndEncounterBusinessLayer>();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
+                    options.JsonSerializerOptions.PropertyNamingPolicy = null;
+                    options.JsonSerializerOptions.WriteIndented = false;
+                });
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

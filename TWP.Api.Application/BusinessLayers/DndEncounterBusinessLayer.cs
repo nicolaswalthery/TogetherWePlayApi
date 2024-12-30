@@ -1,4 +1,5 @@
 ﻿using TWP.Api.Application.BusinessLayers.Interfaces;
+using TWP.Api.Infrastructure.DataTransferObjects;
 using TWP.Api.Infrastructure.JsonRepositories.Interfaces;
 
 namespace TWP.Api.Application.BusinessLayers
@@ -11,11 +12,9 @@ namespace TWP.Api.Application.BusinessLayers
             _monsterActivitiesJsonRepository = monsterActivitiesJsonRepository;
         }
 
-        public string EncounterRandomGenerator()
+        public RollTableDto EncounterRandomGenerator()
         {
-            //TEST TO DEL
-            var result = _monsterActivitiesJsonRepository.GetRollTable(String.Empty);
-            throw new NotImplementedException();
+            return _monsterActivitiesJsonRepository.GetRollTable();
         }
     }
 }

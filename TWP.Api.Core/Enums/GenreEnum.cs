@@ -2,5 +2,7 @@
 {
     public enum GenreEnum
     {
+        Fantasy = 1,
+
     }
 }

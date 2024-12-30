@@ -1,8 +1,8 @@
 ﻿using TWP.Api.Core.Enums;
 
-namespace TWP.Api.Core.DbEntities
+namespace TWP.Api.Infrastructure.DataTransferObjects
 {
-    public class RollTableEntryDbEntity : Entity
+    public class RollTableEntryDto
     {
         /// <summary>
         /// Minimum roll value to select this entry
@@ -24,19 +24,5 @@ namespace TWP.Api.Core.DbEntities
         /// </summary>
         public string ResultText { get; set; }
 
-
-        //Navigation Property
-
-        /// <summary>
-        /// Foreign key to Parent RollTable to specify the table this entry belongs to
-        /// </summary>
-        public int RollTableId { get; set; }
-        public RollTableDbEntity RollTable { get; set; } // Navigation property to RollTable
-
-        /// <summary>
-        /// Optional foreign key to another RollTable if this entry links to another table
-        /// </summary>
-        public int? LinkedTableId { get; set; }
-        public RollTableDbEntity LinkedTable { get; set; }
     }
 }

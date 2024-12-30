@@ -1,6 +1,6 @@
 ﻿using TWP.Api.Core.Enums;
 
-namespace TWP.Api.Infrastructure.DbEntities
+namespace TWP.Api.Infrastructure.DataTransferObjects
 {
     public class RollTableDto
     {
@@ -37,7 +37,7 @@ namespace TWP.Api.Infrastructure.DbEntities
         /// <summary>
         /// Tells us in what subgenres this roll table is most appropriated.
         /// </summary>
-        public List<SubgenreEnum> Subgenres { get; set; }
+        public List<SubgenreEnum> Subgenres { get; set; } = new();
 
         /// <summary>
         /// Tells us in what genre this roll table is most appropriated.
@@ -49,8 +49,13 @@ namespace TWP.Api.Infrastructure.DbEntities
         /// </summary>
         public bool IsTableCopywriteFree { get; set; }
 
-        
+        /// <summary>
+        /// Source from which the random table comes from
+        /// </summary>
+        public SourceEnum Source { get; set; }
+
+
         //Navigation Property
-        public List<RollTableEntryDto> RollTableEntries { get; set; }
+        public List<RollTableEntryDto> Entries { get; set; } = new();
     }
 }
