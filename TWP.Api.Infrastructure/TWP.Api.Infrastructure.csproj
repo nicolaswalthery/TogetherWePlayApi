@@ -10,4 +10,8 @@
     <ProjectReference Include="..\TWP.Api.Core\TWP.Api.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="JsonStaticData\" />
+  </ItemGroup>
+
 </Project>

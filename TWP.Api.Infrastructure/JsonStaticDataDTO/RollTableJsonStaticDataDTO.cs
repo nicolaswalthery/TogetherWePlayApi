@@ -2,7 +2,7 @@
 
 namespace TWP.Api.Infrastructure.DbEntities
 {
-    public class RollTableDbEntity : Entity
+    public class RollTableEntryJsonStaticDataDTO
     {
         /// <summary>
         /// Name of the roll table.
