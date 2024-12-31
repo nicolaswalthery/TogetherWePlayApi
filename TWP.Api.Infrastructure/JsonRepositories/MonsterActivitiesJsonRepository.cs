@@ -2,6 +2,7 @@
 using Common.Extensions;
 using TWP.Api.Infrastructure.JsonRepositories.Mappers;
 using TWP.Api.Infrastructure.DataTransferObjects;
+using TWP.Api.Core.Enums;
 
 namespace TWP.Api.Infrastructure.JsonRepositories
 {
@@ -11,7 +12,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories
     public class MonsterActivitiesJsonRepository : JsonRepositoryBase, IMonsterActivitiesJsonRepository
     {
         private readonly string _fileName = "MonsterActivitiesRandomTable";
-        public MonsterActivitiesJsonRepository() : base("Shadowdark")
+        public MonsterActivitiesJsonRepository() : base(SourceEnum.Shadowdark)
         {   
         }
 

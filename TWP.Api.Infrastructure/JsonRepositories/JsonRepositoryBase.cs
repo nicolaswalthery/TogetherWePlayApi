@@ -1,16 +1,18 @@
-﻿namespace TWP.Api.Infrastructure.JsonRepositories
+﻿using TWP.Api.Core.Enums;
+
+namespace TWP.Api.Infrastructure.JsonRepositories
 {
     public class JsonRepositoryBase
     {
         private string _randomTablesRelativePath = @"TWP.Api.Infrastructure\JsonFiles\RandomTables";
         private string _baseRelativePath = @"TWP.Api.Infrastructure\JsonFiles";
-        private string _folderName;
+        private SourceEnum _folderName;
 
         public JsonRepositoryBase()
         {
         }
 
-        public JsonRepositoryBase(string folderName)
+        public JsonRepositoryBase(SourceEnum folderName)
         {
             _folderName = folderName;
         }
