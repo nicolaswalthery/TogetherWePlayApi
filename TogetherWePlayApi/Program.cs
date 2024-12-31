@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddTransient<JsonRepositoryBase>();
 builder.Services.AddTransient<IMonsterActivitiesJsonRepository, MonsterActivitiesJsonRepository>();
+builder.Services.AddTransient<ISomethingHappenJsonRepository, SomethingHappenJsonRepository>();
 builder.Services.AddTransient<IDndEncounterBusinessLayer, DndEncounterBusinessLayer>();
 builder.Services.AddTransient<IDndController, DndController>();
 

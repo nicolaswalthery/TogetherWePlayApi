@@ -1,0 +1,180 @@
+{
+    "SomethingHappens": [
+        {
+            "d100": "01",
+            "Details": "The ground shakes violently and a massive fissure opens"
+        },
+        {
+            "d100": "02-03",
+            "Details": "An unseen foe leaps out of hiding at close range"
+        },
+        {
+            "d100": "04-05",
+            "Details": "A horrible buzzing fills the air, growing louder and louder"
+        },
+        {
+            "d100": "06-07",
+            "Details": "You catch the acrid smell of smoke and flame"
+        },
+        {
+            "d100": "08-09",
+            "Details": "A bright star appears in the sky, visible even at midday"
+        },
+        {
+            "d100": "16-17",
+            "Details": "A dwarf in a red hat hands you a rose, bows, and leaves"
+        },
+        {
+            "d100": "18-19",
+            "Details": "A cowled stranger in a black cloak approaches you"
+        },
+        {
+            "d100": "20-21",
+            "Details": "Someone tries to pick your pocket"
+        },
+        {
+            "d100": "22-23",
+            "Details": "A strange ticking sound comes from inside your bag"
+        },
+        {
+            "d100": "24-25",
+            "Details": "A frothing, frantic horse with a saddle but no rider appears"
+        },
+        {
+            "d100": "26-27",
+            "Details": "A mound in the earth quickly burrows toward you"
+        },
+        {
+            "d100": "28-29",
+            "Details": "You sense you are being magically scryed upon"
+        },
+        {
+            "d100": "34-35",
+            "Details": "A woman hands you a black cat and then runs away"
+        },
+        {
+            "d100": "36-37",
+            "Details": "A small, woodland creature jumps out of a backpack"
+        },
+        {
+            "d100": "38-39",
+            "Details": "You smell lilacs and hear faint, ghostly laughter"
+        },
+        {
+            "d100": "42-43",
+            "Details": "A green-glowing meteor streaks through the sky"
+        },
+        {
+            "d100": "44-45",
+            "Details": "Someone nearby is staring at you and mouthing words"
+        },
+        {
+            "d100": "46-47",
+            "Details": "A pair of yellow eyes watches you from the darkness"
+        },
+        {
+            "d100": "48-49",
+            "Details": "An orc with an arrow in her back crashes through a door"
+        },
+        {
+            "d100": "50-53",
+            "Details": "You hear a beast cry out in pain just up ahead"
+        },
+        {
+            "d100": "54-55",
+            "Details": "A huge swarm of bats crashes over you and swirls away"
+        },
+        {
+            "d100": "56-57",
+            "Details": "A frail beggar whispers that he has a secret to tell you"
+        },
+        {
+            "d100": "58-59",
+            "Details": "An object falls from above and barely misses your head"
+        },
+        {
+            "d100": "60-61",
+            "Details": "A seagull lands on your head and coughs up an odd bottle"
+        },
+        {
+            "d100": "62-63",
+            "Details": "The smell of ozone rises and electricity crackles in the air"
+        },
+        {
+            "d100": "64-65",
+            "Details": "You spot a trail of tiny silver coins leading around a bend"
+        },
+        {
+            "d100": "66-67",
+            "Details": "A wild-eyed man approaches with a holy book held high"
+        },
+        {
+            "d100": "68-69",
+            "Details": "Every light source suddenly extinguishes"
+        },
+        {
+            "d100": "70-71",
+            "Details": "A stampede of wild animals bursts into view"
+        },
+        {
+            "d100": "72-73",
+            "Details": "An old woman points at you and yells, 'There they are!'"
+        },
+        {
+            "d100": "74-75",
+            "Details": "A passing stranger presses an ancient coin into your hand"
+        },
+        {
+            "d100": "76-77",
+            "Details": "A chorus of howls echo in the distance"
+        },
+        {
+            "d100": "78-79",
+            "Details": "Two pinching and slapping goblins tumble into sight"
+        },
+        {
+            "d100": "80-81",
+            "Details": "You realize you are not alone; something is behind you"
+        },
+        {
+            "d100": "82-83",
+            "Details": "The sudden sound of rushing water crashes toward you"
+        },
+        {
+            "d100": "84-85",
+            "Details": "You hear an ear-splitting scream that nobody else hears"
+        },
+        {
+            "d100": "86-87",
+            "Details": "A man slaps you with a glove and throws it at your feet"
+        },
+        {
+            "d100": "88-89",
+            "Details": "A violent, windy storm kicks up without warning"
+        },
+        {
+            "d100": "90-91",
+            "Details": "Lightning strikes close and leaves a glowing object behind"
+        },
+        {
+            "d100": "92-93",
+            "Details": "A multicolored orb drifts up to you and then zips away"
+        },
+        {
+            "d100": "94-95",
+            "Details": "A runaway wagon crashes toward you"
+        },
+        {
+            "d100": "96-97",
+            "Details": "An NPC throws off their disguise, revealing an enemy"
+        },
+        {
+            "d100": "98-99",
+            "Details": "A demon appears to you and presents a tempting offer"
+        },
+        {
+            "d100": "00",
+            "Details": "A radiant being appears to you with a message of warning"
+        }
+    ]
+}

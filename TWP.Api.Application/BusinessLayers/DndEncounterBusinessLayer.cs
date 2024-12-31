@@ -7,14 +7,17 @@ namespace TWP.Api.Application.BusinessLayers
     public class DndEncounterBusinessLayer : IDndEncounterBusinessLayer
     {
         private readonly IMonsterActivitiesJsonRepository _monsterActivitiesJsonRepository;
-        public DndEncounterBusinessLayer(IMonsterActivitiesJsonRepository monsterActivitiesJsonRepository)
+        private readonly ISomethingHappenJsonRepository _somethingHappenJsonRepository;
+
+        public DndEncounterBusinessLayer(IMonsterActivitiesJsonRepository monsterActivitiesJsonRepository, ISomethingHappenJsonRepository somethingHappenJsonRepository)
         {
             _monsterActivitiesJsonRepository = monsterActivitiesJsonRepository;
+            _somethingHappenJsonRepository = somethingHappenJsonRepository;
         }
 
         public RollTableDto EncounterRandomGenerator()
         {
-            return _monsterActivitiesJsonRepository.GetRollTable();
+            return _somethingHappenJsonRepository.GetRollTable();
         }
     }
 }

@@ -11,12 +11,11 @@ namespace TWP.Api.Infrastructure.JsonRepositories
     /// </summary>
     public class MonsterActivitiesJsonRepository : JsonRepositoryBase, IMonsterActivitiesJsonRepository
     {
-        private readonly string _fileName = "MonsterActivitiesRandomTable";
-        public MonsterActivitiesJsonRepository() : base(SourceEnum.Shadowdark)
+        public MonsterActivitiesJsonRepository() : base(folderName: SourceEnum.Shadowdark, fileName: "MonsterActivitiesRandomTable")
         {   
         }
 
         public RollTableDto GetRollTable() 
-            => _fileName.GetJsonFile(base.FullRandomTablesRelativePath).ToDto();
+            => base.GetRollTable().ToMonsterActivitiesRollTableDto();
     }
 }

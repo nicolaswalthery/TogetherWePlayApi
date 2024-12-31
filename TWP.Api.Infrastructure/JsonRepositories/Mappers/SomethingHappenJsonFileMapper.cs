@@ -1,38 +1,39 @@
 ﻿using Common.Extensions;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 using TWP.Api.Core.Enums;
 using TWP.Api.Infrastructure.DataTransferObjects;
 
 namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
 {
-    public static class MonsterActivitiesJsonFileMapper
+    public static class SomethingHappenJsonFileMapper
     {
-        public static RollTableDto ToMonsterActivitiesRollTableDto(this string json)
+        public static RollTableDto ToSomethingHappensRollTableDto(this string json)
         {
-            var deserializedObject = json.ToObject<Root>();
+            var deserializedObject = json.ToObject<SomethingHappensRoot>();
 
             var rollTableDto = new RollTableDto()
             {
-                DiceType = DiceTypeEnum.d6,
+                DiceType = DiceTypeEnum.d100,
                 Genre = GenreEnum.Fantasy,
                 IsTableCopywriteFree = false,
                 MaxRerolls = 1,
-                Name = "Monster Activity",
-                NumberOfDiceType = 2,
+                Name = "Something Happen",
+                NumberOfDiceType = 1,
                 Subgenres = { SubgenreEnum.DarkFantasy },
                 Source = SourceEnum.Shadowdark,
                 Setting = SettingEnum.None,
                 SentenceTemplate = string.Empty
             };
 
-            foreach (var activity in deserializedObject.ActivityTable) // Matches the updated property
+            foreach (var somethingHappen in deserializedObject.SomethingHappens)
             {
-                var (minRoll, maxRoll) = ExtractNumbers(activity.Roll);
+                var (minRoll, maxRoll) = ExtractNumbers(somethingHappen.d100);
                 rollTableDto.Entries.Add(new RollTableEntryDto()
                 {
                     MinRoll = minRoll,
                     MaxRoll = maxRoll,
-                    ResultText = activity.Activity,
+                    ResultText = somethingHappen.Details,
                     Type = Core.Enums.RollEntryEnum.Result
                 });
             }
@@ -61,14 +62,14 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
         }
     }
 
-    internal class MonsterActivity
+    internal class SomethingHappensEntry
     {
-        public string Roll { get; set; }
-        public string Activity { get; set; }
+        public string d100 { get; set; }
+        public string Details { get; set; }
     }
 
-    internal class Root
+    internal class SomethingHappensRoot
     {
-        public List<MonsterActivity> ActivityTable { get; set; } // /!\ Must Matches the JSON key !
+        public List<SomethingHappensEntry> SomethingHappens { get; set; }
     }
 }
