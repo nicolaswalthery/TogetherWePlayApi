@@ -20,7 +20,7 @@ namespace TogetherWePlayApi.Controllers
         }
 
         [HttpGet(Name = "GetMonterActivity")]
-        public RollTableDto GetMonterActivity()
+        public RollTableEntryDto GetMonterActivity()
         {
             return _dndEncounterBusinessLayer.EncounterRandomGenerator();
         }

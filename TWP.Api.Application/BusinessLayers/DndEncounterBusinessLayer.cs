@@ -1,4 +1,6 @@
-﻿using TWP.Api.Application.BusinessLayers.Interfaces;
+﻿using Common.Randomizer;
+using TWP.Api.Application.BusinessLayers.Interfaces;
+using TWP.Api.Application.Helpers;
 using TWP.Api.Infrastructure.DataTransferObjects;
 using TWP.Api.Infrastructure.JsonRepositories.Interfaces;
 
@@ -8,16 +10,18 @@ namespace TWP.Api.Application.BusinessLayers
     {
         private readonly IMonsterActivitiesJsonRepository _monsterActivitiesJsonRepository;
         private readonly ISomethingHappenJsonRepository _somethingHappenJsonRepository;
+        private readonly IUltraModern5eJsonRepository _ultraModern5EJsonRepository;
 
-        public DndEncounterBusinessLayer(IMonsterActivitiesJsonRepository monsterActivitiesJsonRepository, ISomethingHappenJsonRepository somethingHappenJsonRepository)
+        public DndEncounterBusinessLayer(IMonsterActivitiesJsonRepository monsterActivitiesJsonRepository, ISomethingHappenJsonRepository somethingHappenJsonRepository, IUltraModern5eJsonRepository ultraModern5EJsonRepository)
         {
             _monsterActivitiesJsonRepository = monsterActivitiesJsonRepository;
             _somethingHappenJsonRepository = somethingHappenJsonRepository;
+            _ultraModern5EJsonRepository = ultraModern5EJsonRepository;
         }
 
-        public RollTableDto EncounterRandomGenerator()
+        public RollTableEntryDto EncounterRandomGenerator()
         {
-            return _somethingHappenJsonRepository.GetRollTable();
+            return _ultraModern5EJsonRepository.GetTechItemTable_A_RandomTable().GetRandomlyOneEntry();
         }
     }
 }

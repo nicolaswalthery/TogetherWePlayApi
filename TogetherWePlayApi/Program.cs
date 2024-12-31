@@ -11,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddTransient<JsonRepositoryBase>();
 builder.Services.AddTransient<IMonsterActivitiesJsonRepository, MonsterActivitiesJsonRepository>();
 builder.Services.AddTransient<ISomethingHappenJsonRepository, SomethingHappenJsonRepository>();
+builder.Services.AddTransient<IUltraModern5eJsonRepository, UltraModern5eJsonRepository>();
 builder.Services.AddTransient<IDndEncounterBusinessLayer, DndEncounterBusinessLayer>();
 builder.Services.AddTransient<IDndController, DndController>();
 

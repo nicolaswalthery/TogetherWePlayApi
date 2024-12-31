@@ -1,8 +1,5 @@
 ﻿using Common.Extensions;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using TWP.Api.Core.Enums;
-using TWP.Api.Infrastructure.DataTransferObjects;
-using TWP.Api.Infrastructure.JsonRepositories.Mappers;
 
 namespace TWP.Api.Infrastructure.JsonRepositories
 {
@@ -28,12 +25,20 @@ namespace TWP.Api.Infrastructure.JsonRepositories
             _fileName = fileName;
         }
 
+        public JsonRepositoryBase(SourceEnum folderName)
+        {
+            _folderName = folderName;
+        }
+
         protected string RandomTablesRelativePath => _randomTablesRelativePath;
         protected string BaseFolderRelativePath => _baseRelativePath;
         protected string FullRandomTablesRelativePath => $@"{_randomTablesRelativePath}\{_folderName}";
 
         protected string GetRollTable()
             => _fileName.GetJsonFile(FullRandomTablesRelativePath);
+
+        protected string GetRollTable(string fileName)
+            => fileName.GetJsonFile(FullRandomTablesRelativePath);
 
     }
 }

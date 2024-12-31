@@ -77,7 +77,7 @@ namespace Common.Extensions
         public static T GetPercentilResultFromEnum<T>(T enumeration)
             where T : Enum
         {
-            var resultPercentDie = new Dice(1, 100).ThrowIt;
+            var resultPercentDie = new Dice(1, 100).Roll;
             T[] orderedEnumArray = enumeration.OrderedByValue();
             return new RandomSelector<T>().PercentilSelector(orderedEnumArray!, resultPercentDie);
         }

@@ -5,11 +5,11 @@ using TWP.Api.Infrastructure.Helpers;
 
 namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
 {
-    public static class SomethingHappenJsonFileMapper
+    public static class TechItemTableARandomJsonFileMapper
     {
-        public static RollTableDto ToSomethingHappensRollTableDto(this string json)
+        public static RollTableDto ToTechItemTableARandomTableRollTableDto(this string json)
         {
-            var deserializedObject = json.ToObject<SomethingHappensRoot>();
+            var deserializedObject = json.ToObject<TechItemTableARoot>();
 
             var rollTableDto = new RollTableDto()
             {
@@ -17,22 +17,22 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
                 Genre = GenreEnum.Fantasy,
                 IsTableCopywriteFree = false,
                 MaxRerolls = 1,
-                Name = "Something Happen",
+                Name = "Tech Item Table A",
                 NumberOfDiceType = 1,
                 Subgenres = { SubgenreEnum.DarkFantasy },
-                Source = SourceEnum.Shadowdark,
+                Source = SourceEnum.UM5e,
                 Setting = SettingEnum.None,
                 SentenceTemplate = string.Empty
             };
 
-            foreach (var somethingHappen in deserializedObject.SomethingHappens)
+            foreach (var techItem in deserializedObject.TechItemTableA)
             {
-                var (minRoll, maxRoll) = somethingHappen.d100.ExtractMinAndMaxRollNumbers();
+                var (minRoll, maxRoll) = techItem.Range.ExtractMinAndMaxRollNumbers();
                 rollTableDto.Entries.Add(new RollTableEntryDto()
                 {
                     MinRoll = minRoll,
                     MaxRoll = maxRoll,
-                    ResultText = somethingHappen.Details,
+                    ResultText = techItem.Description,
                     Type = Core.Enums.RollEntryEnum.Result
                 });
             }
@@ -41,14 +41,14 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
         }
     }
 
-    internal class SomethingHappensEntry
+    internal class TechItemTableAEntry
     {
-        public string d100 { get; set; }
-        public string Details { get; set; }
+        public string Range { get; set; }
+        public string Description { get; set; }
     }
 
-    internal class SomethingHappensRoot
+    internal class TechItemTableARoot
     {
-        public List<SomethingHappensEntry> SomethingHappens { get; set; }
+        public List<TechItemTableAEntry> TechItemTableA { get; set; }
     }
 }

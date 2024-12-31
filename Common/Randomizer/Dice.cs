@@ -7,7 +7,7 @@
         /// - Later, i realised that "Random" objects were already really good at doing that...
         /// - But i still decided to keep the Dice class and use it in the Treasures_Hoard_Tables class because it was clearer to me to 
         ///   instanciate dice then Random type objects without any flavor.
-        ///   To be explicite, i rather write "oneD6.ThrowIt" which will emulate a six sided die using its property "ThrowIt" then write rdnNbr.Next(1, 7).
+        ///   To be explicite, i rather write "oneD6.Roll" which will emulate a six sided die using its property "Roll" then write rdnNbr.Next(1, 7).
         ///   It speaks better to me. :)
         /// </summary>
         #region STATIC ELEMENTS
@@ -23,15 +23,15 @@
         #endregion
         #region INSTANCE VARIABLES
         #endregion
-        private short  sidesOfADie;
-        private short  nbrOfDice;
+        private int sidesOfADie;
+        private int nbrOfDice;
         private Random dieOutcome;
 
 
         #region INSTANCE CONSTRUCTORS - PROPERTIES - METHODES
         #endregion 
         //==CONSTRUCTOR
-        public Dice(short nbrOfDice, short sidesOfADie)
+        public Dice(int nbrOfDice, int sidesOfADie)
         {
             this.NbrOfDice   = nbrOfDice;
             this.SidesOfADie = sidesOfADie;
@@ -40,7 +40,7 @@
 
         //==PROPERTIES
         //Set the number of dice that will be virtually thrown.
-        public short NbrOfDice /*to be thrown*/
+        public int NbrOfDice /*to be thrown*/
         {
             get { return this.nbrOfDice; }
             private set
@@ -51,7 +51,7 @@
                 this.nbrOfDice = value;
             }
         }
-        public short SidesOfADie
+        public int SidesOfADie
         {
             get { return this.sidesOfADie; }
             private set
@@ -66,7 +66,7 @@
         /// <summary>
         /// This property will generate a random number set between the number of dice thrown (min) and the total sides of those dice combine plus one (max).
         /// </summary>
-        public int ThrowIt 
+        public int Roll 
         {
             get
             {
@@ -80,10 +80,10 @@
 
         public (int firstNumber, int secondNumber) GetTwoDifferentNumber()
         {
-            var firstNumber = ThrowIt;
+            var firstNumber = Roll;
             var secondNumber = 0;
             {
-                secondNumber = ThrowIt;
+                secondNumber = Roll;
             } while (firstNumber == secondNumber);
             return (firstNumber, secondNumber);
         }

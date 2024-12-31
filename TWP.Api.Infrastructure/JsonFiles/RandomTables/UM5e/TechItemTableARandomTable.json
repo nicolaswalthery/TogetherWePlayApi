@@ -1,0 +1,109 @@
+{
+    "TechItemTableA": [
+        {
+            "Range": "01-10",
+            "Description": "Basic Power Cell"
+        },
+        {
+            "Range": "11-20",
+            "Description": "Brass Knuckles"
+        },
+        {
+            "Range": "21-25",
+            "Description": "Medium Power Cell"
+        },
+        {
+            "Range": "26-30",
+            "Description": "Collapsible Baton"
+        },
+        {
+            "Range": "31-35",
+            "Description": "Plug Bayonet"
+        },
+        {
+            "Range": "36-40",
+            "Description": "Grenade, Smoke Screening"
+        },
+        {
+            "Range": "41-45",
+            "Description": "Leather Armor"
+        },
+        {
+            "Range": "46-50",
+            "Description": "Low-Calibre Autoloader"
+        },
+        {
+            "Range": "51-55",
+            "Description": "Grenade, Fragmentation"
+        },
+        {
+            "Range": "56-60",
+            "Description": "Grenade, Flashbang"
+        },
+        {
+            "Range": "61-63",
+            "Description": "Fighting Knife Bayonet"
+        },
+        {
+            "Range": "64-65",
+            "Description": "Vigor Injection (Stock)"
+        },
+        {
+            "Range": "66-68",
+            "Description": "Dark Brew (Stock)"
+        },
+        {
+            "Range": "69-71",
+            "Description": "Grenade, Concussion"
+        },
+        {
+            "Range": "72-74",
+            "Description": "Synthetic Weave"
+        },
+        {
+            "Range": "75-77",
+            "Description": "Ballistics Armor"
+        },
+        {
+            "Range": "78-80",
+            "Description": "Synthetic Weave"
+        },
+        {
+            "Range": "81-83",
+            "Description": "High Power Cell"
+        },
+        {
+            "Range": "84-86",
+            "Description": "Grenade, HEAT"
+        },
+        {
+            "Range": "87-89",
+            "Description": "Medical Kit"
+        },
+        {
+            "Range": "90-92",
+            "Description": "Vigor Injection (Greater)"
+        },
+        {
+            "Range": "93-95",
+            "Description": "Dark Brew (Greater)"
+        },
+        {
+            "Range": "96-97",
+            "Description": "Force Body Vest"
+        },
+        {
+            "Range": "98",
+            "Description": "Grenade, Riot"
+        },
+        {
+            "Range": "99",
+            "Description": "One-Handed Grappling Hook"
+        },
+        {
+            "Range": "00",
+            "Description": "Capsicum Spray"
+        }
+    ]
+}
+
