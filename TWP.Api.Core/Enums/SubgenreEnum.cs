@@ -2,6 +2,6 @@
 {
     public enum SubgenreEnum
     {
-        DarkFantasy
+        DarkFantasy = 1,
     }
 }
