@@ -12,6 +12,11 @@ namespace TWP.Api.Infrastructure.JsonRepositories
         {
         }
 
+        /// <summary>
+        /// JsonRepositoryBase main Constructor
+        /// </summary>
+        /// <param name="folderName">Folder name where the random table json is located.</param>
+        /// <remarks><param name="folderName"> is named after the ttrpg system where the random table is coming from.</remarks>
         public JsonRepositoryBase(SourceEnum folderName)
         {
             _folderName = folderName;
