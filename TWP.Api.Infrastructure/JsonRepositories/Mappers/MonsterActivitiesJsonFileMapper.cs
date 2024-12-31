@@ -40,7 +40,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
             return rollTableDto;
         }
 
-        public static (int firstNumber, int secondNumber) ExtractNumbers(string roll)
+        private static (int firstNumber, int secondNumber) ExtractNumbers(string roll)
         {
             if (Regex.IsMatch(roll, @"^\d+$")) // Single number
             {

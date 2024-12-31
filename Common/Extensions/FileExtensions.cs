@@ -4,11 +4,16 @@ namespace Common.Extensions
 {
     public static class FileExtensions
     {
-        public static string GetJsonFile(this string fileName, string folderName)
+        /// <summary>
+        /// Get a json file.
+        /// </summary>
+        /// <param name="fileName">Json File Name</param>
+        /// <param name="relativePath">Relative path to the folder where the json file is located./></param>
+        /// <returns></returns>
+        public static string GetJsonFile(this string fileName, string relativePath)
         {
             try
             {
-                string relativePath = @"TWP.Api.Infrastructure\JsonFiles\RandomTables";
                 // Combine the project root and the relative path to form the absolute file path
                 string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\", relativePath, $"{fileName}.json");
 
