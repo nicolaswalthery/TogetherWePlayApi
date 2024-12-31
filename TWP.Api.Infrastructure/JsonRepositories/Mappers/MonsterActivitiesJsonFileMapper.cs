@@ -22,18 +22,19 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
                 Subgenres = { SubgenreEnum.DarkFantasy },
                 Source = SourceEnum.Shadowdark,
                 Setting = SettingEnum.None,
-                SentenceTemplate = String.Empty
+                SentenceTemplate = string.Empty
             };
 
-            foreach (var activity in deserializedObject.MonsterActivityTable)
+            foreach (var activity in deserializedObject.ActivityTable) // Matches the updated property
             {
+                var (minRoll, maxRoll) = ExtractNumbers(activity.Roll);
                 rollTableDto.Entries.Add(new RollTableEntryDto()
                 {
-                    MinRoll = ExtractNumbers(activity.Roll).firstNumber,
-                    MaxRoll = ExtractNumbers(activity.Roll).secondNumber,
+                    MinRoll = minRoll,
+                    MaxRoll = maxRoll,
                     ResultText = activity.Activity,
                     Type = Core.Enums.RollEntryEnum.Result
-                }) ;
+                });
             }
 
             return rollTableDto;
@@ -41,22 +42,23 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
 
         public static (int firstNumber, int secondNumber) ExtractNumbers(string roll)
         {
-            // Define a regular expression to match numbers in the string
-            var match = Regex.Match(roll, @"(\d+)-(\d+)");
-
-            if (match.Success)
+            if (Regex.IsMatch(roll, @"^\d+$")) // Single number
             {
-                // Extract the first and second numbers
+                int number = int.Parse(roll);
+                return (number, number);
+            }
+            else if (Regex.IsMatch(roll, @"(\d+)-(\d+)")) // Number range
+            {
+                var match = Regex.Match(roll, @"(\d+)-(\d+)");
                 int firstNumber = int.Parse(match.Groups[1].Value);
                 int secondNumber = int.Parse(match.Groups[2].Value);
                 return (firstNumber, secondNumber);
             }
             else
             {
-                throw new ArgumentException("The input string does not contain a valid number range.");
+                throw new ArgumentException("The input string does not contain a valid number or range.");
             }
         }
-
     }
 
     internal class MonsterActivity
@@ -67,6 +69,6 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
 
     internal class Root
     {
-        public List<MonsterActivity> MonsterActivityTable { get; set; }
+        public List<MonsterActivity> ActivityTable { get; set; } // Matches the JSON key
     }
 }

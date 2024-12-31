@@ -4,31 +4,38 @@ namespace Common.Extensions
 {
     public static class FileExtensions
     {
-        public static string GetJsonFile(this string folderName, string fileName)
+        public static string GetJsonFile(this string fileName, string folderName)
         {
             try
             {
-                //string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"/{folderName}/{fileName}.json");
-                string filePath = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\");
-                //Path.GetFullPath(Path.Combine(baseDirectory, @"..\..\..\"))
-                //var jsonSaveFilePath = Directory.GetFiles(Path.Combine(Application.dataPath, $"../Saves/"), $"{saveJsonFileToLoad}.json").FirstOrDefault();
-                //if (String.IsNullOrWhiteSpace(jsonSaveFilePath))
-                //    throw new Exception($"{saveJsonFileToLoad} not found in the save files !");
+                string relativePath = @"TWP.Api.Infrastructure\JsonFiles\RandomTables";
+                // Combine the project root and the relative path to form the absolute file path
+                string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\", relativePath, $"{fileName}.json");
 
+                // Resolve the full path
+                filePath = Path.GetFullPath(filePath);
+
+                // Ensure the file exists before trying to read it
+                if (!File.Exists(filePath))
+                {
+                    throw new FileNotFoundException($"The file '{fileName}.json' was not found in the path '{filePath}'.");
+                }
+
+                // Read and return the content of the file
                 string jsonContent = File.ReadAllText(filePath);
-
-                return jsonContent is not null ? jsonContent : String.Empty;
+                return jsonContent;
             }
             catch (FileNotFoundException ex)
             {
                 Console.WriteLine($"File not found: {ex.Message}");
-                return "";
+                return string.Empty;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"An error occurred: {ex.Message}");
-                return "";
+                return string.Empty;
             }
         }
+
     }
 }

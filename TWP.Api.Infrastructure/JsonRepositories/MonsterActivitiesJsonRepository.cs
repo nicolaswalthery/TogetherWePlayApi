@@ -16,6 +16,6 @@ namespace TWP.Api.Infrastructure.JsonRepositories
         }
 
         public RollTableDto GetRollTable() 
-            => FolderName.GetJsonFile(_fileName).ToDto();
+            => _fileName.GetJsonFile(FolderName).ToDto();
     }
 }
