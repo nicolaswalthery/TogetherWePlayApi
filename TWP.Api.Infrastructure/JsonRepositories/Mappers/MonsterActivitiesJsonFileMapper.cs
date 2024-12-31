@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using TWP.Api.Core.Enums;
 using TWP.Api.Infrastructure.DataTransferObjects;
+using TWP.Api.Infrastructure.Helpers;
 
 namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
 {
@@ -27,7 +28,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
 
             foreach (var activity in deserializedObject.ActivityTable) // Matches the updated property
             {
-                var (minRoll, maxRoll) = ExtractNumbers(activity.Roll);
+                var (minRoll, maxRoll) = activity.Roll.ExtractMinAndMaxRollNumbers();
                 rollTableDto.Entries.Add(new RollTableEntryDto()
                 {
                     MinRoll = minRoll,
@@ -38,26 +39,6 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
             }
 
             return rollTableDto;
-        }
-
-        private static (int firstNumber, int secondNumber) ExtractNumbers(string roll)
-        {
-            if (Regex.IsMatch(roll, @"^\d+$")) // Single number
-            {
-                int number = int.Parse(roll);
-                return (number, number);
-            }
-            else if (Regex.IsMatch(roll, @"(\d+)-(\d+)")) // Number range
-            {
-                var match = Regex.Match(roll, @"(\d+)-(\d+)");
-                int firstNumber = int.Parse(match.Groups[1].Value);
-                int secondNumber = int.Parse(match.Groups[2].Value);
-                return (firstNumber, secondNumber);
-            }
-            else
-            {
-                throw new ArgumentException("The input string does not contain a valid number or range.");
-            }
         }
     }
 
