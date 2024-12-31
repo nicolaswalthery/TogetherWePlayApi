@@ -69,6 +69,6 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
 
     internal class Root
     {
-        public List<MonsterActivity> ActivityTable { get; set; } // Matches the JSON key
+        public List<MonsterActivity> ActivityTable { get; set; } // /!\ Must Matches the JSON key !
     }
 }
