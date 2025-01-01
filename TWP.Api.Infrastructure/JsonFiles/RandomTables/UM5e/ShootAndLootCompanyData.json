@@ -1,0 +1,88 @@
+{
+    "CompanyData": [
+        {
+            "d20": "1",
+            "Company": "Mifune",
+            "DamageType": "Acid",
+            "Magazine": "Reload Cell 15",
+            "TL": 4
+        },
+        {
+            "d20": "2",
+            "Company": "Gunsmith",
+            "DamageType": "Cold",
+            "Magazine": "Reload Cell 15",
+            "TL": 4
+        },
+        {
+            "d20": "3",
+            "Company": "Viper",
+            "DamageType": "Fire",
+            "Magazine": "Reload Cell 15",
+            "TL": 4
+        },
+        {
+            "d20": "4",
+            "Company": "Moses",
+            "DamageType": "Pincher (lightning)",
+            "Magazine": "Reload Cell 15",
+            "TL": 3
+        },
+        {
+            "d20": "5",
+            "Company": "Seburo",
+            "DamageType": "Sonic (thunder & bludgeoning)",
+            "Magazine": "Reload Cell 15",
+            "TL": 3
+        },
+        {
+            "d20": "6-10",
+            "Company": "Federated Firearms",
+            "DamageType": "Traditional bullet (piercing)",
+            "Magazine": "Reload Cell 20",
+            "TL": 3
+        },
+        {
+            "d20": "11-12",
+            "Company": "NecroTech",
+            "DamageType": "Nuclear (radiant)",
+            "Magazine": "Reload Cell 20",
+            "TL": 3
+        },
+        {
+            "d20": "13-14",
+            "Company": "Alphaden",
+            "DamageType": "Laser (fire)",
+            "Magazine": "Reload Cell 20",
+            "TL": 3
+        },
+        {
+            "d20": "15-16",
+            "Company": "Marathon",
+            "DamageType": "Plasma (radiant & fire)",
+            "Magazine": "Reload Cell 20",
+            "TL": 5
+        },
+        {
+            "d20": "17-18",
+            "Company": "Morita Limited",
+            "DamageType": "Magnetic (piercing)",
+            "Magazine": "Reload Cell 20",
+            "TL": 3
+        },
+        {
+            "d20": "19",
+            "Company": "NecroTech",
+            "DamageType": "Necrotic",
+            "Magazine": "Reload Cell 20",
+            "TL": 3
+        },
+        {
+            "d20": "20",
+            "Company": "Spirit Systems",
+            "DamageType": "Force",
+            "Magazine": "Reload Cell 20",
+            "TL": 3
+        }
+    ]
+}

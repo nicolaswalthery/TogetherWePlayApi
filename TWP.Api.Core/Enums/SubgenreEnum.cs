@@ -3,5 +3,10 @@
     public enum SubgenreEnum
     {
         DarkFantasy = 1,
+        Cyberpunk,
+        SpaceOpera,
+        NasaPunk,
+        HardSciFi,
+        PostApo
     }
 }

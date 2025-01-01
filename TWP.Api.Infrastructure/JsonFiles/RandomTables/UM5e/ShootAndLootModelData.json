@@ -1,0 +1,104 @@
+{
+    "ModelData": [
+        {
+            "d100": "1",
+            "Model": "X-T-R",
+            "Benefit": "Ricochet"
+        },
+        {
+            "d100": "2",
+            "Model": "2000",
+            "Benefit": "Chain"
+        },
+        {
+            "d100": "3",
+            "Model": "DL-44",
+            "Benefit": "Lingering"
+        },
+        {
+            "d100": "4",
+            "Model": "M-99",
+            "Benefit": "Gunner"
+        },
+        {
+            "d100": "5",
+            "Model": "90K",
+            "Benefit": "Rifling"
+        },
+        {
+            "d100": "6",
+            "Model": "Special",
+            "Benefit": "Defense"
+        },
+        {
+            "d100": "7",
+            "Model": "Cannon",
+            "Benefit": "Caliber"
+        },
+        {
+            "d100": "8",
+            "Model": "Model One",
+            "Benefit": "Regeneration"
+        },
+        {
+            "d100": "9",
+            "Model": "VC5",
+            "Benefit": "Blade"
+        },
+        {
+            "d100": "10",
+            "Model": "EX",
+            "Benefit": "Velocity"
+        },
+        {
+            "d100": "11",
+            "Model": "Pearl",
+            "Benefit": "Expensive"
+        },
+        {
+            "d100": "12",
+            "Model": "VF",
+            "Benefit": "Tracking"
+        },
+        {
+            "d100": "13",
+            "Model": "PPP",
+            "Benefit": "Rust"
+        },
+        {
+            "d100": "14",
+            "Model": "GG",
+            "Benefit": "Void"
+        },
+        {
+            "d100": "15",
+            "Model": "1337",
+            "Benefit": "Extension"
+        },
+        {
+            "d100": "16",
+            "Model": "E-Tech",
+            "Benefit": "Criticality"
+        },
+        {
+            "d100": "17",
+            "Model": "ZF-1",
+            "Benefit": "Replay"
+        },
+        {
+            "d100": "18",
+            "Model": "101",
+            "Benefit": "Echo"
+        },
+        {
+            "d100": "19",
+            "Model": "XM-18",
+            "Benefit": "Polymer"
+        },
+        {
+            "d100": "20",
+            "Model": "EM-1",
+            "Benefit": "Vigor"
+        }
+    ]
+}

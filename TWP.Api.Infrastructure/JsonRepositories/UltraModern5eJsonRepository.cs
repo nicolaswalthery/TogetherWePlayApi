@@ -1,8 +1,8 @@
-﻿using System.IO.Enumeration;
-using TWP.Api.Core.Enums;
+﻿using TWP.Api.Core.Enums;
 using TWP.Api.Infrastructure.DataTransferObjects;
 using TWP.Api.Infrastructure.JsonRepositories.Interfaces;
 using TWP.Api.Infrastructure.JsonRepositories.Mappers;
+using static TWP.Api.Infrastructure.JsonRepositories.Mappers.ShootAndLootCompanyDataJsonFileMapper;
 
 namespace TWP.Api.Infrastructure.JsonRepositories
 {
@@ -17,5 +17,8 @@ namespace TWP.Api.Infrastructure.JsonRepositories
 
         public RollTableDto GetTechItemTable_A_RandomTable() 
             => base.GetRollTable(fileName: "TechItemTableARandomTable").ToTechItemTableARandomTableRollTableDto();
+
+        public RollTableDto GetShootAndLootCompanyData()
+            => base.GetRollTable(fileName: "ShootAndLootCompanyData").ToShootAndLootCompanyNameRollTableDto();
     }
 }
