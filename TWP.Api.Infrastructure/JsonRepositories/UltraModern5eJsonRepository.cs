@@ -11,6 +11,10 @@ namespace TWP.Api.Infrastructure.JsonRepositories
     /// </summary>
     public class UltraModern5eJsonRepository : JsonRepositoryBase, IUltraModern5eJsonRepository
     {
+
+        private string _shootAndLootCompanyDataJsonFileName = "ShootAndLootCompanyData";
+        private string _shootAndLootLineDataJsonFileName = "ShootAndLootLineData";
+
         public UltraModern5eJsonRepository() : base(folderName: SourceEnum.UM5e)
         {
         }
@@ -23,26 +27,26 @@ namespace TWP.Api.Infrastructure.JsonRepositories
 
         #region Company Data Tables
         public RollTableDto GetShootAndLootCompanyName()
-            => base.GetRollTable(fileName: "ShootAndLootCompanyData").ToShootAndLootCompanyNameRollTableDto();
+            => base.GetRollTable(fileName: _shootAndLootCompanyDataJsonFileName).ToShootAndLootCompanyNameRollTableDto();
 
         public RollTableDto GetShootAndLootDamageType()
-            => base.GetRollTable(fileName: "ShootAndLootCompanyData").ToShootAndLootDamageTypeRollTableDto();
+            => base.GetRollTable(fileName: _shootAndLootCompanyDataJsonFileName).ToShootAndLootDamageTypeRollTableDto();
 
         public RollTableDto GetShootAndLootMagazine()
-            => base.GetRollTable(fileName: "ShootAndLootCompanyData").ToShootAndLootMagazineRollTableDto();
+            => base.GetRollTable(fileName: _shootAndLootCompanyDataJsonFileName).ToShootAndLootMagazineRollTableDto();
 
         public RollTableDto GetShootAndLootTechLevel()
-            => base.GetRollTable(fileName: "ShootAndLootCompanyData").ToShootAndLootTechLevelRollTableDto();
+            => base.GetRollTable(fileName: _shootAndLootCompanyDataJsonFileName).ToShootAndLootTechLevelRollTableDto();
 
         #endregion Company Data Tables
         
         #region Line Data
 
         public RollTableDto GetShootAndLootLineData()
-            => base.GetRollTable(fileName: "ShootAndLootLineData").ToShootAndLootLineRollTableDto();
+            => base.GetRollTable(fileName: _shootAndLootLineDataJsonFileName).ToShootAndLootLineRollTableDto();
 
         public RollTableDto GetShootAndLootAdditionalProperty()
-            => base.GetRollTable(fileName: "ShootAndLootLineData").ToShootAndLootAdditionalPropertyRollTableDto();
+            => base.GetRollTable(fileName: _shootAndLootLineDataJsonFileName).ToShootAndLootAdditionalPropertyRollTableDto();
 
         #endregion Line Data Tables
     }
