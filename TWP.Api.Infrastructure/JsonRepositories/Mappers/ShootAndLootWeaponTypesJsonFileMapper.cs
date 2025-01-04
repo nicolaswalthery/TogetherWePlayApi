@@ -139,7 +139,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
         }
     }
 
-    public class WeaponTypesRoot
+    public class WeaponTypeRoot
     {
         public string d20 { get; set; }
         public string WeaponType { get; set; }
@@ -152,6 +152,6 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
 
     internal class WeaponTypesRoot
     {
-        public List<WeaponTypesRoot> WeaponTypes { get; set; } // /!\ Must Matches the JSON key !
+        public List<WeaponTypeRoot> WeaponTypes { get; set; } // /!\ Must Matches the JSON key !
     }
 }
