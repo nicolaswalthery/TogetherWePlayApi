@@ -2,7 +2,7 @@
     "WeaponTypes": [
         {
             "d20": "1-5",
-            "Weapon Type": "One-handed small arm",
+            "WeaponType": "One-handed small arm",
             "Damage": "1d6",
             "Base Cost": 250,
             "Range": "50/200",
@@ -11,7 +11,7 @@
         },
         {
             "d20": "6-10",
-            "Weapon Type": "Two-handed small arm",
+            "WeaponType": "Two-handed small arm",
             "Damage": "1d8",
             "Base Cost": 350,
             "Range": "100/400",
@@ -20,7 +20,7 @@
         },
         {
             "d20": "11-15",
-            "Weapon Type": "Heavy weapon",
+            "WeaponType": "Heavy weapon",
             "Damage": "1d10",
             "Base Cost": 550,
             "Range": "200/800",
@@ -29,7 +29,7 @@
         },
         {
             "d20": "16-20",
-            "Weapon Type": "Super heavy weapon",
+            "WeaponType": "Super heavy weapon",
             "Damage": "1d6+6",
             "Base Cost": 750,
             "Range": "300/1200",

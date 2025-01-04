@@ -26,7 +26,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
             return rollTableDto;
         }
 
-        public static RollTableDto ToShootAndLootWeaponCostMultiplierRollTableDto(this string json)
+        public static RollTableDto ToShootAndLootWeaponCostMultipliersRollTableDto(this string json)
         {
             var deserializedObject = json.ToObject<WeaponRaritiesRoot>();
             var rollTableDto = BuildRollTableDto(name: "Cost Multipliers");

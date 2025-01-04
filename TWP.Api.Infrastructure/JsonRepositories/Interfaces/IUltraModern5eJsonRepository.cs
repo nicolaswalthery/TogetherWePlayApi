@@ -24,6 +24,14 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Interfaces
 
         public RollTableDto GetShootAndLootShieldBenefits();
 
+        public RollTableDto GetShootAndLootWeaponRarities();
 
+        public RollTableDto GetShootAndLootWeaponCostMultipliers();
+
+        public RollTableDto GetShootAndLootWeaponNumberOfLines();
+
+        public RollTableDto GetShootAndLootWeaponNumberOfModels();
+
+        public RollTableDto GetShootAndLootWeaponBenefits();
     }
 }
