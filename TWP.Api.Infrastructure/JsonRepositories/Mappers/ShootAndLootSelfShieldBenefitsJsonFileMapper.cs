@@ -10,11 +10,11 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
         public static RollTableDto ToShootAndLootShieldBenefitsRollTableDto(this string json)
         {
             var deserializedObject = json.ToObject<Root>();
-            RollTableDto rollTableDto = BuildRollTableDto("Shoot And Loot Self Shield Benefits");
+            RollTableDto rollTableDto = BuildRollTableDto(name: "Shoot And Loot Self Shield Benefits");
 
-            foreach (var SelfShieldBenefit in deserializedObject.SelfShieldBenefits) // Matches the updated property
+            foreach (var SelfShieldBenefit in deserializedObject.SelfShieldBenefits)
             {
-                var (minRoll, maxRoll) = SelfShieldBenefit.d20.ExtractMinAndMaxRollNumbers();
+                var (minRoll, maxRoll) = SelfShieldBenefit.d100.ExtractMinAndMaxRollNumbers();
                 rollTableDto.Entries.Add(new RollTableEntryDto()
                 {
                     MinRoll = minRoll,
@@ -46,7 +46,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
 
         public class ShootAndLootShieldBenefitDatumDto
         {
-            public string d20 { get; set; }
+            public string d100 { get; set; }
             public string Model { get; set; }
             public string Benefit { get; set; }
         }

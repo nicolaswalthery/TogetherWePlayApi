@@ -1,112 +1,112 @@
 {
     "SelfShieldBenefits": [
         {
-            "d20": "01-11",
+            "d100": "01-11",
             "Model": "Asclepius",
             "Benefit": "Feedback"
         },
         {
-            "d20": "12-17",
+            "d100": "12-17",
             "Model": "Boom-Box",
             "Benefit": "Burst"
         },
         {
-            "d20": "18-23",
+            "d100": "18-23",
             "Model": "Breadbasket",
             "Benefit": "Power"
         },
         {
-            "d20": "24-29",
+            "d100": "24-29",
             "Model": "Buzzz",
             "Benefit": "Channel"
         },
         {
-            "d20": "30-35",
+            "d100": "30-35",
             "Model": "Cackle",
             "Benefit": "Collapse"
         },
         {
-            "d20": "36-40",
+            "d100": "36-40",
             "Model": "Ceranuoscopy",
             "Benefit": "Transform"
         },
         {
-            "d20": "41-45",
+            "d100": "41-45",
             "Model": "X-TRO",
             "Benefit": "Leach"
         },
         {
-            "d20": "46-50",
+            "d100": "46-50",
             "Model": "Godspeed",
             "Benefit": "Speed"
         },
         {
-            "d20": "51-55",
+            "d100": "51-55",
             "Model": "Hachiman",
             "Benefit": "Linger"
         },
         {
-            "d20": "56-59",
+            "d100": "56-59",
             "Model": "Zapatacular",
             "Benefit": "Response"
         },
         {
-            "d20": "60-63",
+            "d100": "60-63",
             "Model": "Necromonger",
             "Benefit": "Necrotic"
         },
         {
-            "d20": "64-67",
+            "d100": "64-67",
             "Model": "Puff-Puff",
             "Benefit": "Pulse"
         },
         {
-            "d20": "68-71",
+            "d100": "68-71",
             "Model": "Firefly",
             "Benefit": "Lightning"
         },
         {
-            "d20": "72-75",
+            "d100": "72-75",
             "Model": "Hammer",
             "Benefit": "Thunder"
         },
         {
-            "d20": "76-79",
+            "d100": "76-79",
             "Model": "Freshmaker",
             "Benefit": "Acid"
         },
         {
-            "d20": "78-81",
+            "d100": "78-81",
             "Model": "Darkside",
             "Benefit": "Force"
         },
         {
-            "d20": "82-85",
+            "d100": "82-85",
             "Model": "Old-Man",
             "Benefit": "Cold"
         },
         {
-            "d20": "86-89",
+            "d100": "86-89",
             "Model": "Fatman",
             "Benefit": "Health"
         },
         {
-            "d20": "90-93",
+            "d100": "90-93",
             "Model": "Loverboy",
             "Benefit": "Radiant"
         },
         {
-            "d20": "94-96",
+            "d100": "94-96",
             "Model": "Thermoptix",
             "Benefit": "Stealth"
         },
         {
-            "d20": "97-99",
+            "d100": "97-99",
             "Model": "Fuji",
             "Benefit": "Fire"
         },
         {
-            "d20": "00",
+            "d100": "00",
             "Model": "Triple-A",
             "Benefit": "Flash"
         }
