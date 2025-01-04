@@ -15,6 +15,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories
         private string _shootAndLootCompanyDataJsonFileName = "ShootAndLootCompanyData";
         private string _shootAndLootLineDataJsonFileName = "ShootAndLootLineData";
         private string _shootAndLootSelfShieldBenefitsJsonFileName = "ShootAndLootSelfShieldBenefits";
+        private string _shootAndLootWeaponRaritiesJsonFileName = "ShootAndLootWeaponRarities";
 
         public UltraModern5eJsonRepository() : base(folderName: SourceEnum.UM5e)
         {
@@ -57,7 +58,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories
             => base.GetRollTable(fileName: _shootAndLootLineDataJsonFileName).ToShootAndLootModelNameRollTableDto();
 
         public RollTableDto GetShootAndLootModelBenefit()
-            => base.GetRollTable(fileName: _shootAndLootLineDataJsonFileName).ToShootAndLootModelBenefitRollTableDto();
+            => base.GetRollTable(fileName: _shootAndLootLineDataJsonFileName).ToShootAndLootModelBenefitsRollTableDto();
 
         #endregion Model Data
 
@@ -67,6 +68,13 @@ namespace TWP.Api.Infrastructure.JsonRepositories
             => base.GetRollTable(fileName: _shootAndLootSelfShieldBenefitsJsonFileName).ToShootAndLootShieldBenefitsRollTableDto();
 
         #endregion Shield Benefits Data
+
+        #region Weapon Rarities Data
+
+        public RollTableDto GetShootAndLootWeaponRarities()
+            => base.GetRollTable(fileName: _shootAndLootWeaponRaritiesJsonFileName).ToShootAndLootWeaponRarityRollTableDto();
+
+        #endregion Weapon Rarities Data
 
     }
 }

@@ -1,64 +1,52 @@
 {
     "WeaponRarities": [
-        {
-            "d20": "1-7",
-            "Rarity": "Common",
-            "Benefit": "None",
-            "Table Rolls": {
-                "Type 1": "1 company",
-                "Type 2": "1 company"
-            },
-            "Cost": "0"
-        },
-        {
-            "d20": "8-13",
-            "Rarity": "Uncommon",
-            "Benefit": "+1 attack and +1 damage",
-            "Table Rolls": {
-                "Type 1": "1 company, 1 line",
-                "Type 2": "1 company, 1 line"
-            },
-            "Cost": "x2"
-        },
-        {
-            "d20": "14-18",
-            "Rarity": "Rare",
-            "Benefit": "+1 attack and +2 damage",
-            "Table Rolls": {
-                "Type 1": "1 company, 1 line, 1 model",
-                "Type 2": "1 company, 1 line, 1 model"
-            },
-            "Cost": "x5"
-        },
-        {
-            "d20": "19-22",
-            "Rarity": "Epic",
-            "Benefit": "+2 attack and +3 damage",
-            "Table Rolls": {
-                "Type 1": "1 company, 1 line, 1 model",
-                "Type 2": "1 company, 1 line, 1 model"
-            },
-            "Cost": "x10"
-        },
-        {
-            "d20": "23-25",
-            "Rarity": "Masterwork",
-            "Benefit": "+2 attack and +4 damage",
-            "Table Rolls": {
-                "Type 1": "1 company, 1 line, 2 model",
-                "Type 2": "1 company, 1 line, 2 model"
-            },
-            "Cost": "x30"
-        },
-        {
-            "d20": "26-up",
-            "Rarity": "Legendary",
-            "Benefit": "+3 attack and +5 damage",
-            "Table Rolls": {
-                "Type 1": "1 company, 2 line, 2 model",
-                "Type 2": "1 company, 2 line, 2 model"
-            },
-            "Cost": "x60"
-        }
+      {
+        "d20": "1-7",
+        "rarity": "Common",
+        "benefit": "None",
+        "numberOfLines": "0",
+        "numberOfModels": "0",
+        "costMultiplier": "0"
+      },
+      {
+        "d20": "8-13",
+        "rarity": "Uncommon",
+        "benefit": "+1 attack and +1 damage",
+        "numberOfLines": "1",
+        "numberOfModels": "0",
+        "costMultiplier": "x2"
+      },
+      {
+        "d20": "14-18",
+        "rarity": "Rare",
+        "benefit": "+1 attack and +2 damage",
+        "numberOfLines": "1",
+        "numberOfModels": "1",
+        "costMultiplier": "x5"
+      },
+      {
+        "d20": "19-22",
+        "rarity": "Epic",
+        "benefit": "+2 attack and +3 damage",
+        "numberOfLines": "1",
+        "numberOfModels": "1",
+        "costMultiplier": "x10"
+      },
+      {
+        "d20": "23-25",
+        "rarity": "Masterwork",
+        "benefit": "+2 attack and +4 damage",
+        "numberOfLines": "1",
+        "numberOfModels": "2",
+        "costMultiplier": "x30"
+      },
+      {
+        "d20": "26-up",
+        "rarity": "Legendary",
+        "benefit": "+3 attack and +5 damage",
+        "numberOfLines": "2",
+        "numberOfModels": "2",
+        "costMultiplier": "x60"
+      }
     ]
 }

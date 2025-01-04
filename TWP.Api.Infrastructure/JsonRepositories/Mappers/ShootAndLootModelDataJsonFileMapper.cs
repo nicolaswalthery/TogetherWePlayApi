@@ -40,7 +40,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
             return rollTableDto;
         }
 
-        public static RollTableDto ToShootAndLootModelBenefitRollTableDto(this string json)
+        public static RollTableDto ToShootAndLootModelBenefitsRollTableDto(this string json)
         {
             var deserializedObject = json.ToObject<Root>();
 

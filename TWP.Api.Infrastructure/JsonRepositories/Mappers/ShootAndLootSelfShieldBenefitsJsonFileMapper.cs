@@ -31,7 +31,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
         {
             return new RollTableDto()
             {
-                DiceType = DiceTypeEnum.d20,
+                DiceType = DiceTypeEnum.d100,
                 Genre = GenreEnum.ScienceFiction,
                 IsTableCopywriteFree = false,
                 MaxRerolls = 1,
