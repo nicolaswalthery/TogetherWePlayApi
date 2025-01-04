@@ -26,7 +26,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
             return rollTableDto;
         }
 
-        public static RollTableDto ToShootAndLootWeaponPropertyRollTableDto(this string json)
+        public static RollTableDto ToShootAndLootWeaponPropertiesRollTableDto(this string json)
         {
             var deserializedObject = json.ToObject<WeaponTypesRoot>();
             var rollTableDto = BuildRollTableDto(name: "Weapon Property");

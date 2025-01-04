@@ -89,7 +89,23 @@ namespace TWP.Api.Infrastructure.JsonRepositories
 
         #region Weapon Type Data
 
+        public RollTableDto GetShootAndLootWeaponType()
+            => base.GetRollTable(fileName: _shootAndLootWeaponRaritiesJsonFileName).ToShootAndLootWeaponTypeRollTableDto();
 
+        public RollTableDto GetShootAndLootWeaponWeight()
+            => base.GetRollTable(fileName: _shootAndLootWeaponRaritiesJsonFileName).ToShootAndLootWeaponWeightRollTableDto();
+
+        public RollTableDto GetShootAndLootWeaponProperties()
+            => base.GetRollTable(fileName: _shootAndLootWeaponRaritiesJsonFileName).ToShootAndLootWeaponPropertiesRollTableDto();
+
+        public RollTableDto GetShootAndLootWeaponBaseCost()
+            => base.GetRollTable(fileName: _shootAndLootWeaponRaritiesJsonFileName).ToShootAndLootWeaponBaseCostRollTableDto();
+
+        public RollTableDto GetShootAndLootWeaponDamage()
+            => base.GetRollTable(fileName: _shootAndLootWeaponRaritiesJsonFileName).ToShootAndLootDamageRollTableDto();
+
+        public RollTableDto GetShootAndLootWeaponRange()
+            => base.GetRollTable(fileName: _shootAndLootWeaponRaritiesJsonFileName).ToShootAndLootWeaponRangeRollTableDto();
 
         #endregion Weapon Type Data
 
