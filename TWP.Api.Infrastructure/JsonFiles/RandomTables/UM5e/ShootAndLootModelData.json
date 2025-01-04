@@ -1,102 +1,102 @@
 {
     "ModelData": [
         {
-            "d100": "1",
+            "d20": "1",
             "Model": "X-T-R",
             "Benefit": "Ricochet"
         },
         {
-            "d100": "2",
+            "d20": "2",
             "Model": "2000",
             "Benefit": "Chain"
         },
         {
-            "d100": "3",
+            "d20": "3",
             "Model": "DL-44",
             "Benefit": "Lingering"
         },
         {
-            "d100": "4",
+            "d20": "4",
             "Model": "M-99",
             "Benefit": "Gunner"
         },
         {
-            "d100": "5",
+            "d20": "5",
             "Model": "90K",
             "Benefit": "Rifling"
         },
         {
-            "d100": "6",
+            "d20": "6",
             "Model": "Special",
             "Benefit": "Defense"
         },
         {
-            "d100": "7",
+            "d20": "7",
             "Model": "Cannon",
             "Benefit": "Caliber"
         },
         {
-            "d100": "8",
+            "d20": "8",
             "Model": "Model One",
             "Benefit": "Regeneration"
         },
         {
-            "d100": "9",
+            "d20": "9",
             "Model": "VC5",
             "Benefit": "Blade"
         },
         {
-            "d100": "10",
+            "d20": "10",
             "Model": "EX",
             "Benefit": "Velocity"
         },
         {
-            "d100": "11",
+            "d20": "11",
             "Model": "Pearl",
             "Benefit": "Expensive"
         },
         {
-            "d100": "12",
+            "d20": "12",
             "Model": "VF",
             "Benefit": "Tracking"
         },
         {
-            "d100": "13",
+            "d20": "13",
             "Model": "PPP",
             "Benefit": "Rust"
         },
         {
-            "d100": "14",
+            "d20": "14",
             "Model": "GG",
             "Benefit": "Void"
         },
         {
-            "d100": "15",
+            "d20": "15",
             "Model": "1337",
             "Benefit": "Extension"
         },
         {
-            "d100": "16",
+            "d20": "16",
             "Model": "E-Tech",
             "Benefit": "Criticality"
         },
         {
-            "d100": "17",
+            "d20": "17",
             "Model": "ZF-1",
             "Benefit": "Replay"
         },
         {
-            "d100": "18",
+            "d20": "18",
             "Model": "101",
             "Benefit": "Echo"
         },
         {
-            "d100": "19",
+            "d20": "19",
             "Model": "XM-18",
             "Benefit": "Polymer"
         },
         {
-            "d100": "20",
+            "d20": "20",
             "Model": "EM-1",
             "Benefit": "Vigor"
         }
