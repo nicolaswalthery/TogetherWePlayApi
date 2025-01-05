@@ -25,7 +25,7 @@ namespace TWP.Api.Application.BusinessLayers
             GetAndMapWeaponTypeDataDto(shootAndLootDto);
 
             //Weapon Rarity
-            var numberOfLinesAndModels = GetAndMapWeaponRarityDataToDto(shootAndLootDto);
+            var numberOfLinesAndModels = GetAndMapWeaponRarityDataToDto(shootAndLootDto, ComputeRarityModifier(1, 2));
 
             //Company
             GetAndMapWeaponCompanyDataToDto(shootAndLootDto);
@@ -43,6 +43,24 @@ namespace TWP.Api.Application.BusinessLayers
             }
 
             return shootAndLootDto;
+        }
+
+        private static int ComputeRarityModifier(int averageCharacterLevel, int monsterChallengeRating)
+        {
+            // Calculate the difference between the monster challenge rating and the average character level
+            int difference = monsterChallengeRating - averageCharacterLevel;
+
+            // Determine the rarity modifier based on the average character level
+            int levelModifier = averageCharacterLevel switch
+            {
+                <= 5 => 0,  // Levels 1-5: No modifier
+                <= 10 => 1, // Levels 6-10: +1
+                <= 15 => 3, // Levels 11-15: +3
+                _ => 6      // Levels 16-20: +6
+            };
+
+            // Add the difference to the rarity roll modifier
+            return difference + levelModifier;
         }
 
         private void GetAndMapWeaponLineDataToDto(ShootAndLootDto shootAndLootDto)
@@ -89,7 +107,7 @@ namespace TWP.Api.Application.BusinessLayers
             shootAndLootDto.CompanyName = GetByDieResult(weaponCompanyNames, dieResult).ResultText;
         }
 
-        private (int numberLines, int numberModels) GetAndMapWeaponRarityDataToDto(ShootAndLootDto shootAndLootDto)
+        private (int numberLines, int numberModels) GetAndMapWeaponRarityDataToDto(ShootAndLootDto shootAndLootDto, int rarityModifier)
         {
             var weaponRarities = _ultraModern5EJsonRepository.GetShootAndLootWeaponRarities();
             var weaponCostMultipliers = _ultraModern5EJsonRepository.GetShootAndLootWeaponCostMultipliers();
@@ -97,7 +115,7 @@ namespace TWP.Api.Application.BusinessLayers
             var weaponNumberOfModels = _ultraModern5EJsonRepository.GetShootAndLootWeaponNumberOfModels();
             var weaponBenefits = _ultraModern5EJsonRepository.GetShootAndLootWeaponBenefits();
 
-            var dieResult = RandomSelectionHelpers.RollDie(weaponRarities.NumberOfDiceType, weaponRarities.DiceType);
+            var dieResult = RandomSelectionHelpers.RollDie(weaponRarities.NumberOfDiceType, weaponRarities.DiceType) + rarityModifier;
 
             shootAndLootDto.Rarity = GetByDieResult(weaponRarities, dieResult).ResultText;
             shootAndLootDto.CostMultiplier = GetByDieResult(weaponCostMultipliers, dieResult).ResultText;

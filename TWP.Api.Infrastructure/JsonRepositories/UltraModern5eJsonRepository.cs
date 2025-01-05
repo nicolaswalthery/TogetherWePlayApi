@@ -15,6 +15,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories
         private string _shootAndLootLineDataJsonFileName = "ShootAndLootLineData";
         private string _shootAndLootSelfShieldBenefitsJsonFileName = "ShootAndLootSelfShieldBenefits";
         private string _shootAndLootWeaponRaritiesJsonFileName = "ShootAndLootWeaponRarities";
+        private string _shootAndLootWeaponTypeJsonFileName = "ShootAndLootWeaponTypes";
 
         public UltraModern5eJsonRepository() : base(folderName: SourceEnum.UM5e)
         {
@@ -90,22 +91,22 @@ namespace TWP.Api.Infrastructure.JsonRepositories
         #region Weapon Type Data
 
         public RollTableDto GetShootAndLootWeaponType()
-            => base.GetRollTable(fileName: _shootAndLootWeaponRaritiesJsonFileName).ToShootAndLootWeaponTypeRollTableDto();
+            => base.GetRollTable(fileName: _shootAndLootWeaponTypeJsonFileName).ToShootAndLootWeaponTypeRollTableDto();
 
         public RollTableDto GetShootAndLootWeaponWeight()
-            => base.GetRollTable(fileName: _shootAndLootWeaponRaritiesJsonFileName).ToShootAndLootWeaponWeightRollTableDto();
+            => base.GetRollTable(fileName: _shootAndLootWeaponTypeJsonFileName).ToShootAndLootWeaponWeightRollTableDto();
 
         public RollTableDto GetShootAndLootWeaponProperties()
-            => base.GetRollTable(fileName: _shootAndLootWeaponRaritiesJsonFileName).ToShootAndLootWeaponPropertiesRollTableDto();
+            => base.GetRollTable(fileName: _shootAndLootWeaponTypeJsonFileName).ToShootAndLootWeaponPropertiesRollTableDto();
 
         public RollTableDto GetShootAndLootWeaponBaseCost()
-            => base.GetRollTable(fileName: _shootAndLootWeaponRaritiesJsonFileName).ToShootAndLootWeaponBaseCostRollTableDto();
+            => base.GetRollTable(fileName: _shootAndLootWeaponTypeJsonFileName).ToShootAndLootWeaponBaseCostRollTableDto();
 
         public RollTableDto GetShootAndLootWeaponDamage()
-            => base.GetRollTable(fileName: _shootAndLootWeaponRaritiesJsonFileName).ToShootAndLootDamageRollTableDto();
+            => base.GetRollTable(fileName: _shootAndLootWeaponTypeJsonFileName).ToShootAndLootDamageRollTableDto();
 
         public RollTableDto GetShootAndLootWeaponRange()
-            => base.GetRollTable(fileName: _shootAndLootWeaponRaritiesJsonFileName).ToShootAndLootWeaponRangeRollTableDto();
+            => base.GetRollTable(fileName: _shootAndLootWeaponTypeJsonFileName).ToShootAndLootWeaponRangeRollTableDto();
 
         #endregion Weapon Type Data
 

@@ -41,7 +41,7 @@
         "costMultiplier": "x30"
       },
       {
-        "d20": "26-up",
+        "d20": "26-40",
         "rarity": "Legendary",
         "benefit": "+3 attack and +5 damage",
         "numberOfLines": "2",
