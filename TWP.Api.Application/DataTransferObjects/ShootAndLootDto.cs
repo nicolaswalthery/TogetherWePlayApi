@@ -3,8 +3,10 @@
     public class ShootAndLootDto
     {
         public string WeaponType { get; set; }
-        public string damage { get; set; }
+        public string Damage { get; set; }
         public string BaseCost { get; set; }
+        public string CostMultiplier { get; set; }
+        public string Cost {  get; set; }
         public string Range { get; set; }
         public string Weight { get; set; }
         public string Properties { get; set; }

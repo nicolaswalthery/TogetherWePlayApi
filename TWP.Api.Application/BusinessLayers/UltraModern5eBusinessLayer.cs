@@ -1,4 +1,5 @@
-﻿using TWP.Api.Application.BusinessLayers.Interfaces;
+﻿using Common.Extensions;
+using TWP.Api.Application.BusinessLayers.Interfaces;
 using TWP.Api.Application.DataTransferObjects;
 using TWP.Api.Application.Helpers;
 using TWP.Api.Infrastructure.DataTransferObjects;
@@ -21,19 +22,25 @@ namespace TWP.Api.Application.BusinessLayers
             var shootAndLootDto = new ShootAndLootDto();
 
             //Weapon Type
-            GetWeaponTypeData(shootAndLootDto);
+            GetAndMapWeaponTypeDataDto(shootAndLootDto);
 
             //Weapon Rarity
-            GetWeaponRarityData(shootAndLootDto);
+            var numberOfLinesAndModels = GetAndMapWeaponRarityDataToDto(shootAndLootDto);
 
             //Company
-            GetWeaponCompanyData(shootAndLootDto);
+            GetAndMapWeaponCompanyDataToDto(shootAndLootDto);
 
             //Model
-            GetWeaponModelData(shootAndLootDto);
+            for (int i = 0; i < numberOfLinesAndModels.numberModels; i++)
+            {
+                GetAndMapWeaponModelDataToDto(shootAndLootDto);
+            }
 
             //Line
-            GetAndMapWeaponLineDataToDto(shootAndLootDto);
+            for (int i = 0; i < numberOfLinesAndModels.numberLines; i++)
+            {
+                GetAndMapWeaponLineDataToDto(shootAndLootDto);
+            }
 
             return shootAndLootDto;
         }
@@ -52,19 +59,21 @@ namespace TWP.Api.Application.BusinessLayers
             };
         }
 
-        private void GetWeaponModelData(ShootAndLootDto ShootAndLootDto)
+        private void GetAndMapWeaponModelDataToDto(ShootAndLootDto shootAndLootDto)
         {
             var weaponModelNames = _ultraModern5EJsonRepository.GetShootAndLootModelName();
             var weaponModelBenefits = _ultraModern5EJsonRepository.GetShootAndLootModelBenefit();
 
             var dieResult = RandomSelectionHelpers.RollDie(weaponModelNames.NumberOfDiceType, weaponModelNames.DiceType);
 
-            var entries = new List<RollTableEntryDto>();
-            entries.Add(GetByDieResult(weaponModelNames, dieResult));
-            entries.Add(GetByDieResult(weaponModelBenefits, dieResult));
+            shootAndLootDto.CompanyModelData = new()
+            {
+                Benefit = GetByDieResult(weaponModelBenefits, dieResult).ResultText,
+                modelName = GetByDieResult(weaponModelNames, dieResult).ResultText
+            };
         }
 
-        private void GetWeaponCompanyData(ShootAndLootDto ShootAndLootDto)
+        private void GetAndMapWeaponCompanyDataToDto(ShootAndLootDto shootAndLootDto)
         {
             var weaponCompanyNames = _ultraModern5EJsonRepository.GetShootAndLootCompanyName();
             var weaponDamageTypes = _ultraModern5EJsonRepository.GetShootAndLootDamageType();
@@ -73,14 +82,14 @@ namespace TWP.Api.Application.BusinessLayers
 
             var dieResult = RandomSelectionHelpers.RollDie(weaponCompanyNames.NumberOfDiceType, weaponCompanyNames.DiceType);
 
-            var entries = new List<RollTableEntryDto>();
-            entries.Add(GetByDieResult(weaponCompanyNames, dieResult));
-            entries.Add(GetByDieResult(weaponDamageTypes, dieResult));
-            entries.Add(GetByDieResult(weaponMagazine, dieResult));
-            entries.Add(GetByDieResult(weaponTechLevel, dieResult));
+            shootAndLootDto.CompanyName = GetByDieResult(weaponCompanyNames, dieResult).ResultText;
+            shootAndLootDto.TechLevel = GetByDieResult(weaponTechLevel, dieResult).ResultText;
+            shootAndLootDto.Magazines = GetByDieResult(weaponMagazine, dieResult).ResultText;
+            shootAndLootDto.DamageType = GetByDieResult(weaponDamageTypes, dieResult).ResultText;
+            shootAndLootDto.CompanyName = GetByDieResult(weaponCompanyNames, dieResult).ResultText;
         }
 
-        private void GetWeaponRarityData(ShootAndLootDto ShootAndLootDto)
+        private (int numberLines, int numberModels) GetAndMapWeaponRarityDataToDto(ShootAndLootDto shootAndLootDto)
         {
             var weaponRarities = _ultraModern5EJsonRepository.GetShootAndLootWeaponRarities();
             var weaponCostMultipliers = _ultraModern5EJsonRepository.GetShootAndLootWeaponCostMultipliers();
@@ -90,15 +99,14 @@ namespace TWP.Api.Application.BusinessLayers
 
             var dieResult = RandomSelectionHelpers.RollDie(weaponRarities.NumberOfDiceType, weaponRarities.DiceType);
 
-            var entries = new List<RollTableEntryDto>();
-            entries.Add(GetByDieResult(weaponRarities, dieResult));
-            entries.Add(GetByDieResult(weaponCostMultipliers, dieResult));
-            entries.Add(GetByDieResult(weaponNumberOfLines, dieResult));
-            entries.Add(GetByDieResult(weaponNumberOfModels, dieResult));
-            entries.Add(GetByDieResult(weaponBenefits, dieResult));
+            shootAndLootDto.Rarity = GetByDieResult(weaponRarities, dieResult).ResultText;
+            shootAndLootDto.CostMultiplier = GetByDieResult(weaponCostMultipliers, dieResult).ResultText;
+            shootAndLootDto.Benefit = GetByDieResult(weaponBenefits, dieResult).ResultText;
+
+            return (GetByDieResult(weaponNumberOfLines, dieResult).ResultText.ToInt(), GetByDieResult(weaponNumberOfLines, dieResult).ResultText.ToInt());
         }
 
-        private void GetWeaponTypeData(ShootAndLootDto ShootAndLootDto)
+        private void GetAndMapWeaponTypeDataDto(ShootAndLootDto shootAndLootDto)
         {
             var weaponType = _ultraModern5EJsonRepository.GetShootAndLootWeaponType();
             var weaponWeight = _ultraModern5EJsonRepository.GetShootAndLootWeaponWeight();
@@ -109,13 +117,12 @@ namespace TWP.Api.Application.BusinessLayers
 
             var dieResult = RandomSelectionHelpers.RollDie(weaponType.NumberOfDiceType, weaponType.DiceType);
 
-            var entries = new List<RollTableEntryDto>();
-            entries.Add(GetByDieResult(weaponType, dieResult));
-            entries.Add(GetByDieResult(weaponWeight, dieResult));
-            entries.Add(GetByDieResult(weaponProperties, dieResult));
-            entries.Add(GetByDieResult(weaponBaseCost, dieResult));
-            entries.Add(GetByDieResult(weaponDamage, dieResult));
-            entries.Add(GetByDieResult(weaponRange, dieResult));
+            shootAndLootDto.WeaponType = GetByDieResult(weaponType, dieResult).ResultText;
+            shootAndLootDto.BaseCost = GetByDieResult(weaponBaseCost, dieResult).ResultText;
+            shootAndLootDto.Properties = GetByDieResult(weaponProperties, dieResult).ResultText;
+            shootAndLootDto.Weight = GetByDieResult(weaponWeight, dieResult).ResultText;
+            shootAndLootDto.Damage = GetByDieResult(weaponDamage, dieResult).ResultText;
+            shootAndLootDto.Range = GetByDieResult(weaponRange, dieResult).ResultText;
         }
 
         private static RollTableEntryDto GetByDieResult(RollTableDto rollTableDto, int rollResult)
