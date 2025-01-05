@@ -4,37 +4,37 @@
             "d20": "1-5",
             "WeaponType": "One-handed small arm",
             "Damage": "1d6",
-            "Base Cost": 250,
+            "BaseCost": "250",
             "Range": "50/200",
             "Weight": "3 lb.",
             "Properties": "Light"
         },
-        {
-            "d20": "6-10",
-            "WeaponType": "Two-handed small arm",
-            "Damage": "1d8",
-            "Base Cost": 350,
-            "Range": "100/400",
-            "Weight": "12 lb.",
-            "Properties": "x2 magazine"
-        },
-        {
-            "d20": "11-15",
-            "WeaponType": "Heavy weapon",
-            "Damage": "1d10",
-            "Base Cost": 550,
-            "Range": "200/800",
-            "Weight": "40 lb.",
-            "Properties": "x3 magazine, heavy"
-        },
-        {
-            "d20": "16-20",
-            "WeaponType": "Super heavy weapon",
-            "Damage": "1d6+6",
-            "Base Cost": 750,
-            "Range": "300/1200",
-            "Weight": "150 lb.",
-            "Properties": "x4 magazine, heavy, AP"
-        }
+      {
+        "d20": "6-10",
+        "WeaponType": "Two-handed small arm",
+        "Damage": "1d8",
+        "BaseCost": "350",
+        "Range": "100/400",
+        "Weight": "12 lb.",
+        "Properties": "x2 magazine"
+      },
+      {
+        "d20": "11-15",
+        "WeaponType": "Heavy weapon",
+        "Damage": "1d10",
+        "BaseCost": "550",
+        "Range": "200/800",
+        "Weight": "40 lb.",
+        "Properties": "x3 magazine, heavy"
+      },
+      {
+        "d20": "16-20",
+        "WeaponType": "Super heavy weapon",
+        "Damage": "1d6+6",
+        "BaseCost": "750",
+        "Range": "300/1200",
+        "Weight": "150 lb.",
+        "Properties": "x4 magazine, heavy, AP"
+      }
     ]
 }

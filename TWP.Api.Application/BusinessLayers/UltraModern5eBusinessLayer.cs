@@ -42,6 +42,8 @@ namespace TWP.Api.Application.BusinessLayers
                 GetAndMapWeaponLineDataToDto(shootAndLootDto);
             }
 
+            shootAndLootDto.Cost = (shootAndLootDto.BaseCost.ToInt() * shootAndLootDto.CostMultiplier.ToInt()).ToString();
+
             return shootAndLootDto;
         }
 
