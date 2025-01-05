@@ -1,9 +1,9 @@
-﻿using TWP.Api.Infrastructure.DataTransferObjects;
+﻿using TWP.Api.Application.DataTransferObjects;
 
 namespace TWP.Api.Application.BusinessLayers.Interfaces
 {
     public interface IUltraModern5eBusinessLayer
     {
-        public List<RollTableEntryDto> ShootAndLootGeneration();
+        public ShootAndLootDto ShootAndLootGeneration();
     }
 }
