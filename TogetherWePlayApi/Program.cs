@@ -15,6 +15,7 @@ builder.Services.AddTransient<IUltraModern5eJsonRepository, UltraModern5eJsonRep
 builder.Services.AddTransient<IDndEncounterBusinessLayer, DndEncounterBusinessLayer>();
 builder.Services.AddTransient<IUltraModern5eBusinessLayer, UltraModern5eBusinessLayer>();
 builder.Services.AddTransient<IDndController, DndController>();
+builder.Services.AddTransient<IUltraModern5eController, UltraModern5eController>();
 
 builder.Services.AddControllers()
                 .AddJsonOptions(options =>
