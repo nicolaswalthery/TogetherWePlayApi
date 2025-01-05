@@ -5,6 +5,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Interfaces
     public interface IUltraModern5eJsonRepository
     {
         public RollTableDto GetTechItemTable_A_RandomTable();
+        public RollTableDto GetTechItemTable_B_RandomTable();
 
         public RollTableDto GetShootAndLootCompanyName();
 

@@ -1,0 +1,48 @@
+{
+  "TechItemTableB": [
+    {
+      "Range": "01-10",
+      "Tech": "Loot & Shoot"
+    },
+    {
+      "Range": "11-20",
+      "Tech": "Grenade, EMP"
+    },
+    {
+      "Range": "21-30",
+      "Tech": "Grenade, Booster"
+    },
+    {
+      "Range": "31-40",
+      "Tech": "Grenade, Tag"
+    },
+    {
+      "Range": "41-45",
+      "Tech": "Vigor Shooter"
+    },
+    {
+      "Range": "46-50",
+      "Tech": "Grenade, Shockwave"
+    },
+    {
+      "Range": "51-54",
+      "Tech": "Spike Bayonet"
+    },
+    {
+      "Range": "55-57",
+      "Tech": "Targeting Scope"
+    },
+    {
+      "Range": "58-59",
+      "Tech": "Engineering Kit (TL0)"
+    },
+    {
+      "Range": "60-61",
+      "Tech": "Rover Robot"
+    },
+    {
+      "Range": "62-63",
+      "Tech": "Grenade, Smoke Signal"
+    }
+  ]
+}

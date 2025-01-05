@@ -5,9 +5,9 @@ using TWP.Api.Infrastructure.Helpers;
 
 namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
 {
-    public static class TechItemTableARandomJsonFileMapper
+    public static class TechItemTableBRandomJsonFileMapper
     {
-        public static RollTableDto ToTechItemTableARandomTableRollTableDto(this string json)
+        public static RollTableDto ToTechItemTableBRandomTableRollTableDto(this string json)
         {
             var deserializedObject = json.ToObject<TechItemTableARoot>();
 
@@ -17,7 +17,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
                 Genre = GenreEnum.ScienceFiction,
                 IsTableCopywriteFree = false,
                 MaxRerolls = 1,
-                Name = "Tech Item Table A",
+                Name = "Tech Item Table B",
                 NumberOfDiceType = 1,
                 Subgenres = { SubgenreEnum.SpaceOpera, SubgenreEnum.Cyberpunk, SubgenreEnum.NasaPunk, SubgenreEnum.HardSciFi, SubgenreEnum.PostApo },
                 Source = SourceEnum.UM5e,
@@ -41,14 +41,14 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
         }
     }
 
-    internal class TechItemTableAEntry
+    internal class TechItemTableBEntry
     {
         public string Range { get; set; }
-        public string Description { get; set; }
+        public string Tech { get; set; }
     }
 
-    internal class TechItemTableARoot
+    internal class TechItemTableBRoot
     {
-        public List<TechItemTableAEntry> TechItemTableA { get; set; }
+        public List<TechItemTableAEntry> TechItemTableB { get; set; }
     }
 }

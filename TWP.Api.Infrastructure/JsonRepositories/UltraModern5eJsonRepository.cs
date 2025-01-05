@@ -26,6 +26,10 @@ namespace TWP.Api.Infrastructure.JsonRepositories
         public RollTableDto GetTechItemTable_A_RandomTable() 
             => base.GetRollTable(fileName: "TechItemTableARandomTable").ToTechItemTableARandomTableRollTableDto();
 
+        public RollTableDto GetTechItemTable_B_RandomTable()
+            => base.GetRollTable(fileName: "TechItemTableBRandomTable").ToTechItemTableBRandomTableRollTableDto();
+
+
         #endregion Treasure Tables
 
         #region Company Data Tables
