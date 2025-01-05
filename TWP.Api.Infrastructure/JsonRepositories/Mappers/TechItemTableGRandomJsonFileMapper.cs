@@ -5,11 +5,11 @@ using TWP.Api.Infrastructure.Helpers;
 
 namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
 {
-    public static class TechItemTableBRandomJsonFileMapper
+    public static class TechItemTableGRandomJsonFileMapper
     {
-        public static RollTableDto ToTechItemTableBRandomTableRollTableDto(this string json)
+        public static RollTableDto ToTechItemTableGRandomTableRollTableDto(this string json)
         {
-            var deserializedObject = json.ToObject<TechItemTableBRoot>();
+            var deserializedObject = json.ToObject<TechItemTableGRoot>();
 
             var rollTableDto = new RollTableDto()
             {
@@ -17,7 +17,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
                 Genre = GenreEnum.ScienceFiction,
                 IsTableCopywriteFree = false,
                 MaxRerolls = 1,
-                Name = "Tech Item Table B",
+                Name = "Tech Item Table G",
                 NumberOfDiceType = 1,
                 Subgenres = { SubgenreEnum.SpaceOpera, SubgenreEnum.Cyberpunk, SubgenreEnum.NasaPunk, SubgenreEnum.HardSciFi, SubgenreEnum.PostApo },
                 Source = SourceEnum.UM5e,
@@ -25,7 +25,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
                 SentenceTemplate = string.Empty
             };
 
-            foreach (var techItem in deserializedObject.TechItemTableB)
+            foreach (var techItem in deserializedObject.TechItemTableG)
             {
                 var (minRoll, maxRoll) = techItem.Range.ExtractMinAndMaxRollNumbers();
                 rollTableDto.Entries.Add(new RollTableEntryDto()
@@ -41,14 +41,14 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
         }
     }
 
-    internal class TechItemTableBEntry
+    internal class TechItemTableGEntry
     {
         public string Range { get; set; }
         public string Tech { get; set; }
     }
 
-    internal class TechItemTableBRoot
+    internal class TechItemTableGRoot
     {
-        public List<TechItemTableBEntry> TechItemTableB { get; set; }
+        public List<TechItemTableGEntry> TechItemTableG { get; set; }
     }
 }

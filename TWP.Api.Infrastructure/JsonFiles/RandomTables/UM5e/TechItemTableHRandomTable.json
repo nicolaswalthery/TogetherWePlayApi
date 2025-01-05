@@ -1,0 +1,100 @@
+{
+  "TechItemTableH": [
+    {
+      "Range": "01-17",
+      "Tech": "Loot And Shoot"
+    },
+    {
+      "Range": "18-25",
+      "Tech": "Marathon Self-Shield"
+    },
+    {
+      "Range": "26-33",
+      "Tech": "Solid Laser Cannon"
+    },
+    {
+      "Range": "34-41",
+      "Tech": "Xeno-Stranger"
+    },
+    {
+      "Range": "42-48",
+      "Tech": "Volley Gun ESP"
+    },
+    {
+      "Range": "49-54",
+      "Tech": "Cannonballer"
+    },
+    {
+      "Range": "55-59",
+      "Tech": "Ground Heavy Gun"
+    },
+    {
+      "Range": "59-63",
+      "Tech": "X-Beam"
+    },
+    {
+      "Range": "64-67",
+      "Tech": "Gravity Gun"
+    },
+    {
+      "Range": "68-71",
+      "Tech": "Micromissile Launcher"
+    },
+    {
+      "Range": "72-73",
+      "Tech": "Field Manipulator"
+    },
+    {
+      "Range": "75-76",
+      "Tech": "Atomizer"
+    },
+    {
+      "Range": "77-79",
+      "Tech": "Blade Launcher"
+    },
+    {
+      "Range": "80-81",
+      "Tech": "Displacement Device"
+    },
+    {
+      "Range": "82-83",
+      "Tech": "Capacitor Plasma Pistol"
+    },
+    {
+      "Range": "84-85",
+      "Tech": "Plasma Pistol"
+    },
+    {
+      "Range": "86-87",
+      "Tech": "Railgun"
+    },
+    {
+      "Range": "88-89",
+      "Tech": "Thumper Laser Pistol"
+    },
+    {
+      "Range": "90-91",
+      "Tech": "Thumper Laser Rifle"
+    },
+    {
+      "Range": "92-93",
+      "Tech": "Ultimate Sniper Rifle"
+    },
+    {
+      "Range": "94-95",
+      "Tech": "Energy Dome Mk1"
+    },
+    {
+      "Range": "96-97",
+      "Tech": "Kinetic Baffle"
+    },
+    {
+      "Range": "98-99",
+      "Tech": "Gauss Repeater"
+    },
+    {
+      "Range": "00",
+      "Tech": "Assembly Assault Anachronism"
+    }
+  ]
+}

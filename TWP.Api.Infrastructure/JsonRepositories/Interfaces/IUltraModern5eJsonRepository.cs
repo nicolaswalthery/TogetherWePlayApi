@@ -6,6 +6,13 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Interfaces
     {
         public RollTableDto GetTechItemTable_A_RandomTable();
         public RollTableDto GetTechItemTable_B_RandomTable();
+        public RollTableDto GetTechItemTable_C_RandomTable();
+        public RollTableDto GetTechItemTable_D_RandomTable();
+        public RollTableDto GetTechItemTable_E_RandomTable();
+        public RollTableDto GetTechItemTable_F_RandomTable();
+        public RollTableDto GetTechItemTable_G_RandomTable();
+        public RollTableDto GetTechItemTable_H_RandomTable();
+        public RollTableDto GetTechItemTable_I_RandomTable();
 
         public RollTableDto GetShootAndLootCompanyName();
 

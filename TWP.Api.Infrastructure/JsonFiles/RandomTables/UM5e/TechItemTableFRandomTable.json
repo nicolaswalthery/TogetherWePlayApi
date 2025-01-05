@@ -1,0 +1,92 @@
+{
+  "TechItemTableF": [
+    {
+      "Range": "01-20",
+      "Tech": "Loot And Shoot"
+    },
+    {
+      "Range": "20-26",
+      "Tech": "Sabazios Self-Shield"
+    },
+    {
+      "Range": "27-32",
+      "Tech": "Linked Vessel (Mark 3)"
+    },
+    {
+      "Range": "33-38",
+      "Tech": "Infrared Goggles"
+    },
+    {
+      "Range": "39-45",
+      "Tech": "Implant Vessel (Mark 3)"
+    },
+    {
+      "Range": "45-50",
+      "Tech": "Force Shield"
+    },
+    {
+      "Range": "51-55",
+      "Tech": "ESP Maelstrom"
+    },
+    {
+      "Range": "56-60",
+      "Tech": "Full Combat Warrior"
+    },
+    {
+      "Range": "61-65",
+      "Tech": "Charge Pistol"
+    },
+    {
+      "Range": "66-70",
+      "Tech": "Sonic Focus Rifle"
+    },
+    {
+      "Range": "71-75",
+      "Tech": "Restraint Field"
+    },
+    {
+      "Range": "76-78",
+      "Tech": "Nuclear Pulse Rifle"
+    },
+    {
+      "Range": "79-81",
+      "Tech": "SPP Vortex"
+    },
+    {
+      "Range": "82-84",
+      "Tech": "SPP Sensor Gun"
+    },
+    {
+      "Range": "85-87",
+      "Tech": "Alphaden Self-Shield"
+    },
+    {
+      "Range": "88-89",
+      "Tech": "Grub Gun"
+    },
+    {
+      "Range": "90-91",
+      "Tech": "Ion Rifle"
+    },
+    {
+      "Range": "92-93",
+      "Tech": "Gods Eye Sniper Gun"
+    },
+    {
+      "Range": "94-95",
+      "Tech": "Kinetic Flash Rifle"
+    },
+    {
+      "Range": "96-97",
+      "Tech": "Light Coilgun"
+    },
+    {
+      "Range": "98-99",
+      "Tech": "Plus Suit MK1"
+    },
+    {
+      "Range": "00",
+      "Tech": "Accelerator Rifle"
+    }
+  ]
+}

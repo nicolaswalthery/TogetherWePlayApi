@@ -29,6 +29,27 @@ namespace TWP.Api.Infrastructure.JsonRepositories
         public RollTableDto GetTechItemTable_B_RandomTable()
             => base.GetRollTable(fileName: "TechItemTableBRandomTable").ToTechItemTableBRandomTableRollTableDto();
 
+        public RollTableDto GetTechItemTable_C_RandomTable()
+            => base.GetRollTable(fileName: "TechItemTableCRandomTable").ToTechItemTableCRandomTableRollTableDto();
+
+        public RollTableDto GetTechItemTable_D_RandomTable()
+            => base.GetRollTable(fileName: "TechItemTableDRandomTable").ToTechItemTableDRandomTableRollTableDto();
+
+        public RollTableDto GetTechItemTable_E_RandomTable()
+            => base.GetRollTable(fileName: "TechItemTableERandomTable").ToTechItemTableERandomTableRollTableDto();
+
+        public RollTableDto GetTechItemTable_F_RandomTable()
+            => base.GetRollTable(fileName: "TechItemTableFRandomTable").ToTechItemTableFRandomTableRollTableDto();
+
+        public RollTableDto GetTechItemTable_G_RandomTable()
+            => base.GetRollTable(fileName: "TechItemTableGRandomTable").ToTechItemTableGRandomTableRollTableDto();
+
+        public RollTableDto GetTechItemTable_H_RandomTable()
+            => base.GetRollTable(fileName: "TechItemTableHRandomTable").ToTechItemTableHRandomTableRollTableDto();
+
+        public RollTableDto GetTechItemTable_I_RandomTable()
+            => base.GetRollTable(fileName: "TechItemTableIRandomTable").ToTechItemTableIRandomTableRollTableDto();
+
 
         #endregion Treasure Tables
 

@@ -1,0 +1,164 @@
+{
+  "TechItemTableC": [
+    {
+      "Range": "01-20",
+      "Tech": "Loot And Shoot"
+    },
+    {
+      "Range": "21-25",
+      "Tech": "Basic Sniper Rifle"
+    },
+    {
+      "Range": "26-28",
+      "Tech": "Net Gun"
+    },
+    {
+      "Range": "29-31",
+      "Tech": "Break-Action Shot Pistol"
+    },
+    {
+      "Range": "32-34",
+      "Tech": "Bolt Rifle"
+    },
+    {
+      "Range": "35-37",
+      "Tech": "Aramid Survival Suit"
+    },
+    {
+      "Range": "38-40",
+      "Tech": "Machine Pistol"
+    },
+    {
+      "Range": "41-43",
+      "Tech": "Semi-Automatic Rifle"
+    },
+    {
+      "Range": "44-46",
+      "Tech": "Medium Machine Gun"
+    },
+    {
+      "Range": "47-49",
+      "Tech": "Libration"
+    },
+    {
+      "Range": "50-52",
+      "Tech": "Submachine Gun"
+    },
+    {
+      "Range": "53-55",
+      "Tech": "The Immortal"
+    },
+    {
+      "Range": "56-58",
+      "Tech": "Tactical Body Armor"
+    },
+    {
+      "Range": "59-61",
+      "Tech": "Machine Light Cannon"
+    },
+    {
+      "Range": "62-64",
+      "Tech": "Shotgun"
+    },
+    {
+      "Range": "65-67",
+      "Tech": "Heavy Grappling Hook"
+    },
+    {
+      "Range": "68-70",
+      "Tech": "One-Handed Grenade Launcher"
+    },
+    {
+      "Range": "71-72",
+      "Tech": "Darkephrine"
+    },
+    {
+      "Range": "73-74",
+      "Tech": "Grenade Light Weapon"
+    },
+    {
+      "Range": "75-76",
+      "Tech": "Punch Gun"
+    },
+    {
+      "Range": "77-78",
+      "Tech": "Engineering Kit (TL2)"
+    },
+    {
+      "Range": "79-80",
+      "Tech": "Grenade, Plasma"
+    },
+    {
+      "Range": "81-82",
+      "Tech": "Grenade, Singularity"
+    },
+    {
+      "Range": "83-84",
+      "Tech": "Caseless Rifle"
+    },
+    {
+      "Range": "85",
+      "Tech": "Electroshock Gun"
+    },
+    {
+      "Range": "86",
+      "Tech": "ESP Rifle"
+    },
+    {
+      "Range": "87",
+      "Tech": "Crankgun"
+    },
+    {
+      "Range": "88",
+      "Tech": "Shield Brace"
+    },
+    {
+      "Range": "89",
+      "Tech": "Rotary Cannon"
+    },
+    {
+      "Range": "90",
+      "Tech": "Angel River"
+    },
+    {
+      "Range": "91",
+      "Tech": "Mortar"
+    },
+    {
+      "Range": "92",
+      "Tech": "Sniper Cannon"
+    },
+    {
+      "Range": "93",
+      "Tech": "Caseless Pistol"
+    },
+    {
+      "Range": "94",
+      "Tech": "Machine Shotgun"
+    },
+    {
+      "Range": "95",
+      "Tech": "Carbon Crossbow"
+    },
+    {
+      "Range": "96",
+      "Tech": "Light Machine Gun"
+    },
+    {
+      "Range": "97",
+      "Tech": "Gas Mask"
+    },
+    {
+      "Range": "98",
+      "Tech": "Compound Longbow"
+    },
+    {
+      "Range": "99",
+      "Tech": "Linked Vessel (Mark 2)"
+    },
+    {
+      "Range": "00",
+      "Tech": "Implant Vessel (Mark 2)"
+    }
+  ]
+}
