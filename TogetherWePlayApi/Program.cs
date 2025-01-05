@@ -13,6 +13,7 @@ builder.Services.AddTransient<IMonsterActivitiesJsonRepository, MonsterActivitie
 builder.Services.AddTransient<ISomethingHappenJsonRepository, SomethingHappenJsonRepository>();
 builder.Services.AddTransient<IUltraModern5eJsonRepository, UltraModern5eJsonRepository>();
 builder.Services.AddTransient<IDndEncounterBusinessLayer, DndEncounterBusinessLayer>();
+builder.Services.AddTransient<IUltraModern5eBusinessLayer, UltraModern5eBusinessLayer>();
 builder.Services.AddTransient<IDndController, DndController>();
 
 builder.Services.AddControllers()

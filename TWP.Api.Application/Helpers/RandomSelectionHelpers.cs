@@ -1,4 +1,5 @@
 ﻿using Common.Randomizer;
+using TWP.Api.Core.Enums;
 using TWP.Api.Infrastructure.DataTransferObjects;
 
 namespace TWP.Api.Application.Helpers
@@ -12,8 +13,11 @@ namespace TWP.Api.Application.Helpers
         /// <returns></returns>
         public static RollTableEntryDto GetRandomlyOneEntry(this RollTableDto rollTableDto)
         {
-            var rollResult = new Dice(rollTableDto.NumberOfDiceType, (int)rollTableDto.DiceType).Roll;
+            var rollResult = RollDie(rollTableDto.NumberOfDiceType, rollTableDto.DiceType);
             return rollTableDto.Entries.First(e => e.MinRoll <= rollResult && e.MaxRoll >= rollResult);
         }
+
+        public static int RollDie(int numberOfDiceType, DiceTypeEnum diceType)
+            => new Dice(numberOfDiceType, (int)diceType).Roll;
     }
 }
