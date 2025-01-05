@@ -9,7 +9,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
     {
         public static RollTableDto ToShootAndLootModelNameRollTableDto(this string json)
         {
-            var deserializedObject = json.ToObject<Root>();
+            var deserializedObject = json.ToObject<ModelDataRoot>();
 
             var rollTableDto = new RollTableDto()
             {
@@ -25,7 +25,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
                 SentenceTemplate = string.Empty
             };
 
-            foreach (var modelData in deserializedObject.ShootAndLootModelData) // Matches the updated property
+            foreach (var modelData in deserializedObject.ModelData) // Matches the updated property
             {
                 var (minRoll, maxRoll) = modelData.d20.ExtractMinAndMaxRollNumbers();
                 rollTableDto.Entries.Add(new RollTableEntryDto()
@@ -42,7 +42,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
 
         public static RollTableDto ToShootAndLootModelBenefitsRollTableDto(this string json)
         {
-            var deserializedObject = json.ToObject<Root>();
+            var deserializedObject = json.ToObject<ModelDataRoot>();
 
             var rollTableDto = new RollTableDto()
             {
@@ -58,7 +58,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
                 SentenceTemplate = string.Empty
             };
 
-            foreach (var modelDatum in deserializedObject.ShootAndLootModelData) // Matches the updated property
+            foreach (var modelDatum in deserializedObject.ModelData) // Matches the updated property
             {
                 var (minRoll, maxRoll) = modelDatum.d20.ExtractMinAndMaxRollNumbers();
                 rollTableDto.Entries.Add(new RollTableEntryDto()
@@ -80,9 +80,9 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
             public string Benefit { get; set; }
         }
 
-        internal class Root
+        internal class ModelDataRoot
         {
-            public List<ShootAndLootModelDatumDto> ShootAndLootModelData { get; set; } // /!\ Must Matches the JSON key !
+            public List<ShootAndLootModelDatumDto> ModelData { get; set; } // /!\ Must Matches the JSON key !
         }
     }
 }

@@ -9,7 +9,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
     {
         public static RollTableDto ToShootAndLootCompanyNameRollTableDto(this string json)
         {
-            var deserializedObject = json.ToObject<Root>();
+            var deserializedObject = json.ToObject<CompanyDataRoot>();
 
             var rollTableDto = new RollTableDto()
             {
@@ -25,7 +25,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
                 SentenceTemplate = string.Empty
             };
 
-            foreach (var companyDatum in deserializedObject.ShootAndLootCompanyData) // Matches the updated property
+            foreach (var companyDatum in deserializedObject.CompanyData) // Matches the updated property
             {
                 var (minRoll, maxRoll) = companyDatum.d20.ExtractMinAndMaxRollNumbers();
                 rollTableDto.Entries.Add(new RollTableEntryDto()
@@ -42,7 +42,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
 
         public static RollTableDto ToShootAndLootDamageTypeRollTableDto(this string json)
         {
-            var deserializedObject = json.ToObject<Root>();
+            var deserializedObject = json.ToObject<CompanyDataRoot>();
 
             var rollTableDto = new RollTableDto()
             {
@@ -58,7 +58,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
                 SentenceTemplate = string.Empty
             };
 
-            foreach (var companyDatum in deserializedObject.ShootAndLootCompanyData) // Matches the updated property
+            foreach (var companyDatum in deserializedObject.CompanyData) // Matches the updated property
             {
                 var (minRoll, maxRoll) = companyDatum.d20.ExtractMinAndMaxRollNumbers();
                 rollTableDto.Entries.Add(new RollTableEntryDto()
@@ -75,7 +75,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
 
         public static RollTableDto ToShootAndLootMagazineRollTableDto(this string json)
         {
-            var deserializedObject = json.ToObject<Root>();
+            var deserializedObject = json.ToObject<CompanyDataRoot>();
 
             var rollTableDto = new RollTableDto()
             {
@@ -91,7 +91,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
                 SentenceTemplate = string.Empty
             };
 
-            foreach (var companyDatum in deserializedObject.ShootAndLootCompanyData) // Matches the updated property
+            foreach (var companyDatum in deserializedObject.CompanyData) // Matches the updated property
             {
                 var (minRoll, maxRoll) = companyDatum.d20.ExtractMinAndMaxRollNumbers();
                 rollTableDto.Entries.Add(new RollTableEntryDto()
@@ -108,7 +108,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
 
         public static RollTableDto ToShootAndLootTechLevelRollTableDto(this string json)
         {
-            var deserializedObject = json.ToObject<Root>();
+            var deserializedObject = json.ToObject<CompanyDataRoot>();
 
             var rollTableDto = new RollTableDto()
             {
@@ -124,7 +124,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
                 SentenceTemplate = string.Empty
             };
 
-            foreach (var companyDatum in deserializedObject.ShootAndLootCompanyData) // Matches the updated property
+            foreach (var companyDatum in deserializedObject.CompanyData) // Matches the updated property
             {
                 var (minRoll, maxRoll) = companyDatum.d20.ExtractMinAndMaxRollNumbers();
                 rollTableDto.Entries.Add(new RollTableEntryDto()
@@ -148,9 +148,9 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
             public string TL { get; set; }
         }
 
-        internal class Root
+        internal class CompanyDataRoot
         {
-            public List<ShootAndLootCompanyDatumDto> ShootAndLootCompanyData { get; set; } // /!\ Must Matches the JSON key !
+            public List<ShootAndLootCompanyDatumDto> CompanyData { get; set; } // /!\ Must Matches the JSON key !
         }
     }
 }

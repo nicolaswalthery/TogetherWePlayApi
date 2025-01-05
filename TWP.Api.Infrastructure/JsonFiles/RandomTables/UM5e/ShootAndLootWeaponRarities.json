@@ -2,51 +2,51 @@
     "WeaponRarities": [
       {
         "d20": "1-7",
-        "rarity": "Common",
-        "benefit": "None",
-        "numberOfLines": "0",
-        "numberOfModels": "0",
-        "costMultiplier": "0"
+        "Rarity": "Common",
+        "Benefit": "None",
+        "NumberOfLines": "0",
+        "NumberOfModels": "0",
+        "CostMultiplier": "0"
       },
       {
         "d20": "8-13",
-        "rarity": "Uncommon",
-        "benefit": "+1 attack and +1 damage",
-        "numberOfLines": "1",
-        "numberOfModels": "0",
-        "costMultiplier": "x2"
+        "Rarity": "Uncommon",
+        "Benefit": "+1 attack and +1 damage",
+        "NumberOfLines": "1",
+        "NumberOfModels": "0",
+        "CostMultiplier": "2"
       },
       {
         "d20": "14-18",
-        "rarity": "Rare",
-        "benefit": "+1 attack and +2 damage",
-        "numberOfLines": "1",
-        "numberOfModels": "1",
-        "costMultiplier": "x5"
+        "Rarity": "Rare",
+        "Benefit": "+1 attack and +2 damage",
+        "NumberOfLines": "1",
+        "NumberOfModels": "1",
+        "CostMultiplier": "5"
       },
       {
         "d20": "19-22",
-        "rarity": "Epic",
-        "benefit": "+2 attack and +3 damage",
-        "numberOfLines": "1",
-        "numberOfModels": "1",
-        "costMultiplier": "x10"
+        "Rarity": "Epic",
+        "Benefit": "+2 attack and +3 damage",
+        "NumberOfLines": "1",
+        "NumberOfModels": "1",
+        "CostMultiplier": "10"
       },
       {
         "d20": "23-25",
-        "rarity": "Masterwork",
-        "benefit": "+2 attack and +4 damage",
-        "numberOfLines": "1",
-        "numberOfModels": "2",
-        "costMultiplier": "x30"
+        "Rarity": "Masterwork",
+        "Benefit": "+2 attack and +4 damage",
+        "NumberOfLines": "1",
+        "NumberOfModels": "2",
+        "CostMultiplier": "30"
       },
       {
         "d20": "26-40",
-        "rarity": "Legendary",
-        "benefit": "+3 attack and +5 damage",
-        "numberOfLines": "2",
-        "numberOfModels": "2",
-        "costMultiplier": "x60"
+        "Rarity": "Legendary",
+        "Benefit": "+3 attack and +5 damage",
+        "NumberOfLines": "2",
+        "NumberOfModels": "2",
+        "CostMultiplier": "60"
       }
     ]
 }

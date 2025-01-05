@@ -13,6 +13,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories
     {
         private string _shootAndLootCompanyDataJsonFileName = "ShootAndLootCompanyData";
         private string _shootAndLootLineDataJsonFileName = "ShootAndLootLineData";
+        private string _shootAndLootModelDataJsonFileName = "ShootAndLootModelData";
         private string _shootAndLootSelfShieldBenefitsJsonFileName = "ShootAndLootSelfShieldBenefits";
         private string _shootAndLootWeaponRaritiesJsonFileName = "ShootAndLootWeaponRarities";
         private string _shootAndLootWeaponTypeJsonFileName = "ShootAndLootWeaponTypes";
@@ -55,10 +56,10 @@ namespace TWP.Api.Infrastructure.JsonRepositories
         #region Model Data
 
         public RollTableDto GetShootAndLootModelName()
-            => base.GetRollTable(fileName: _shootAndLootLineDataJsonFileName).ToShootAndLootModelNameRollTableDto();
+            => base.GetRollTable(fileName: _shootAndLootModelDataJsonFileName).ToShootAndLootModelNameRollTableDto();
 
         public RollTableDto GetShootAndLootModelBenefit()
-            => base.GetRollTable(fileName: _shootAndLootLineDataJsonFileName).ToShootAndLootModelBenefitsRollTableDto();
+            => base.GetRollTable(fileName: _shootAndLootModelDataJsonFileName).ToShootAndLootModelBenefitsRollTableDto();
 
         #endregion Model Data
 

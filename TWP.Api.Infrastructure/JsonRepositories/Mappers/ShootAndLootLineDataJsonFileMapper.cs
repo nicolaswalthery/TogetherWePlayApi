@@ -25,7 +25,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
                 SentenceTemplate = string.Empty
             };
 
-            foreach (var lineDatum in deserializedObject.ShootAndLootLineData) // Matches the updated property
+            foreach (var lineDatum in deserializedObject.LineData) // Matches the updated property
             {
                 var (minRoll, maxRoll) = lineDatum.d20.ExtractMinAndMaxRollNumbers();
                 rollTableDto.Entries.Add(new RollTableEntryDto()
@@ -58,7 +58,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
                 SentenceTemplate = string.Empty
             };
 
-            foreach (var lineDatum in deserializedObject.ShootAndLootLineData) // Matches the updated property
+            foreach (var lineDatum in deserializedObject.LineData) // Matches the updated property
             {
                 var (minRoll, maxRoll) = lineDatum.d20.ExtractMinAndMaxRollNumbers();
                 rollTableDto.Entries.Add(new RollTableEntryDto()
@@ -82,7 +82,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
 
         internal class Root
         {
-            public List<ShootAndLootLineDatumDto> ShootAndLootLineData { get; set; } // /!\ Must Matches the JSON key !
+            public List<ShootAndLootLineDatumDto> LineData { get; set; } // /!\ Must Matches the JSON key !
         }
     }
 }
