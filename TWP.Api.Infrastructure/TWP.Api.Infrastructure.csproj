@@ -20,4 +20,8 @@
     <ProjectReference Include="..\TWP.Api.Core\TWP.Api.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="JsonFiles\RandomTables\Dnd5e\" />
+  </ItemGroup>
+
 </Project>

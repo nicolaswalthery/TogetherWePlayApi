@@ -1,0 +1,123 @@
+{
+    "EncounterDifficulty": [
+    {
+        "Party Level": "1",
+        "Low": "50",
+        "Moderate": "75",
+        "High": "100"
+    },
+    {
+        "Party Level": "2",
+        "Low": "100",
+        "Moderate": "150",
+        "High": "200"
+    },
+    {
+        "Party Level": "3",
+        "Low": "150",
+        "Moderate": "225",
+        "High": "400"
+    },
+    {
+        "Party Level": "4",
+        "Low": "250",
+        "Moderate": "375",
+        "High": "500"
+    },
+    {
+        "Party Level": "5",
+        "Low": "500",
+        "Moderate": "750",
+        "High": "1,100"
+    },
+    {
+        "Party Level": "6",
+        "Low": "600",
+        "Moderate": "1,000",
+        "High": "1,400"
+    },
+    {
+        "Party Level": "7",
+        "Low": "750",
+        "Moderate": "1,300",
+        "High": "1,700"
+    },
+    {
+        "Party Level": "8",
+        "Low": "1,000",
+        "Moderate": "1,700",
+        "High": "2,100"
+    },
+    {
+        "Party Level": "9",
+        "Low": "1,300",
+        "Moderate": "2,000",
+        "High": "2,600"
+    },
+    {
+        "Party Level": "10",
+        "Low": "1,600",
+        "Moderate": "2,300",
+        "High": "3,100"
+    },
+    {
+        "Party Level": "11",
+        "Low": "1,900",
+        "Moderate": "2,900",
+        "High": "4,100"
+    },
+    {
+        "Party Level": "12",
+        "Low": "2,200",
+        "Moderate": "3,700",
+        "High": "4,700"
+    },
+    {
+        "Party Level": "13",
+        "Low": "2,600",
+        "Moderate": "4,200",
+        "High": "5,400"
+    },
+    {
+        "Party Level": "14",
+        "Low": "2,900",
+        "Moderate": "4,900",
+        "High": "6,200"
+    },
+    {
+        "Party Level": "15",
+        "Low": "3,300",
+        "Moderate": "5,400",
+        "High": "7,800"
+    },
+    {
+        "Party Level": "16",
+        "Low": "3,800",
+        "Moderate": "6,100",
+        "High": "9,800"
+    },
+    {
+        "Party Level": "17",
+        "Low": "4,500",
+        "Moderate": "7,200",
+        "High": "11,700"
+    },
+    {
+        "Party Level": "18",
+        "Low": "5,000",
+        "Moderate": "8,700",
+        "High": "14,200"
+    },
+    {
+        "Party Level": "19",
+        "Low": "5,500",
+        "Moderate": "10,700",
+        "High": "17,200"
+    },
+    {
+        "Party Level": "20",
+        "Low": "6,400",
+        "Moderate": "13,200",
+        "High": "22,000"
+    }
+]}

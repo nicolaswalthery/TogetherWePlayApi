@@ -2,6 +2,7 @@
 using TWP.Api.Application.BusinessLayers.Interfaces;
 using TWP.Api.Application.DataTransferObjects;
 using TWP.Api.Application.Helpers;
+using TWP.Api.Core.Enums;
 using TWP.Api.Infrastructure.DataTransferObjects;
 using TWP.Api.Infrastructure.JsonRepositories.Interfaces;
 
@@ -9,7 +10,7 @@ namespace TWP.Api.Application.BusinessLayers
 {
     public class UltraModern5eBusinessLayer : IUltraModern5eBusinessLayer
     {
-
+        private string _shootAndLootTextResult = "Loot And Shoot";
         private IUltraModern5eJsonRepository _ultraModern5EJsonRepository;
 
         public UltraModern5eBusinessLayer(IUltraModern5eJsonRepository ultraModern5EJsonRepository)
@@ -17,10 +18,17 @@ namespace TWP.Api.Application.BusinessLayers
             _ultraModern5EJsonRepository = ultraModern5EJsonRepository;
         }
 
-        public void TreasureGeneration()
+        public void TreasureGeneration(int challengeRating)
         {
+            string treasureHoard = String.Empty;
+            if (challengeRating >= 4)
+                GetTreasureHoardChallenge0_4();
+
+            var results = ShootAndLootGenerations(treasureHoard.CountOccurrences(_shootAndLootTextResult));
 
         }
+
+
 
         public ShootAndLootDto ShootAndLootGeneration()
         {
@@ -50,6 +58,63 @@ namespace TWP.Api.Application.BusinessLayers
             shootAndLootDto.Cost = (shootAndLootDto.BaseCost.ToInt() * shootAndLootDto.CostMultiplier.ToInt()).ToString();
 
             return shootAndLootDto;
+        }
+
+        private string GetTreasureHoardChallenge0_4()
+        {
+            switch (RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d100))
+            {
+                case int n when (n >= 1 && n <= 6):
+                    return "No treasure.";
+                case int n when (n >= 7 && n <= 16):
+                    return$"{RandomSelectionHelpers.RollDie(2, DiceTypeEnum.d6)} credits";
+                case int n when (n >= 17 && n <= 26):
+                    return$"{RandomSelectionHelpers.RollDie(2, DiceTypeEnum.d4)} credits";
+                case int n when (n >= 27 && n <= 36):
+                    return$"{RandomSelectionHelpers.RollDie(2, DiceTypeEnum.d6)} credits";
+                case int n when (n >= 37 && n <= 44):
+                    return$"{RandomSelectionHelpers.RollDie(2, DiceTypeEnum.d6)} credits. {ListToString(_ultraModern5EJsonRepository.GetTechItemTable_A_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d6)))}";
+                case int n when (n >= 45 && n <= 52):
+                    return$"{RandomSelectionHelpers.RollDie(2, DiceTypeEnum.d4)} credits. {ListToString(_ultraModern5EJsonRepository.GetTechItemTable_A_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d6)))}";               
+                case int n when (n >= 53 && n <= 60):
+                    return$"{RandomSelectionHelpers.RollDie(2, DiceTypeEnum.d6)} credits. {ListToString(_ultraModern5EJsonRepository.GetTechItemTable_A_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d6)))}";
+                case int n when (n >= 61 && n <= 65):
+                    return$"{RandomSelectionHelpers.RollDie(2, DiceTypeEnum.d6)} credits. {ListToString(_ultraModern5EJsonRepository.GetTechItemTable_B_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d4)))}";
+                case int n when (n >= 66 && n <= 70):
+                    return$"{RandomSelectionHelpers.RollDie(2, DiceTypeEnum.d4)} credits. {ListToString(_ultraModern5EJsonRepository.GetTechItemTable_B_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d4)))}";
+                case int n when (n >= 71 && n <= 75):
+                    return$"{RandomSelectionHelpers.RollDie(2, DiceTypeEnum.d6)} credits. {ListToString(_ultraModern5EJsonRepository.GetTechItemTable_B_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d4)))}";
+                case int n when (n >= 76 && n <= 78):
+                    return$"{RandomSelectionHelpers.RollDie(2, DiceTypeEnum.d6)} credits. {ListToString(_ultraModern5EJsonRepository.GetTechItemTable_C_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d4)))}";
+                case int n when (n >= 79 && n <= 80):
+                    return$"{RandomSelectionHelpers.RollDie(2, DiceTypeEnum.d4)} credits. {ListToString(_ultraModern5EJsonRepository.GetTechItemTable_C_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d4)))}";
+                case int n when (n >= 81 && n <= 85):
+                    return$"{RandomSelectionHelpers.RollDie(2, DiceTypeEnum.d6)} credits. {ListToString(_ultraModern5EJsonRepository.GetTechItemTable_C_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d4)))}";
+                case int n when (n >= 86 && n <= 92):
+                    return$"{RandomSelectionHelpers.RollDie(2, DiceTypeEnum.d4)} credits. {ListToString(_ultraModern5EJsonRepository.GetTechItemTable_F_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d4)))}";
+                case int n when (n >= 93 && n <= 97):
+                    return$"{RandomSelectionHelpers.RollDie(2, DiceTypeEnum.d6)} credits. {ListToString(_ultraModern5EJsonRepository.GetTechItemTable_F_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d4)))}";
+                case int n when (n >= 98 && n <= 99):
+                    return$"{RandomSelectionHelpers.RollDie(2, DiceTypeEnum.d4)} credits. {_ultraModern5EJsonRepository.GetTechItemTable_G_RandomTable().GetRandomlyASingleEntry().ResultText}";
+                case 100:
+                    return$"{RandomSelectionHelpers.RollDie(2, DiceTypeEnum.d6)} credits. {_ultraModern5EJsonRepository.GetTechItemTable_G_RandomTable().GetRandomlyASingleEntry().ResultText}";
+                default:
+                    throw new Exception("Invalide Roll");
+
+            }
+        }
+
+        private string ListToString(List<RollTableEntryDto> rollTableEntryDtos) 
+            => string.Join(", ", rollTableEntryDtos.Select(e => e.ResultText));
+
+        private List<ShootAndLootDto> ShootAndLootGenerations(int numberOfShootAndLoots)
+        {
+            var shootAndLootDtos = new List<ShootAndLootDto>();
+            for (int i = 0; i < numberOfShootAndLoots; i++)
+            {
+                shootAndLootDtos.Add(ShootAndLootGeneration());
+            }
+            return shootAndLootDtos;
         }
 
         private static int ComputeRarityModifier(int averageCharacterLevel, int monsterChallengeRating)
@@ -128,7 +193,7 @@ namespace TWP.Api.Application.BusinessLayers
             shootAndLootDto.CostMultiplier = GetByDieResult(weaponCostMultipliers, dieResult).ResultText;
             shootAndLootDto.Benefit = GetByDieResult(weaponBenefits, dieResult).ResultText;
 
-            return (GetByDieResult(weaponNumberOfLines, dieResult).ResultText.ToInt(), GetByDieResult(weaponNumberOfLines, dieResult).ResultText.ToInt());
+            return (GetByDieResult(weaponNumberOfLines, dieResult).ResultText.ToInt(), GetByDieResult(weaponNumberOfModels, dieResult).ResultText.ToInt());
         }
 
         private void GetAndMapWeaponTypeDataDto(ShootAndLootDto shootAndLootDto)

@@ -20,7 +20,7 @@ namespace TWP.Api.Application.BusinessLayers
 
         public RollTableEntryDto EncounterRandomGenerator()
         {
-            return _ultraModern5EJsonRepository.GetTechItemTable_A_RandomTable().GetRandomlyOneEntry();
+            return _ultraModern5EJsonRepository.GetTechItemTable_A_RandomTable().GetRandomlyASingleEntry();
         }
     }
 }
