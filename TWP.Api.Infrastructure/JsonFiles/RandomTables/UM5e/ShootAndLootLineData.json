@@ -1,54 +1,54 @@
 {
     "LineData": [
-        {
-            "d20": "1-2",
-            "Line": "Arc",
-            "AdditionalProperty": "Sniper (+1)"
-        },
-        {
-            "d20": "3-4",
-            "Line": "Super",
-            "AdditionalProperty": "Sniper (+2)"
-        },
-        {
-            "d20": "5-6",
-            "Line": "Detective",
-            "AdditionalProperty": "Armor Piercing"
-        },
-        {
-            "d20": "7-8",
-            "Line": "Annihilator",
-            "AdditionalProperty": "Auto"
-        },
-        {
-            "d20": "9-10",
-            "Line": "Enforcer",
-            "AdditionalProperty": "Feed"
-        },
-        {
-            "d20": "11-12",
-            "Line": "Omega",
-            "AdditionalProperty": "Auto-heavy"
-        },
-        {
-            "d20": "13-14",
-            "Line": "Tactical",
-            "AdditionalProperty": "Explosive"
-        },
-        {
-            "d20": "15-16",
-            "Line": "Dragoon",
-            "AdditionalProperty": "Shotgun"
-        },
-        {
-            "d20": "17-18",
-            "Line": "Performance",
-            "AdditionalProperty": "Undermount"
-        },
-        {
-            "d20": "19-20",
-            "Line": "Seraphim",
-            "AdditionalProperty": "Guided"
-        }
+      {
+        "d20": "1-2",
+        "Line": "Arc",
+        "AdditionalProperty": "Sniper (+1) : This weapon gains a sniper scope and the sniper property is +1. You cannot gain more than a +3 total from a sniper bonus through multiple rolling."
+      },
+      {
+        "d20": "3-4",
+        "Line": "Super",
+        "AdditionalProperty": "Sniper (+2) : This weapon gains a sniper scope and the sniper property is +2. You cannot gain more than a +3 total from a sniper bonus through multiple rolling."
+      },
+      {
+        "d20": "5-6",
+        "Line": "Detective",
+        "AdditionalProperty": "Armor Piercing : This weapon ignores a target’s resistance to the weapon’s damage type (e.g., a piercing weapon ignores resistance to piercing). If the target has fantasy damage resistances, the weapon also counts as magical, silver, and adamantine. If an opponent has immunity to the weapon’s damage type and the weapon has the AP property, the opponent has only resistance to that weapon instead of immunity. Certain weapons unlock the AP property at indicated character levels while others gain them immediately."
+      },
+      {
+        "d20": "7-8",
+        "Line": "Annihilator",
+        "AdditionalProperty": "Auto : The increased damage from employing this property is based on the original damage improved by one step (1d4 to 1d6 to 1d8 to 1d10 to 1d12 to 2d6 to 2d8 to 1d6+6 to 1d8+8 to 1d10+10 to 1d12+12). Increase magazine size x3."
+      },
+      {
+        "d20": "9-10",
+        "Line": "Enforcer",
+        "AdditionalProperty": "Feed : Also called a belt-driven weapon, this involves ammunition being fed into a firearm externally from an external supply. Older variations involved feed strips or disintegrating belts, while later models employ a hybrid mechanism to load bullets without the belt being fed through a machine. An energy weapon with the feed property involves a complicated connection/disconnection procedure to power up, including the time it takes for the energy cell to recharge a capacitor. Property. Feed weapons often possess massive round capacities but suffer from a prolonged reloading time. Reloading a feed weapon takes one minute unless stated otherwise in the weapon description. You must have one free hand to reload this firearm."
+      },
+      {
+        "d20": "11-12",
+        "Line": "Omega",
+        "AdditionalProperty": "Auto-heavy : The increased damage from employing this property is based on the original damage improved by one step (1d4 to 1d6 to 1d8 to 1d10 to 1d12 to 2d6 to 2d8 to 1d6+6 to 1d8+8 to 1d10+10 to 1d12+12). Increase magazine size to x5."
+      },
+      {
+        "d20": "13-14",
+        "Line": "Tactical",
+        "AdditionalProperty": "Explosive : If you hit a target with a direct attack (not an area effect), all creatures within 5 feet of the initial target must make a DC 15 Dexterity saving throw or suffer damage equal to half the damage you infl icted. A success still suffers half damage (one-quarter of initial damage). If using an area effect with this weapon, the saving throw DC increases by 1."
+      },
+      {
+        "d20": "15-16",
+        "Line": "Dragoon",
+        "AdditionalProperty": "Shotgun : Shotguns impact with tremendous force at close range, but this stopping power diminishes rapidly further out. Property. Shotguns gain a damage bonus if fired at targets within 10 feet, equal to half a single attack’s maximum unmodified damage (for example, a weapon infl icting 1d8 base damage adds +4 against close targets; a weapon inflicting 1d8+8 base damage adds +8 against close targets). Additionally when attacking a target beyond normal range, that target takes only half damage on a hit. Point-Blank (5th level). If you roll a natural 20, the target is knocked prone."
+      },
+      {
+        "d20": "17-18",
+        "Line": "Performance",
+        "AdditionalProperty": "Undermount : This weapon is actually the undermount of another weapon."
+      },
+      {
+        "d20": "19-20",
+        "Line": "Seraphim",
+        "AdditionalProperty": "Guided : These weapons assist in aiming These weapons assist in aiming after being fired and can even after being fired and can even make a secondary attack if the make a secondary attack if the GYRO For free, you can either have advantage on the attack roll or miss the initial attack and make a second attack for free at the beginning of your next turn first one misses. Property For free, you can either have advantage on the attack roll or miss the initial attack and make a second attack for free at the beginning of your next turn using that same round of ammunition (or rocket). This weapon can do this a number of times equal to its tech level (min 1), recovering spent uses at the next dawn."
+      }
     ]
 }
