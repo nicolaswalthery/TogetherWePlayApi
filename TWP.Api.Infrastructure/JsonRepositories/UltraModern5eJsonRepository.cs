@@ -136,5 +136,10 @@ namespace TWP.Api.Infrastructure.JsonRepositories
 
         #endregion Weapon Type Data
 
+        #region Self Shield Benefits
+        public RollTableDto GetShootAndLootSelfShieldBenefits()
+            => base.GetRollTable(fileName: "ShootAndLootSelfShieldBenefits").ToShootAndLootShieldBenefitsRollTableDto();
+        #endregion Self Shield Benefits
+
     }
 }

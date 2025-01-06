@@ -54,5 +54,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Interfaces
         public RollTableDto GetShootAndLootWeaponDamage();
 
         public RollTableDto GetShootAndLootWeaponRange();
+
+        public RollTableDto GetShootAndLootSelfShieldBenefits();
     }
 }

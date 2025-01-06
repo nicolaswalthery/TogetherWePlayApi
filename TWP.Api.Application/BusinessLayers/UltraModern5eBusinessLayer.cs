@@ -17,6 +17,11 @@ namespace TWP.Api.Application.BusinessLayers
             _ultraModern5EJsonRepository = ultraModern5EJsonRepository;
         }
 
+        public void TreasureGeneration()
+        {
+
+        }
+
         public ShootAndLootDto ShootAndLootGeneration()
         {
             var shootAndLootDto = new ShootAndLootDto();
