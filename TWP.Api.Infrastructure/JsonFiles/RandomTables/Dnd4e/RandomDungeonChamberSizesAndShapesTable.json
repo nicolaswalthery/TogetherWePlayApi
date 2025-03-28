@@ -1,0 +1,14 @@
+{
+  "chamberSizesAndShapes": [
+    {"d20": "1-2", "chamber": "Square, 8 x 8 squares"},
+    {"d20": "3-4", "chamber": "Square, 10 x 10 squares"},
+    {"d20": "5-6", "chamber": "Rectangle, 6 x 8 squares"},
+    {"d20": "7-8", "chamber": "Rectangle, 8 x 10 squares"},
+    {"d20": "9-10", "chamber": "Rectangle, 10 x 16 squares"},
+    {"d20": "11-12", "chamber": "Octagon, 8 x 8 squares"},
+    {"d20": "13-14", "chamber": "Octagon, 8 x 12 squares"},
+    {"d20": "15-16", "chamber": "Octagon, 12 x 12 squares"},
+    {"d20": "17-18", "chamber": "Irregular, roughly 8 x 10 squares"},
+    {"d20": "19-20", "chamber": "Irregular, roughly 10 x 16 squares"}
+  ]
+}

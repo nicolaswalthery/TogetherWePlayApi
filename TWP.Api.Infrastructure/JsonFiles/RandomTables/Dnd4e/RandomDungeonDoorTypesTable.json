@@ -1,0 +1,10 @@
+{
+  "doorTypes": [
+    {"d20": "1-4", "heroic": "Not stuck", "paragon": "Barred or locked", "epic": "Stone"},
+    {"d20": "5-8", "heroic": "Wooden", "paragon": "Stone", "epic": "Iron"},
+    {"d20": "9-11", "heroic": "Barred or locked", "paragon": "Iron", "epic": "Wooden portcullis"},
+    {"d20": "12-14", "heroic": "Stone", "paragon": "Wooden portcullis", "epic": "Adamantine"},
+    {"d20": "15-17", "heroic": "Iron", "paragon": "Adamantine", "epic": "Iron portcullis"},
+    {"d20": "18-20", "heroic": "Wooden portcullis", "paragon": "Iron portcullis", "epic": "Adamantine portcullis"}
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "encounterExtraFeature": [
+    {"d10": "1-4", "extra_feature": "No extra feature"},
+    {"d10": "5", "extra_feature": "Replace one monster with trap"},
+    {"d10": "6", "extra_feature": "Replace one monster with hazard"},
+    {"d10": "7", "extra_feature": "Replace one monster with lurker"},
+    {"d10": "8", "extra_feature": "As template from above, but add a trap"},
+    {"d10": "9", "extra_feature": "As template from above, but add a hazard"},
+    {"d10": "10", "extra_feature": "As template from above, but add a lurker"}
+  ]
+}

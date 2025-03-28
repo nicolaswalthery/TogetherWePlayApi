@@ -1,0 +1,13 @@
+{
+  "chamberFeatures": [
+    {"d20": "1-3", "features": "Rubble or other difficult terrain"},
+    {"d20": "4-5", "features": "Crevasse or chasm"},
+    {"d20": "6-7", "features": "Statue, obelisk, or similar object"},
+    {"d20": "8-9", "features": "Pit"},
+    {"d20": "10-13", "features": "Pool, fountain, or basin"},
+    {"d20": "14-16", "features": "Furniture"},
+    {"d20": "17-18", "features": "Altar, brazier, or arcane symbol on floor"},
+    {"d20": "19", "features": "Platform or dais"},
+    {"d20": "20", "features": "Sarcophagus"}
+  ]
+}

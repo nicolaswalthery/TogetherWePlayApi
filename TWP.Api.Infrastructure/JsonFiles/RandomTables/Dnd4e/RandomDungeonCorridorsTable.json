@@ -1,0 +1,21 @@
+{
+  "corridors": [
+    {"d20": 1, "corridor": "Straight 4 squares"},
+    {"d20": 2, "corridor": "Straight 8 squares"},
+    {"d20": 3, "corridor": "Ends in door"},
+    {"d20": 4, "corridor": "Straight 4 squares, door on right"},
+    {"d20": 5, "corridor": "Straight 4 squares, door on left"},
+    {"d20": 6, "corridor": "Straight 4 squares, side passage on right"},
+    {"d20": 7, "corridor": "Straight 4 squares, side passage on left"},
+    {"d20": 8, "corridor": "Three-way intersection (\"T\")"},
+    {"d20": 9, "corridor": "Four-way intersection"},
+    {"d20": 10, "corridor": "90-degree turn left"},
+    {"d20": 11, "corridor": "90-degree turn right"},
+    {"d20": 12, "corridor": "Ends in chamber (no door)"},
+    {"d20": 13, "corridor": "Ends in stairs"},
+    {"d20": 14, "corridor": "Straight 4 squares, stairs on right"},
+    {"d20": 15, "corridor": "Straight 4 squares, stairs on left"},
+    {"d20": 16, "corridor": "Dead end"},
+    {"d20": 17, "corridor": "Random encounter"}
+  ]
+}

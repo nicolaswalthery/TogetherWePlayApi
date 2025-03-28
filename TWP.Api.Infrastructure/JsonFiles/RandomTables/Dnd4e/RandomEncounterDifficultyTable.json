@@ -1,0 +1,7 @@
+{
+  "encounterDifficulty": [
+    {"d20": "1-4", "difficulty": "Easy"},
+    {"d20": "5-16", "difficulty": "Moderate"},
+    {"d20": "17-20", "difficulty": "Hard"}
+  ]
+}
