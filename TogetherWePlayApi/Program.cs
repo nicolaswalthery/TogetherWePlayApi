@@ -12,7 +12,7 @@ builder.Services.AddTransient<JsonRepositoryBase>();
 builder.Services.AddTransient<IMonsterActivitiesJsonRepository, MonsterActivitiesJsonRepository>();
 builder.Services.AddTransient<ISomethingHappenJsonRepository, SomethingHappenJsonRepository>();
 builder.Services.AddTransient<IUltraModern5eJsonRepository, UltraModern5eJsonRepository>();
-builder.Services.AddTransient<IDndEncounterBusinessLayer, DndEncounterBusinessLayer>();
+builder.Services.AddTransient<IDndEncounterBusinessLayer, Dnd5eEncounterBusinessLayer>();
 builder.Services.AddTransient<IUltraModern5eBusinessLayer, UltraModern5eBusinessLayer>();
 builder.Services.AddTransient<IDndController, DndController>();
 builder.Services.AddTransient<IUltraModern5eController, UltraModern5eController>();

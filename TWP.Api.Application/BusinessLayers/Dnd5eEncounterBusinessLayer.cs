@@ -5,13 +5,13 @@ using TWP.Api.Infrastructure.JsonRepositories.Interfaces;
 
 namespace TWP.Api.Application.BusinessLayers
 {
-    public class DndEncounterBusinessLayer : IDndEncounterBusinessLayer
+    public class Dnd5eEncounterBusinessLayer : IDndEncounterBusinessLayer
     {
         private readonly IMonsterActivitiesJsonRepository _monsterActivitiesJsonRepository;
         private readonly ISomethingHappenJsonRepository _somethingHappenJsonRepository;
         private readonly IUltraModern5eJsonRepository _ultraModern5EJsonRepository;
 
-        public DndEncounterBusinessLayer(IMonsterActivitiesJsonRepository monsterActivitiesJsonRepository, ISomethingHappenJsonRepository somethingHappenJsonRepository, IUltraModern5eJsonRepository ultraModern5EJsonRepository)
+        public Dnd5eEncounterBusinessLayer(IMonsterActivitiesJsonRepository monsterActivitiesJsonRepository, ISomethingHappenJsonRepository somethingHappenJsonRepository, IUltraModern5eJsonRepository ultraModern5EJsonRepository)
         {
             _monsterActivitiesJsonRepository = monsterActivitiesJsonRepository;
             _somethingHappenJsonRepository = somethingHappenJsonRepository;
