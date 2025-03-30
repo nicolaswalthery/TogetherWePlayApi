@@ -2,7 +2,6 @@
 using TWP.Api.Core.DataTransferObjects;
 using TWP.Api.Core.Enums;
 using TWP.Api.Infrastructure.JsonRepositories.Interfaces;
-using TWP.Api.Infrastructure.JsonRepositories.Mappers;
 
 namespace TWP.Api.Infrastructure.JsonRepositories
 {
@@ -24,7 +23,5 @@ namespace TWP.Api.Infrastructure.JsonRepositories
 
             return results;
         }
-
-
     }
 }
