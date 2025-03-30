@@ -1,9 +1,4 @@
-﻿using Common.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Common.Randomizer;
 using TWP.Api.Application.BusinessLayers.Interfaces;
 using TWP.Api.Core.DataTransferObjects;
 using TWP.Api.Infrastructure.JsonRepositories.Interfaces;
@@ -21,8 +16,8 @@ namespace TWP.Api.Application.BusinessLayers
 
         public Pf2eMonsterDto GetOneRandomPf2eCoreMonster()
         {
-            
-
+            var randomSelector = new RandomSelector<Pf2eMonsterDto>();
+            return randomSelector.SelectOneRandomly(_pathfinder2EJsonRepository.GetAllPf2eCoreMonsters().ToArray());
         }
     }
 }
