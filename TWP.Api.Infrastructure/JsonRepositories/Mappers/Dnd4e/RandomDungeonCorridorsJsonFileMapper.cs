@@ -19,7 +19,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
                 Name = "Random Dungeon Corridors Table",
                 NumberOfDiceType = 1,
                 Subgenres = { SubgenreEnum.HeroicFantasy },
-                Source = SourceEnum.Dnd4e,
+                Source = SourceFolderEnum.Dnd4e,
                 Setting = SettingEnum.None,
                 SentenceTemplate = string.Empty
             };

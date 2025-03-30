@@ -20,7 +20,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
                 Name = "Tech Item Table B",
                 NumberOfDiceType = 1,
                 Subgenres = { SubgenreEnum.SpaceOpera, SubgenreEnum.Cyberpunk, SubgenreEnum.NasaPunk, SubgenreEnum.HardSciFi, SubgenreEnum.PostApo },
-                Source = SourceEnum.UM5e,
+                Source = SourceFolderEnum.UM5e,
                 Setting = SettingEnum.None,
                 SentenceTemplate = string.Empty
             };

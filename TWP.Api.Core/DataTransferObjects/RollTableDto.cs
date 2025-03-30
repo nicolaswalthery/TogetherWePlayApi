@@ -52,7 +52,7 @@ namespace TWP.Api.Infrastructure.DataTransferObjects
         /// <summary>
         /// Source from which the random table comes from
         /// </summary>
-        public SourceEnum Source { get; set; }
+        public SourceFolderEnum Source { get; set; }
 
 
         //Navigation Property

@@ -11,7 +11,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories
     /// </summary>
     public class RandomDungeonDnd4eJsonRepository : JsonRepositoryBase, IRandomDungeonDnd4eJsonRepository
     {
-        public RandomDungeonDnd4eJsonRepository() : base(folderName: SourceEnum.Dnd4e)
+        public RandomDungeonDnd4eJsonRepository() : base(folderName: SourceFolderEnum.Dnd4e)
         {   
         }
 

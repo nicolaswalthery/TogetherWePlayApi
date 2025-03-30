@@ -10,7 +10,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories
     /// </summary>
     public class SomethingHappenJsonRepository : JsonRepositoryBase, ISomethingHappenJsonRepository
     {
-        public SomethingHappenJsonRepository() : base(folderName: SourceEnum.Shadowdark, fileName: "SomethingHappensRandomTable")
+        public SomethingHappenJsonRepository() : base(folderName: SourceFolderEnum.Shadowdark, fileName: "SomethingHappensRandomTable")
         {
         }
 

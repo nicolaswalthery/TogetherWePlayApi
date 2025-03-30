@@ -20,7 +20,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
                 Name = "Something Happen",
                 NumberOfDiceType = 1,
                 Subgenres = { SubgenreEnum.DarkFantasy },
-                Source = SourceEnum.Shadowdark,
+                Source = SourceFolderEnum.Shadowdark,
                 Setting = SettingEnum.None,
                 SentenceTemplate = string.Empty
             };

@@ -18,7 +18,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories
         private string _shootAndLootWeaponRaritiesJsonFileName = "ShootAndLootWeaponRarities";
         private string _shootAndLootWeaponTypeJsonFileName = "ShootAndLootWeaponTypes";
 
-        public UltraModern5eJsonRepository() : base(folderName: SourceEnum.UM5e)
+        public UltraModern5eJsonRepository() : base(folderName: SourceFolderEnum.UM5e)
         {
         }
 

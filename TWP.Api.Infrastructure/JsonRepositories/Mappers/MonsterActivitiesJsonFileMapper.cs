@@ -21,7 +21,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
                 Name = "Monster Activity",
                 NumberOfDiceType = 2,
                 Subgenres = { SubgenreEnum.DarkFantasy },
-                Source = SourceEnum.Shadowdark,
+                Source = SourceFolderEnum.Shadowdark,
                 Setting = SettingEnum.None,
                 SentenceTemplate = string.Empty
             };

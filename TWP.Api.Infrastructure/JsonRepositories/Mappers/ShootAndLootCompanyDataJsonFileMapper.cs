@@ -20,7 +20,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
                 Name = "Shoot And Loot Company Name",
                 NumberOfDiceType = 1,
                 Subgenres = { SubgenreEnum.SpaceOpera, SubgenreEnum.Cyberpunk, SubgenreEnum.NasaPunk, SubgenreEnum.HardSciFi, SubgenreEnum.PostApo },
-                Source = SourceEnum.UM5e,
+                Source = SourceFolderEnum.UM5e,
                 Setting = SettingEnum.None,
                 SentenceTemplate = string.Empty
             };
@@ -53,7 +53,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
                 Name = "Shoot And Loot Damage Type",
                 NumberOfDiceType = 1,
                 Subgenres = { SubgenreEnum.SpaceOpera, SubgenreEnum.Cyberpunk, SubgenreEnum.NasaPunk, SubgenreEnum.HardSciFi, SubgenreEnum.PostApo },
-                Source = SourceEnum.UM5e,
+                Source = SourceFolderEnum.UM5e,
                 Setting = SettingEnum.None,
                 SentenceTemplate = string.Empty
             };
@@ -86,7 +86,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
                 Name = "Shoot And Loot Magazine",
                 NumberOfDiceType = 1,
                 Subgenres = { SubgenreEnum.SpaceOpera, SubgenreEnum.Cyberpunk, SubgenreEnum.NasaPunk, SubgenreEnum.HardSciFi, SubgenreEnum.PostApo },
-                Source = SourceEnum.UM5e,
+                Source = SourceFolderEnum.UM5e,
                 Setting = SettingEnum.None,
                 SentenceTemplate = string.Empty
             };
@@ -119,7 +119,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
                 Name = "Shoot And Loot Tech Level",
                 NumberOfDiceType = 1,
                 Subgenres = { SubgenreEnum.SpaceOpera, SubgenreEnum.Cyberpunk, SubgenreEnum.NasaPunk, SubgenreEnum.HardSciFi, SubgenreEnum.PostApo },
-                Source = SourceEnum.UM5e,
+                Source = SourceFolderEnum.UM5e,
                 Setting = SettingEnum.None,
                 SentenceTemplate = string.Empty
             };

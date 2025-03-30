@@ -11,7 +11,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories
     /// </summary>
     public class MonsterActivitiesJsonRepository : JsonRepositoryBase, IMonsterActivitiesJsonRepository
     {
-        public MonsterActivitiesJsonRepository() : base(folderName: SourceEnum.Shadowdark, fileName: "MonsterActivitiesRandomTable")
+        public MonsterActivitiesJsonRepository() : base(folderName: SourceFolderEnum.Shadowdark, fileName: "MonsterActivitiesRandomTable")
         {   
         }
 
