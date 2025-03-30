@@ -20,6 +20,7 @@ builder.Services.AddTransient<IPathfinder2eBusinessLayer, Pathfinder2eBusinessLa
 
 builder.Services.AddTransient<IDndController, DndController>();
 builder.Services.AddTransient<IUltraModern5eController, UltraModern5eController>();
+builder.Services.AddTransient<IPathfinder2eController, Pathfinder2eController>();
 
 builder.Services.AddControllers()
                 .AddJsonOptions(options =>

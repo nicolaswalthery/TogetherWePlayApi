@@ -9,7 +9,6 @@ namespace TogetherWePlayApi.Controllers
     [Route("[controller]")]
     public class Pathfinder2eController : ControllerBase, IPathfinder2eController
     {
-
         private readonly ILogger<Pathfinder2eController> _logger;
         private readonly IPathfinder2eBusinessLayer _pathfinder2eBusinessLayer;
 
