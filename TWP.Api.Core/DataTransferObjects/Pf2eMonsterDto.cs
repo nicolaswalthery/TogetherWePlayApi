@@ -197,7 +197,7 @@
         public string blurb { get; set; }
         public string publicNotes { get; set; }
         public string privateNotes { get; set; }
-        public int level { get; set; }
+        public int? level { get; set; } 
         public LanguagesDto languages { get; set; }
         public PublicationDto publication { get; set; }
     }
