@@ -109,7 +109,7 @@
         public ModifierDto str { get; set; }
         public ModifierDto dex { get; set; }
         public ModifierDto con { get; set; }
-        public ModifierDto int_ { get; set; }
+        public ModifierDto string_ { get; set; }
         public ModifierDto wis { get; set; }
         public ModifierDto cha { get; set; }
     }
@@ -142,14 +142,14 @@
 
     public class SpeedDto
     {
-        public int value { get; set; }
+        public int? value { get; set; }
         public List<OtherSpeedDto> otherSpeeds { get; set; }
     }
 
     public class OtherSpeedDto
     {
         public string type { get; set; }
-        public int value { get; set; }
+        public int? value { get; set; }
     }
 
     public class AllSavesDto
@@ -197,9 +197,14 @@
         public string blurb { get; set; }
         public string publicNotes { get; set; }
         public string privateNotes { get; set; }
-        public int? level { get; set; } 
+        public LevelDto level { get; set; } 
         public LanguagesDto languages { get; set; }
         public PublicationDto publication { get; set; }
+    }
+
+    public class LevelDto
+    {
+        public int value { get; set; }
     }
 
     public class LanguagesDto
