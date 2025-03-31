@@ -5,8 +5,6 @@ namespace TWP.Api.Infrastructure.JsonRepositories
 {
     public class JsonRepositoryBase
     {
-        private string _randomTablesFolderRelativePath = @"TWP.Api.Infrastructure\JsonFiles\RandomTables";
-        
         private string _baseRelativePath = @"TWP.Api.Infrastructure\JsonFiles";
         private SourceFolderEnum _childFolderName;
         private string _parentFolderName;
@@ -45,9 +43,11 @@ namespace TWP.Api.Infrastructure.JsonRepositories
             _childFolderName = folderName;
         }
 
-        protected string RandomTablesRelativePath => _randomTablesFolderRelativePath;
-        protected string BaseFolderRelativePath => _baseRelativePath; //TWP.Api.Infrastructure\JsonFiles
-        protected string FullRandomTablesRelativePath => $@"{_randomTablesFolderRelativePath}\{_childFolderName}";
+        /// <summary>
+        /// Get the TWP.Api.Infrastructure\JsonFiles base folder path
+        /// </summary>
+        /// <value>TWP.Api.Infrastructure\JsonFiles</value>
+        protected string BaseFolderRelativePath => _baseRelativePath;
         protected string FullRelativePath => $@"{_baseRelativePath}\{_parentFolderName}\{_childFolderName}";
 
         protected string GetJsonByFileName()
