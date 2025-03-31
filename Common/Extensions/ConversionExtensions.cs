@@ -41,13 +41,5 @@ namespace Common.Extensions
         /// <returns></returns>
         public static T JsonToObject<T>(this string json) 
             => JsonSerializer.Deserialize<T>(json);
-
-        private static readonly JsonSerializerOptions _options = new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true,
-            ReadCommentHandling = JsonCommentHandling.Skip,
-            AllowTrailingCommas = true,
-            Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) }
-        };
     }
 }
