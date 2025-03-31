@@ -9,7 +9,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
     {
         public static RollTableDto ToShootAndLootWeaponRarityRollTableDto(this string json)
         {
-            var deserializedObject = json.ToObject<WeaponRaritiesRoot>();
+            var deserializedObject = json.JsonToObject<WeaponRaritiesRoot>();
             var rollTableDto = BuildRollTableDto(name: "Weapon Rarities");
             foreach (var somethingHappen in deserializedObject.WeaponRarities)
             {
@@ -28,7 +28,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
 
         public static RollTableDto ToShootAndLootWeaponCostMultipliersRollTableDto(this string json)
         {
-            var deserializedObject = json.ToObject<WeaponRaritiesRoot>();
+            var deserializedObject = json.JsonToObject<WeaponRaritiesRoot>();
             var rollTableDto = BuildRollTableDto(name: "Cost Multipliers");
             foreach (var somethingHappen in deserializedObject.WeaponRarities)
             {
@@ -47,7 +47,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
 
         public static RollTableDto ToShootAndLootWeaponNumberOfLinesRollTableDto(this string json)
         {
-            var deserializedObject = json.ToObject<WeaponRaritiesRoot>();
+            var deserializedObject = json.JsonToObject<WeaponRaritiesRoot>();
             var rollTableDto = BuildRollTableDto(name: "Number of lines");
             foreach (var somethingHappen in deserializedObject.WeaponRarities)
             {
@@ -66,7 +66,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
 
         public static RollTableDto ToShootAndLootWeaponNumberOfModelsRollTableDto(this string json)
         {
-            var deserializedObject = json.ToObject<WeaponRaritiesRoot>();
+            var deserializedObject = json.JsonToObject<WeaponRaritiesRoot>();
             var rollTableDto = BuildRollTableDto(name: "Number of models");
             foreach (var somethingHappen in deserializedObject.WeaponRarities)
             {
@@ -85,7 +85,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
 
         public static RollTableDto ToShootAndLootWeaponBenefitsRollTableDto(this string json)
         {
-            var deserializedObject = json.ToObject<WeaponRaritiesRoot>();
+            var deserializedObject = json.JsonToObject<WeaponRaritiesRoot>();
             var rollTableDto = BuildRollTableDto(name: "Benefits");
             foreach (var somethingHappen in deserializedObject.WeaponRarities)
             {

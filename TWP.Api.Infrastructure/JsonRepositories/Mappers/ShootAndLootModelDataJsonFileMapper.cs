@@ -9,7 +9,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
     {
         public static RollTableDto ToShootAndLootModelNameRollTableDto(this string json)
         {
-            var deserializedObject = json.ToObject<ModelDataRoot>();
+            var deserializedObject = json.JsonToObject<ModelDataRoot>();
 
             var rollTableDto = new RollTableDto()
             {
@@ -42,7 +42,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
 
         public static RollTableDto ToShootAndLootModelBenefitsRollTableDto(this string json)
         {
-            var deserializedObject = json.ToObject<ModelDataRoot>();
+            var deserializedObject = json.JsonToObject<ModelDataRoot>();
 
             var rollTableDto = new RollTableDto()
             {

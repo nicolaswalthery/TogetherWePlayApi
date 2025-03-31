@@ -9,7 +9,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
     {
         public static RollTableDto ToShootAndLootShieldBenefitsRollTableDto(this string json)
         {
-            var deserializedObject = json.ToObject<ShootAndLootShieldBenefitRoot>();
+            var deserializedObject = json.JsonToObject<ShootAndLootShieldBenefitRoot>();
             RollTableDto rollTableDto = BuildRollTableDto(name: "Shoot And Loot Self Shield Benefits");
 
             foreach (var SelfShieldBenefit in deserializedObject.SelfShieldBenefits)

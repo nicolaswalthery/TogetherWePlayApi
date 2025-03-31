@@ -9,7 +9,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
     {
         public static RollTableDto ToShootAndLootCompanyNameRollTableDto(this string json)
         {
-            var deserializedObject = json.ToObject<CompanyDataRoot>();
+            var deserializedObject = json.JsonToObject<CompanyDataRoot>();
 
             var rollTableDto = new RollTableDto()
             {
@@ -42,7 +42,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
 
         public static RollTableDto ToShootAndLootDamageTypeRollTableDto(this string json)
         {
-            var deserializedObject = json.ToObject<CompanyDataRoot>();
+            var deserializedObject = json.JsonToObject<CompanyDataRoot>();
 
             var rollTableDto = new RollTableDto()
             {
@@ -75,7 +75,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
 
         public static RollTableDto ToShootAndLootMagazineRollTableDto(this string json)
         {
-            var deserializedObject = json.ToObject<CompanyDataRoot>();
+            var deserializedObject = json.JsonToObject<CompanyDataRoot>();
 
             var rollTableDto = new RollTableDto()
             {
@@ -108,7 +108,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
 
         public static RollTableDto ToShootAndLootTechLevelRollTableDto(this string json)
         {
-            var deserializedObject = json.ToObject<CompanyDataRoot>();
+            var deserializedObject = json.JsonToObject<CompanyDataRoot>();
 
             var rollTableDto = new RollTableDto()
             {

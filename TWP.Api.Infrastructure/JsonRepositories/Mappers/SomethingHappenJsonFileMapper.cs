@@ -9,7 +9,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
     {
         public static RollTableDto ToSomethingHappensRollTableDto(this string json)
         {
-            var deserializedObject = json.ToObject<SomethingHappensRoot>();
+            var deserializedObject = json.JsonToObject<SomethingHappensRoot>();
 
             var rollTableDto = new RollTableDto()
             {

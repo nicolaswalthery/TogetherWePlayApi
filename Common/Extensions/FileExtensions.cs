@@ -14,8 +14,11 @@ namespace Common.Extensions
         {
             try
             {
+                if (!fileName.Contains(".json"))//add the .json extension if needed.
+                    fileName = $"{fileName}.json";
+
                 // Combine the project root and the relative path to form the absolute file path
-                string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\", relativePath, $"{fileName}.json");
+                string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\", relativePath, $"{fileName}");
 
                 // Resolve the full path
                 filePath = Path.GetFullPath(filePath);

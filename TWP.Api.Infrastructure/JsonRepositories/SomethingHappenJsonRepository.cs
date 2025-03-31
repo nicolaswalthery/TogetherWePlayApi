@@ -8,13 +8,13 @@ namespace TWP.Api.Infrastructure.JsonRepositories
     /// <summary>
     /// The Json Repositories have the responsability to retreive and map the json data to a data transfer object
     /// </summary>
-    public class SomethingHappenJsonRepository : JsonRepositoryBase, ISomethingHappenJsonRepository
+    public class SomethingHappenJsonRepository : RandomTableJsonRepositoryBase, ISomethingHappenJsonRepository
     {
         public SomethingHappenJsonRepository() : base(folderName: SourceFolderEnum.Shadowdark, fileName: "SomethingHappensRandomTable")
         {
         }
 
         public RollTableDto GetRollTable() 
-            => base.GetRollTable().ToSomethingHappensRollTableDto();
+            => base.GetJsonByFileName().ToSomethingHappensRollTableDto();
     }
 }

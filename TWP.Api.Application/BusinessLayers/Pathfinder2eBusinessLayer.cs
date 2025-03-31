@@ -7,9 +7,9 @@ namespace TWP.Api.Application.BusinessLayers
 {
     public class Pathfinder2eBusinessLayer : IPathfinder2eBusinessLayer
     {
-        private IPathfinder2eJsonRepository _pathfinder2EJsonRepository;
+        private IPathfinder2eMonsterCoreJsonRepository _pathfinder2EJsonRepository;
 
-        public Pathfinder2eBusinessLayer(IPathfinder2eJsonRepository pathfinder2eJsonRepository)
+        public Pathfinder2eBusinessLayer(IPathfinder2eMonsterCoreJsonRepository pathfinder2eJsonRepository)
         {
             _pathfinder2EJsonRepository = pathfinder2eJsonRepository;
         }

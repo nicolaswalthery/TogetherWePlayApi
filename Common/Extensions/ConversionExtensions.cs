@@ -39,7 +39,7 @@ namespace Common.Extensions
         /// <typeparam name="T">Object Type</typeparam>
         /// <param name="json">Json to deserialize</param>
         /// <returns></returns>
-        public static T ToObject<T>(this string json) 
+        public static T JsonToObject<T>(this string json) 
             => JsonSerializer.Deserialize<T>(json);
 
         private static readonly JsonSerializerOptions _options = new JsonSerializerOptions
@@ -49,23 +49,5 @@ namespace Common.Extensions
             AllowTrailingCommas = true,
             Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) }
         };
-
-        /// <summary>
-        /// Maps a JSON string into an T object.
-        /// </summary>
-        /// <param name="json">Raw JSON string.</param>
-        /// <returns>T Object</returns>
-        public static T FromJson<T>(this string json)
-        {
-            var _options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true,
-                ReadCommentHandling = JsonCommentHandling.Skip,
-                AllowTrailingCommas = true,
-                Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) }
-            };
-
-            return JsonSerializer.Deserialize<T>(json, _options);
-        }
     }
 }

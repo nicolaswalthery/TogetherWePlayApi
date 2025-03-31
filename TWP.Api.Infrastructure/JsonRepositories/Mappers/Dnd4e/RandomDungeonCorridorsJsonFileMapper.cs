@@ -8,7 +8,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories.Mappers
     {
         public static RollTableDto ToRandomDungeonCorridorsTableRollTableDto(this string json)
         {
-            var deserializedObject = json.ToObject<RandomDungeonCorridorsRoot>();
+            var deserializedObject = json.JsonToObject<RandomDungeonCorridorsRoot>();
 
             var rollTableDto = new RollTableDto()
             {

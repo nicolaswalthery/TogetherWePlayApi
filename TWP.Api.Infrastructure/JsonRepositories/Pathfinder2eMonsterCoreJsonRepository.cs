@@ -8,7 +8,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories
     /// <summary>
     /// The Json Repositories have the responsability to retreive and map the json data to a data transfer object
     /// </summary>
-    public class Pathfinder2eMonsterCoreJsonRepository : JsonRepositoryBase, IPathfinder2eJsonRepository
+    public class Pathfinder2eMonsterCoreJsonRepository : Pathfinder2eDataJsonRepositoryBase, IPathfinder2eMonsterCoreJsonRepository
     {
         public Pathfinder2eMonsterCoreJsonRepository() : base(folderName: SourceFolderEnum.Pathfinder2eMonsterCore)
         {
@@ -19,7 +19,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories
             var results = new List<Pf2eMonsterDto>();
             var allFileNamesFromBaseFolder = base.GetAllJsonFileNamesInBaseFolder();
             foreach (var fileName in allFileNamesFromBaseFolder)
-                results.Add(base.GetRollTable(fileName: fileName).FromJson<Pf2eMonsterDto>());
+                results.Add(base.GetJsonByFileName(fileName: fileName).JsonToObject<Pf2eMonsterDto>());
 
             return results;
         }
