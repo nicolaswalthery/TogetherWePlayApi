@@ -18,10 +18,16 @@ namespace TogetherWePlayApi.Controllers
             _pathfinder2eBusinessLayer = pathfinder2eBusinessLayer;
         }
 
-        [HttpGet(Name = "GetOneRandomCoreMonster")]
+        [HttpGet("random/core-monster")]
         public Pf2eMonsterDto GetOneRandomCoreMonster()
         {
             return _pathfinder2eBusinessLayer.GetOneRandomPf2eCoreMonster();
+        }
+
+        [HttpGet("random/condition")]
+        public Pf2eConditionDto GetOneRandomCondition()
+        {
+            return _pathfinder2eBusinessLayer.GetOneRandomPf2eCondition();
         }
     }
 }

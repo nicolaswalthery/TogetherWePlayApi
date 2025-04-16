@@ -13,6 +13,7 @@ builder.Services.AddTransient<IMonsterActivitiesJsonRepository, MonsterActivitie
 builder.Services.AddTransient<ISomethingHappenJsonRepository, SomethingHappenJsonRepository>();
 builder.Services.AddTransient<IUltraModern5eJsonRepository, UltraModern5eJsonRepository>();
 builder.Services.AddTransient<IPathfinder2eMonsterCoreJsonRepository, Pathfinder2eMonsterCoreJsonRepository>();
+builder.Services.AddTransient<IPathfinder2eConditionsJsonRepository, Pathfinder2eConditionsJsonRepository>(); 
 
 builder.Services.AddTransient<IDndEncounterBusinessLayer, Dnd5eEncounterBusinessLayer>();
 builder.Services.AddTransient<IUltraModern5eBusinessLayer, UltraModern5eBusinessLayer>();

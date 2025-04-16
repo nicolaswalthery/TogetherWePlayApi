@@ -11,6 +11,7 @@
         Dnd4e,
         Pathfinder2eMonsterCore,
         Pathfinder2eNpcCore,
-        Pathfinder2eRollableTables
+        Pathfinder2eRollableTables,
+        Pathfinder2eConditions
     }
 }
