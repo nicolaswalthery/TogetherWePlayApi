@@ -26,7 +26,7 @@ namespace TWP.Api.Application.BusinessLayers
                 if (result is null)
                     Result<RollTableEntryDto>.Failure("No tech item from the table A found", ReasonType.NotFound);
 
-                return Result<RollTableEntryDto>.Success(result);
+                return Result<RollTableEntryDto>.Success(result!);
             });
     }
 }

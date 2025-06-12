@@ -15,7 +15,7 @@
         }
 
         public static Result Success() => new(true);
-        public static Result Failure(string error, ReasonType reasonType = ReasonType.Failure)
+        public static Result Failure(string error, ReasonType reasonType = ReasonType.Undefine)
             => new(false, error, reasonType);
     }
 
@@ -32,7 +32,7 @@
             : base(false, error, reasonType) { }
 
         public static Result<T> Success(T value) => new(value);
-        public static new Result<T> Failure(string error, ReasonType reasonType = ReasonType.Failure)
+        public static new Result<T> Failure(string error, ReasonType reasonType = ReasonType.Undefine)
             => new(error, reasonType);
     }
 
