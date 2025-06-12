@@ -1,10 +1,9 @@
-﻿using Common.ResultPattern;
-using TWP.Api.Infrastructure.DataTransferObjects;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace TWP.Api.Controllers.Interfaces
 {
     public interface IDndController
     {
-        public Task<Result<RollTableEntryDto>> GetMonterActivity();
+        public Task<IActionResult> GetMonsterActivity();
     }
 }

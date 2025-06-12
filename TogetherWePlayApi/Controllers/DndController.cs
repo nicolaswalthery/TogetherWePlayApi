@@ -2,7 +2,6 @@ using Common.ResultPattern;
 using Microsoft.AspNetCore.Mvc;
 using TWP.Api.Application.BusinessLayers.Interfaces;
 using TWP.Api.Controllers.Interfaces;
-using TWP.Api.Infrastructure.DataTransferObjects;
 
 namespace TogetherWePlayApi.Controllers
 {
@@ -18,7 +17,7 @@ namespace TogetherWePlayApi.Controllers
         }
 
         [HttpGet(Name = "GetMonterActivity")]
-        public async Task<Result<RollTableEntryDto>> GetMonterActivity()
-            => HandleResult(await Safe.ExecuteAsync(async () => await _dndEncounterBusinessLayer.EncounterRandomGenerator()));
+        public async Task<IActionResult> GetMonsterActivity()
+            => HandleResult(await Safe.ExecuteAsync(() => _dndEncounterBusinessLayer.EncounterRandomGenerator()));
     }
 }
