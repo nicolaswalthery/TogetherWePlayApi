@@ -24,7 +24,7 @@ namespace TWP.Api.Application.BusinessLayers
             {
                 var result = _ultraModern5EJsonRepository.GetTechItemTable_A_RandomTable().GetRandomlyASingleEntry();
                 if (result is null)
-                    Result<RollTableEntryDto>.Failure("No tech item from the table A found", ReasonType.NotFound);
+                    return Result<RollTableEntryDto>.Failure("No tech item from the table A found", ReasonType.NotFound);
 
                 return Result<RollTableEntryDto>.Success(result!);
             });

@@ -16,7 +16,7 @@ namespace TogetherWePlayApi.Controllers
             _dndEncounterBusinessLayer = dndEncounterBusinessLayer;
         }
 
-        [HttpGet(Name = "GetMonterActivity")]
+        [HttpGet(Name = "GetMonsterActivity")]
         public async Task<IActionResult> GetMonsterActivity()
             => HandleResult(await Safe.ExecuteAsync(() => _dndEncounterBusinessLayer.EncounterRandomGenerator()));
     }
