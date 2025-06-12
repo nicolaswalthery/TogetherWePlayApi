@@ -1,9 +1,10 @@
-﻿using TWP.Api.Infrastructure.DataTransferObjects;
+﻿using Common.ResultPattern;
+using TWP.Api.Infrastructure.DataTransferObjects;
 
 namespace TWP.Api.Application.BusinessLayers.Interfaces
 {
     public interface IDndEncounterBusinessLayer
     {
-        RollTableEntryDto EncounterRandomGenerator();
+        Task<Result<RollTableEntryDto>> EncounterRandomGenerator();
     }
 }

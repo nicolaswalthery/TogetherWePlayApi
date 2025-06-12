@@ -1,4 +1,5 @@
-﻿using TWP.Api.Application.BusinessLayers.Interfaces;
+﻿using Common.ResultPattern;
+using TWP.Api.Application.BusinessLayers.Interfaces;
 using TWP.Api.Application.Helpers;
 using TWP.Api.Infrastructure.DataTransferObjects;
 using TWP.Api.Infrastructure.JsonRepositories.Interfaces;
@@ -18,9 +19,14 @@ namespace TWP.Api.Application.BusinessLayers
             _ultraModern5EJsonRepository = ultraModern5EJsonRepository;
         }
 
-        public RollTableEntryDto EncounterRandomGenerator()
-        {
-            return _ultraModern5EJsonRepository.GetTechItemTable_A_RandomTable().GetRandomlyASingleEntry();
-        }
+        public async Task<Result<RollTableEntryDto>> EncounterRandomGenerator()
+            => await Safe.ExecuteAsync(async () =>
+            {
+                var result = _ultraModern5EJsonRepository.GetTechItemTable_A_RandomTable().GetRandomlyASingleEntry();
+                if (result is null)
+                    Result<RollTableEntryDto>.Failure("No tech item from the table A found", ReasonType.NotFound);
+
+                return Result<RollTableEntryDto>.Success(result);
+            });
     }
 }
