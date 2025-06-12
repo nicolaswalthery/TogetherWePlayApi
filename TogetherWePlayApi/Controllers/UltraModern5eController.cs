@@ -11,18 +11,18 @@ namespace TogetherWePlayApi.Controllers
     {
 
         private readonly ILogger<UltraModern5eController> _logger;
-        private readonly IUltraModern5eBusinessLayer _ultraModern5EBusinessLayer;
+        private readonly IUltraModern5eBusinessLayer _ultraModern5eBusinessLayer;
 
         public UltraModern5eController(ILogger<UltraModern5eController> logger, IUltraModern5eBusinessLayer ultraModern5EBusinessLayer)
         {
             _logger = logger;
-            _ultraModern5EBusinessLayer = ultraModern5EBusinessLayer;
+            _ultraModern5eBusinessLayer = ultraModern5EBusinessLayer;
         }
 
         [HttpGet(Name = "GetShootAndLoot")]
         public ShootAndLootDto GetShootAndLoot()
         {
-            return _ultraModern5EBusinessLayer.ShootAndLootGeneration();
+            return _ultraModern5eBusinessLayer.ShootAndLootGeneration();
         }
     }
 }
