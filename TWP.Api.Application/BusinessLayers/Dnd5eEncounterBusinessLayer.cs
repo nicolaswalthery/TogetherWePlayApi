@@ -22,11 +22,11 @@ namespace TWP.Api.Application.BusinessLayers
         public async Task<Result<RollTableEntryDto>> EncounterRandomGenerator()
             => await Safe.ExecuteAsync(async () =>
             {
-                var result = _ultraModern5EJsonRepository.GetTechItemTable_A_RandomTable().GetRandomlyASingleEntry();
-                if (result is null)
-                    return Result<RollTableEntryDto>.Failure("No tech item from the table A found", ReasonType.NotFound);
+                var result = _ultraModern5EJsonRepository.GetTechItemTable_A_RandomTable().GetRandomlyASingleEntry().IsNull();
+                if (result.IsFailure)
+                    return Result<RollTableEntryDto>.Failure(result.Error!, result.ReasonType);
 
-                return Result<RollTableEntryDto>.Success(result!);
+                return Result<RollTableEntryDto>.Success(result.Data!);
             });
     }
 }
