@@ -35,7 +35,7 @@ namespace Common.ResultPattern
             where T : class
         {
             if (data is null)
-                return Result<T>.Failure(error.IsNullOrEmptyOrWhiteSpace() ? $"{nameof(T)} - No data found !" : $"{nameof(T)} - {error}", ReasonType.NotFound);
+                return Result<T>.Failure(error.IsNullOrEmptyOrWhiteSpace() ? $"{typeof(T)} - No data found !" : $"{nameof(T)} - {error}", ReasonType.NotFound);
             return Result<T>.Success(data);
         }
 

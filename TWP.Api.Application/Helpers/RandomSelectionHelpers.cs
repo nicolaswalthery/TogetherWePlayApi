@@ -11,8 +11,8 @@ namespace TWP.Api.Application.Helpers
         /// </summary>
         /// <param name="rollTableDto"></param>
         /// <returns></returns>
-        public static RollTableEntryDto GetRandomlyASingleEntry(this RollTableDto rollTableDto)
-        {
+        public static RollTableEntryDto GetRandomlyASingleEntry(this RollTableDto rollTableDto) 
+        { 
             var rollResult = RollDie(rollTableDto.NumberOfDiceType, rollTableDto.DiceType);
             return rollTableDto.Entries.First(e => e.MinRoll <= rollResult && e.MaxRoll >= rollResult);
         }

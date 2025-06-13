@@ -1,4 +1,6 @@
-﻿namespace Common.ResultPattern
+﻿using System.Reflection;
+
+namespace Common.ResultPattern
 {
     public static class Safe
     {
@@ -10,7 +12,7 @@
             }
             catch (Exception ex)
             {
-                return Result<T>.Failure($"Exception: {ex.Message}", ReasonType.Unexpected);
+                return Result<T>.Failure($"Exception: {action.GetMethodInfo().Name} - {ex.Message}", ReasonType.Unexpected);
             }
         }
 

@@ -101,7 +101,7 @@
             "Description": "One-Handed Grappling Hook"
         },
         {
-            "Range": "00",
+            "Range": "100",
             "Description": "Capsicum Spray"
         }
     ]

@@ -67,14 +67,7 @@
         /// This property will generate a random number set between the number of dice thrown (min) and the total sides of those dice combine plus one (max).
         /// </summary>
         public int Roll 
-        {
-            get
-            {
-                int retVal = 1;
-                retVal = ThrowDice();
-                return retVal;
-            }
-        }
+            => ThrowDice();
 
         private int ThrowDice() => this.dieOutcome.Next(this.NbrOfDice/*min value*/, this.SidesOfADie * this.NbrOfDice + 1/*max value +1*/);
 

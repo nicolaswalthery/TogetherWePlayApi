@@ -27,7 +27,7 @@ namespace TWP.Api.Application.BusinessLayers
                 if (result.IsFailure)
                     return Result<RollTableEntryDto>.Failure(result.Error!, result.ReasonType);
 
-                return Result<RollTableEntryDto>.Success(result.Data!);
+                return result;
             });
     }
 }
