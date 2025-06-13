@@ -23,12 +23,12 @@
     {
         public T? Data { get; }
 
-        public Result(T data) : base(true)
+        protected Result(T data) : base(true)
         {
             Data = data;
         }
 
-        public Result(string error, ReasonType reasonType)
+        protected Result(string error, ReasonType reasonType)
             : base(false, error, reasonType) { }
 
         public static Result<T> Success(T value) => new(value);

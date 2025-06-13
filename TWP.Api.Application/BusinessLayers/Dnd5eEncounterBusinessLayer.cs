@@ -22,7 +22,8 @@ namespace TWP.Api.Application.BusinessLayers
         public async Task<Result<RollTableEntryDto>> EncounterRandomGenerator()
             => await Safe.ExecuteAsync(async () =>
             {
-                var result = _ultraModern5EJsonRepository.GetTechItemTable_A_RandomTable().GetRandomlyASingleEntry().IsNull();
+                var result = _ultraModern5EJsonRepository.GetTechItemTable_A_RandomTable().GetRandomlyASingleEntry()
+                                                                                          .Verify(data => data.IsNull());
                 if (result.IsFailure)
                     return Result<RollTableEntryDto>.Failure(result.Error!, result.ReasonType);
 
