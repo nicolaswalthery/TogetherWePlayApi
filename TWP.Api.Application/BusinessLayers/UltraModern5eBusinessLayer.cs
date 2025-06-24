@@ -1,11 +1,12 @@
 ﻿using Common.Extensions;
+using Common.ResultPattern;
+using System.Threading.Tasks;
 using TWP.Api.Application.BusinessLayers.Interfaces;
 using TWP.Api.Application.DataTransferObjects;
 using TWP.Api.Application.Helpers;
 using TWP.Api.Core.Enums;
 using TWP.Api.Infrastructure.DataTransferObjects;
 using TWP.Api.Infrastructure.JsonRepositories.Interfaces;
-using Common.ResultPattern;
 
 namespace TWP.Api.Application.BusinessLayers
 {
@@ -96,12 +97,13 @@ namespace TWP.Api.Application.BusinessLayers
         private string ListToString(List<RollTableEntryDto> rollTableEntryDtos) 
             => string.Join(", ", rollTableEntryDtos.Select(e => e.ResultText));
 
-        private List<ShootAndLootDto> ShootAndLootGenerations(int numberOfShootAndLoots)
+        private async Task<List<ShootAndLootDto>> ShootAndLootGenerations(int numberOfShootAndLoots)
         {
             var shootAndLootDtos = new List<ShootAndLootDto>();
             for (int i = 0; i < numberOfShootAndLoots; i++)
             {
-                shootAndLootDtos.Add(ShootAndLootGeneration());
+                var result = await ShootAndLootGeneration();
+                shootAndLootDtos.Add(result.Data);
             }
             return shootAndLootDtos;
         }

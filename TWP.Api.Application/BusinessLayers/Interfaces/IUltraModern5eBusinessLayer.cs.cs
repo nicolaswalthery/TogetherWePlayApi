@@ -1,4 +1,5 @@
-﻿using TWP.Api.Application.DataTransferObjects;
+﻿using Common.ResultPattern;
+using TWP.Api.Application.DataTransferObjects;
 
 namespace TWP.Api.Application.BusinessLayers.Interfaces
 {
