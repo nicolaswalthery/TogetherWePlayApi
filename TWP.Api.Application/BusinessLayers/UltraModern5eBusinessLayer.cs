@@ -5,6 +5,7 @@ using TWP.Api.Application.Helpers;
 using TWP.Api.Core.Enums;
 using TWP.Api.Infrastructure.DataTransferObjects;
 using TWP.Api.Infrastructure.JsonRepositories.Interfaces;
+using Common.ResultPattern;
 
 namespace TWP.Api.Application.BusinessLayers
 {
@@ -28,37 +29,25 @@ namespace TWP.Api.Application.BusinessLayers
 
         }
 
-
-
-        public ShootAndLootDto ShootAndLootGeneration()
-        {
-            var shootAndLootDto = new ShootAndLootDto();
-
-            //Weapon Type
-            GetAndMapWeaponTypeDataDto(shootAndLootDto);
-
-            //Weapon Rarity
-            var numberOfLinesAndModels = GetAndMapWeaponRarityDataToDto(shootAndLootDto, ComputeRarityModifier(1, 2));
-
-            //Company
-            GetAndMapWeaponCompanyDataToDto(shootAndLootDto);
-
-            //Model
-            for (int i = 0; i < numberOfLinesAndModels.numberModels; i++)
+        public async Task<Result<ShootAndLootDto>> ShootAndLootGeneration()
+            => await Safe.ExecuteAsync(async () =>
             {
-                GetAndMapWeaponModelDataToDto(shootAndLootDto);
-            }
-
-            //Line
-            for (int i = 0; i < numberOfLinesAndModels.numberLines; i++)
-            {
-                GetAndMapWeaponLineDataToDto(shootAndLootDto);
-            }
-
-            shootAndLootDto.Cost = (shootAndLootDto.BaseCost.ToInt() * shootAndLootDto.CostMultiplier.ToInt()).ToString();
-
-            return shootAndLootDto;
-        }
+                var shootAndLootDto = new ShootAndLootDto();
+                GetAndMapWeaponTypeDataDto(shootAndLootDto);
+                var numberOfLinesAndModels = GetAndMapWeaponRarityDataToDto(shootAndLootDto, ComputeRarityModifier(1, 2));
+                GetAndMapWeaponCompanyDataToDto(shootAndLootDto);
+                for (int i = 0; i < numberOfLinesAndModels.numberModels; i++)
+                {
+                    GetAndMapWeaponModelDataToDto(shootAndLootDto);
+                }
+                for (int i = 0; i < numberOfLinesAndModels.numberLines; i++)
+                {
+                    GetAndMapWeaponLineDataToDto(shootAndLootDto);
+                }
+                shootAndLootDto.Cost = (shootAndLootDto.BaseCost.ToInt() * shootAndLootDto.CostMultiplier.ToInt()).ToString();
+                return Result<ShootAndLootDto>.Success(shootAndLootDto);
+            });
+        
 
         private string GetTreasureHoardChallenge0_4()
         {
