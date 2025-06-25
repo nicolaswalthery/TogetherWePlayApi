@@ -18,12 +18,23 @@ namespace TWP.Api.Application.Helpers
         }
 
         public static List<RollTableEntryDto> GetRandomlyManyEntries(this RollTableDto rollTableDto, int numberOfEntries)
-        { 
+        {
+            var uniqueEntries = rollTableDto.Entries.ToList();
             var results = new List<RollTableEntryDto>();
-            for (int i = 0; i < numberOfEntries; i++)
-            {
+            var random = new Random();
+
+            // Shuffle the entries for randomness
+            uniqueEntries = uniqueEntries.OrderBy(x => random.Next()).ToList();
+
+            var toTake = Math.Min(numberOfEntries, uniqueEntries.Count);
+
+            // Take as many unique as possible
+            results.AddRange(uniqueEntries.Take(toTake));
+
+            // If more are needed, allow duplicates
+            for (int i = toTake; i < numberOfEntries; i++)
                 results.Add(rollTableDto.GetRandomlyASingleEntry());
-            }
+
             return results;
         }
 

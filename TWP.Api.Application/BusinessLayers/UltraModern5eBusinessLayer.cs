@@ -21,18 +21,18 @@ namespace TWP.Api.Application.BusinessLayers
 
         public async Task<Result<string>> GenerateTreasureHoard(int challengeRating)
             => Safe.Execute(() =>
-        {
-            string treasureHoard = String.Empty;
-            if (challengeRating >= 0 && challengeRating <= 4)
-                treasureHoard = GetTreasureHoardChallenge0_4();
-            else if (challengeRating >= 5 && challengeRating <= 10)
-                treasureHoard = GetTreasureHoardChallenge5_10();
-            else if (challengeRating >= 11 && challengeRating <= 16)
-                treasureHoard = GetTreasureHoardChallenge11_16();
-            else if (challengeRating >= 17)
-                treasureHoard = GetTreasureHoardChallenge17Plus();
-            return Result<string>.Success(treasureHoard);
-        });
+            {
+                string treasureHoard = String.Empty;
+                if (challengeRating >= 0 && challengeRating <= 4)
+                    treasureHoard = GetTreasureHoardChallenge0_4();
+                else if (challengeRating >= 5 && challengeRating <= 10)
+                    treasureHoard = GetTreasureHoardChallenge5_10();
+                else if (challengeRating >= 11 && challengeRating <= 16)
+                    treasureHoard = GetTreasureHoardChallenge11_16();
+                else if (challengeRating >= 17)
+                    treasureHoard = GetTreasureHoardChallenge17Plus();
+                return Result<string>.Success(treasureHoard);
+            });
 
         public async Task<Result<ShootAndLootDto>> ShootAndLootGeneration()
             => await Safe.ExecuteAsync(async () =>
