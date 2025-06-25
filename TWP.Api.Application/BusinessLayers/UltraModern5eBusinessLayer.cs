@@ -23,7 +23,10 @@ namespace TWP.Api.Application.BusinessLayers
         {
             string treasureHoard = String.Empty;
             if (challengeRating >= 4)
-                GetTreasureHoardChallenge0_4();
+                treasureHoard = GetTreasureHoardChallenge0_4();
+
+            if (challengeRating >= 5 && challengeRating <= 10)
+                treasureHoard = GetTreasureHoardChallenge5_10();
 
             var results = ShootAndLootGenerations(treasureHoard.CountOccurrences(_shootAndLootTextResult));
 
