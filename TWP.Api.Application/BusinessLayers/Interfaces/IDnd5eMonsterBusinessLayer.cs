@@ -1,5 +1,4 @@
 using Common.ResultPattern;
-using System.Threading.Tasks;
 using TWP.Api.Core.DataTransferObjects;
 
 namespace TWP.Api.Application.BusinessLayers.Interfaces
