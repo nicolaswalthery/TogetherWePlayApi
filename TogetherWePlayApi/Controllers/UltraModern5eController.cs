@@ -20,5 +20,9 @@ namespace TogetherWePlayApi.Controllers
         [HttpGet(Name = "GetShootAndLoot")]
         public async Task<IActionResult> GetShootAndLoot()
             => HandleResult(await _ultraModern5eBusinessLayer.ShootAndLootGeneration());
+
+        [HttpGet("GenerateTreasureHoard")]
+        public async Task<IActionResult> GenerateTreasureHoard([FromQuery] int challengeRating)
+            => HandleResult(await _ultraModern5eBusinessLayer.GenerateTreasureHoard(challengeRating));
     }
 }

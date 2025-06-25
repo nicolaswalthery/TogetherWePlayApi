@@ -7,5 +7,6 @@ namespace TWP.Api.Controllers.Interfaces
     public interface IUltraModern5eController
     {
         public Task<IActionResult> GetShootAndLoot();
+        public Task<IActionResult> GenerateTreasureHoard(int challengeRating);
     }
 }
