@@ -1,6 +1,5 @@
 ﻿using Common.Extensions;
 using Common.ResultPattern;
-using System.Threading.Tasks;
 using TWP.Api.Application.BusinessLayers.Interfaces;
 using TWP.Api.Application.DataTransferObjects;
 using TWP.Api.Application.Helpers;
