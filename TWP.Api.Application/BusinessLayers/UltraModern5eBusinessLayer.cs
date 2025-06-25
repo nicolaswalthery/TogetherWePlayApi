@@ -19,7 +19,7 @@ namespace TWP.Api.Application.BusinessLayers
             _ultraModern5EJsonRepository = ultraModern5EJsonRepository;
         }
 
-        public string GenerateTreasureHoard(int challengeRating)
+        public async Task<string> GenerateTreasureHoard(int challengeRating)
         {
             string treasureHoard = String.Empty;
             if (challengeRating >= 4 && challengeRating <= 4)
