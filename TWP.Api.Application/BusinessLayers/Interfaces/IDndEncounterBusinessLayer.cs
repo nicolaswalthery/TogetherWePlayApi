@@ -6,6 +6,6 @@ namespace TWP.Api.Application.BusinessLayers.Interfaces
 {
     public interface IDndEncounterBusinessLayer
     {
-        Task<Result<List<Dnd5eMonsterDto>>> EncounterRandomGenerator(EncounterDifficultyEnum encounterDifficulty, IList<int> playerLevels, string EncounterNarrativeContext);
+        Task<Result<List<Dnd5eMonsterDto>>> EncounterRandomGenerator(EncounterDifficultyEnum encounterDifficulty, IList<int> playerLevels, string encounterNarrativeContext);
     }
 }

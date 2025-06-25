@@ -18,7 +18,7 @@ namespace TogetherWePlayApi.Controllers
         }
 
         [HttpGet(Name = "GenerateRandomEncounter")]
-        public async Task<IActionResult> GenerateRandomEncounter([FromQuery] EncounterDifficultyEnum encounterDifficulty, [FromQuery] IList<int> playerLevels)
-            => HandleResult(await Safe.ExecuteAsync(() => _dndEncounterBusinessLayer.EncounterRandomGenerator(encounterDifficulty, playerLevels, "")));
+        public async Task<IActionResult> GenerateRandomEncounter([FromQuery] EncounterDifficultyEnum encounterDifficulty, [FromQuery] IList<int> playerLevels, [FromQuery] string encounterNarrativeContext)
+            => HandleResult(await Safe.ExecuteAsync(() => _dndEncounterBusinessLayer.EncounterRandomGenerator(encounterDifficulty, playerLevels, encounterNarrativeContext)));
     }
 }

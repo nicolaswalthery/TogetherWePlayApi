@@ -23,7 +23,7 @@ namespace TWP.Api.Application.BusinessLayers
             _somethingHappenJsonRepository = somethingHappenJsonRepository;
         }
 
-        public async Task<Result<List<Dnd5eMonsterDto>>> EncounterRandomGenerator(EncounterDifficultyEnum encounterDifficulty, IList<int> playerLevels, string EncounterNarrativeContext)
+        public async Task<Result<List<Dnd5eMonsterDto>>> EncounterRandomGenerator(EncounterDifficultyEnum encounterDifficulty, IList<int> playerLevels, string encounterNarrativeContext)
             => await Safe.ExecuteAsync(async () =>
             {
                 if(playerLevels.HasNoElement())
