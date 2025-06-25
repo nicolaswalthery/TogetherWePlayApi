@@ -31,6 +31,10 @@ namespace TWP.Api.Application.BusinessLayers
                     treasureHoard = GetTreasureHoardChallenge11_16();
                 else if (challengeRating >= 17)
                     treasureHoard = GetTreasureHoardChallenge17Plus();
+
+                if (treasureHoard.Contains("Loot And Shoot"))
+                    treasureHoard += ShootAndLootGeneration();
+
                 return Result<string>.Success(treasureHoard);
             });
 
