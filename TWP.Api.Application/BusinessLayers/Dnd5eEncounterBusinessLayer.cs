@@ -38,7 +38,47 @@ namespace TWP.Api.Application.BusinessLayers
         private async Task<Result<int>> ComputeExpBudget(EncounterDifficultyEnum encounterDifficulty, IList<int> playerLevels)
             => await Safe.ExecuteAsync(async () =>
             {
-                //TODO
+                // XP budget table as per the image
+                var xpTable = new Dictionary<int, (int Low, int Moderate, int High)>
+                {
+                    {1, (50, 75, 100)},
+                    {2, (100, 150, 200)},
+                    {3, (150, 225, 400)},
+                    {4, (250, 375, 500)},
+                    {5, (500, 750, 1100)},
+                    {6, (600, 1000, 1400)},
+                    {7, (750, 1300, 1700)},
+                    {8, (1000, 1700, 2100)},
+                    {9, (1300, 2000, 2600)},
+                    {10, (1600, 2300, 3100)},
+                    {11, (1900, 2900, 4100)},
+                    {12, (2200, 3700, 4700)},
+                    {13, (2600, 4200, 5400)},
+                    {14, (2900, 4900, 6200)},
+                    {15, (3300, 5400, 7800)},
+                    {16, (3800, 6100, 9800)},
+                    {17, (4500, 7200, 11700)},
+                    {18, (5000, 8700, 14200)},
+                    {19, (5500, 10700, 17200)},
+                    {20, (6400, 13200, 22000)}
+                };
+
+                int total = 0;
+                foreach (var level in playerLevels)
+                {
+                    if (!xpTable.ContainsKey(level))
+                        return Result<int>.Failure($"Invalid character level: {level}");
+
+                    var xp = encounterDifficulty switch
+                    {
+                        EncounterDifficultyEnum.Low => xpTable[level].Low,
+                        EncounterDifficultyEnum.Moderate => xpTable[level].Moderate,
+                        EncounterDifficultyEnum.High => xpTable[level].High,
+                        _ => throw new ArgumentException("Unsupported difficulty")
+                    };
+                    total += xp;
+                }
+                return Result<int>.Success(total);
             });
     }
 }
