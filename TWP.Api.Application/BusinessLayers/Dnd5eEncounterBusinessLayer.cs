@@ -1,6 +1,7 @@
 ﻿using Common.ResultPattern;
 using TWP.Api.Application.BusinessLayers.Interfaces;
 using TWP.Api.Application.Helpers;
+using TWP.Api.Core.Enums;
 using TWP.Api.Infrastructure.DataTransferObjects;
 using TWP.Api.Infrastructure.JsonRepositories.Interfaces;
 
@@ -28,6 +29,16 @@ namespace TWP.Api.Application.BusinessLayers
                     return Result<RollTableEntryDto>.Failure(result.Error!, result.ReasonType);
 
                 return result;
+            });
+
+        /// <summary>
+        /// Compute the experience budget for a party
+        /// </summary>
+        /// <returns></returns>
+        private async Task<Result<int>> ComputeExpBudget(EncounterDifficultyEnum encounterDifficulty, IList<int> playerLevels)
+            => await Safe.ExecuteAsync(async () =>
+            {
+                //TODO
             });
     }
 }
