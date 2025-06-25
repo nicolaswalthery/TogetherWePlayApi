@@ -33,7 +33,7 @@ namespace TWP.Api.Application.BusinessLayers
                     treasureHoard = GetTreasureHoardChallenge17Plus();
 
                 if (treasureHoard.Contains("Loot And Shoot"))
-                    treasureHoard += ShootAndLootGeneration();
+                    treasureHoard += ShootAndLootGeneration().Result.Data; //TODO : mapper to display ShootAndLootDto in string. In a beautiful html string
 
                 return Result<string>.Success(treasureHoard);
             });
