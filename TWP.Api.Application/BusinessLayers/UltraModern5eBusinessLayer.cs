@@ -33,7 +33,13 @@ namespace TWP.Api.Application.BusinessLayers
                     treasureHoard = GetTreasureHoardChallenge17Plus();
 
                 if (treasureHoard.Contains("Loot And Shoot"))
-                    treasureHoard += ShootAndLootGeneration().Result.Data; //TODO : mapper to display ShootAndLootDto in string. In a beautiful html string
+                {
+                    var shootAndLootResult = ShootAndLootGeneration().Result;
+                    if (shootAndLootResult.IsSuccess)
+                    {
+                        treasureHoard += "<br/>" + ShootAndLootDtoToHtml(shootAndLootResult.Data);
+                    }
+                }
 
                 return Result<string>.Success(treasureHoard);
             });
@@ -464,5 +470,32 @@ namespace TWP.Api.Application.BusinessLayers
 
         private static RollTableEntryDto GetByDieResult(RollTableDto rollTableDto, int rollResult)
             => rollTableDto.Entries.First(e => e.MinRoll <= rollResult && e.MaxRoll >= rollResult);
+
+        private string ShootAndLootDtoToHtml(ShootAndLootDto dto)
+        {
+            // Example HTML formatting for ShootAndLootDto
+            return $@"
+                <div style='border:1px solid #ccc; padding:10px; margin:10px 0; border-radius:8px; background:#f9f9f9;'>
+                    <h3>Shoot &amp; Loot</h3>
+                    <ul style='list-style:none; padding:0;'>
+                        <li><strong>Weapon Type:</strong> {dto.WeaponType}</li>
+                        <li><strong>Base Cost:</strong> {dto.BaseCost}</li>
+                        <li><strong>Properties:</strong> {dto.Properties}</li>
+                        <li><strong>Weight:</strong> {dto.Weight}</li>
+                        <li><strong>Damage:</strong> {dto.Damage}</li>
+                        <li><strong>Range:</strong> {dto.Range}</li>
+                        <li><strong>Rarity:</strong> {dto.Rarity}</li>
+                        <li><strong>Cost Multiplier:</strong> {dto.CostMultiplier}</li>
+                        <li><strong>Benefit:</strong> {dto.Benefit}</li>
+                        <li><strong>Company Name:</strong> {dto.CompanyName}</li>
+                        <li><strong>Tech Level:</strong> {dto.TechLevel}</li>
+                        <li><strong>Magazines:</strong> {dto.Magazines}</li>
+                        <li><strong>Damage Type:</strong> {dto.DamageType}</li>
+                        <li><strong>Cost:</strong> {dto.Cost}</li>
+                        <li><strong>Company Model Data:</strong> {dto.CompanyModelData?.modelName} ({dto.CompanyModelData?.Benefit})</li>
+                        <li><strong>Company Line Data:</strong> {dto.CompanyLineData?.lineName} ({dto.CompanyLineData?.AdditionalProperty})</li>
+                    </ul>
+                </div>";
+        }
     }
 }
