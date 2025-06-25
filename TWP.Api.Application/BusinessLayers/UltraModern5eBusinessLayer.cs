@@ -19,10 +19,11 @@ namespace TWP.Api.Application.BusinessLayers
             _ultraModern5EJsonRepository = ultraModern5EJsonRepository;
         }
 
-        public async Task<string> GenerateTreasureHoard(int challengeRating)
+        public async Task<Result<string>> GenerateTreasureHoard(int challengeRating)
+            => Safe.Execute(() =>
         {
             string treasureHoard = String.Empty;
-            if (challengeRating >= 4 && challengeRating <= 4)
+            if (challengeRating >= 0 && challengeRating <= 4)
                 treasureHoard = GetTreasureHoardChallenge0_4();
             else if (challengeRating >= 5 && challengeRating <= 10)
                 treasureHoard = GetTreasureHoardChallenge5_10();
@@ -30,8 +31,8 @@ namespace TWP.Api.Application.BusinessLayers
                 treasureHoard = GetTreasureHoardChallenge11_16();
             else if (challengeRating >= 17)
                 treasureHoard = GetTreasureHoardChallenge17Plus();
-            return treasureHoard;
-        }
+            return Result<string>.Success(treasureHoard);
+        });
 
         public async Task<Result<ShootAndLootDto>> ShootAndLootGeneration()
             => await Safe.ExecuteAsync(async () =>
