@@ -31,6 +31,9 @@ namespace TWP.Api.Application.BusinessLayers
             if (challengeRating >= 11 && challengeRating <= 16)
                 treasureHoard = GetTreasureHoardChallenge11_16();
 
+            if (challengeRating >= 17 && challengeRating <= 20)
+                treasureHoard = GetTreasureHoardChallenge17Plus();
+
             var results = ShootAndLootGenerations(treasureHoard.CountOccurrences(_shootAndLootTextResult));
 
         }
@@ -224,6 +227,124 @@ namespace TWP.Api.Application.BusinessLayers
                     return $"{RandomSelectionHelpers.RollDie(3, DiceTypeEnum.d6) * 500} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_I_RandomTable().GetRandomlyManyEntries(1));
                 case int n when (n == 100):
                     return $"{RandomSelectionHelpers.RollDie(3, DiceTypeEnum.d6) * 1000} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_I_RandomTable().GetRandomlyManyEntries(1));
+                default:
+                    throw new Exception("Invalid Roll");
+            }
+        }
+
+        private string GetTreasureHoardChallenge17_16()
+        {
+            switch (RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d100))
+            {
+                case int n when (n >= 1 && n <= 2):
+                    return "No treasure.";
+                case int n when (n >= 3 && n <= 5):
+                    return $"{RandomSelectionHelpers.RollDie(3, DiceTypeEnum.d6) * 1000} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_C_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d8)));
+                case int n when (n >= 6 && n <= 8):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d10) * 2500} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_C_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d8)));
+                case int n when (n >= 9 && n <= 11):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d2) * 7500} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_C_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d8)));
+                case int n when (n >= 12 && n <= 14):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d8) * 5000} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_C_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d8)));
+                case int n when (n >= 15 && n <= 22):
+                    return $"{RandomSelectionHelpers.RollDie(3, DiceTypeEnum.d6) * 1000} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_D_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d6)));
+                case int n when (n >= 23 && n <= 30):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d10) * 2500} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_D_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d6)));
+                case int n when (n >= 31 && n <= 38):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d2) * 7500} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_D_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d6)));
+                case int n when (n >= 39 && n <= 46):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d8) * 5000} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_D_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d6)));
+                case int n when (n >= 47 && n <= 52):
+                    return $"{RandomSelectionHelpers.RollDie(3, DiceTypeEnum.d6) * 1000} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_E_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d6)));
+                case int n when (n >= 53 && n <= 58):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d10) * 2500} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_E_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d6)));
+                case int n when (n >= 59 && n <= 63):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d2) * 7500} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_E_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d6)));
+                case int n when (n >= 64 && n <= 68):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d8) * 5000} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_E_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d6)));
+                case int n when (n == 69):
+                    return $"{RandomSelectionHelpers.RollDie(3, DiceTypeEnum.d6) * 1000} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_G_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d4)));
+                case int n when (n == 70):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d10) * 2500} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_G_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d4)));
+                case int n when (n == 71):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d2) * 7500} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_G_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d4)));
+                case int n when (n == 72):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d8) * 5000} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_G_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d4)));
+                case int n when (n >= 73 && n <= 74):
+                    return $"{RandomSelectionHelpers.RollDie(3, DiceTypeEnum.d6) * 1000} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_H_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d4)));
+                case int n when (n >= 75 && n <= 76):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d10) * 2500} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_H_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d4)));
+                case int n when (n >= 77 && n <= 78):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d2) * 7500} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_H_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d4)));
+                case int n when (n >= 79 && n <= 80):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d8) * 5000} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_H_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d4)));
+                case int n when (n >= 81 && n <= 85):
+                    return $"{RandomSelectionHelpers.RollDie(3, DiceTypeEnum.d6) * 1000} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_I_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d4)));
+                case int n when (n >= 86 && n <= 90):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d10) * 2500} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_I_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d4)));
+                case int n when (n >= 91 && n <= 95):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d2) * 7500} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_I_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d4)));
+                case int n when (n >= 96 && n <= 100):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d8) * 5000} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_I_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d4)));
+                default:
+                    throw new Exception("Invalid Roll");
+            }
+        }
+
+        private string GetTreasureHoardChallenge17Plus()
+        {
+            switch (RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d100))
+            {
+                case int n when (n >= 1 && n <= 2):
+                    return "No treasure.";
+                case int n when (n >= 3 && n <= 5):
+                    return $"{RandomSelectionHelpers.RollDie(3, DiceTypeEnum.d6) * 1000} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_C_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d8)));
+                case int n when (n >= 6 && n <= 8):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d10) * 2500} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_C_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d8)));
+                case int n when (n >= 9 && n <= 11):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d2) * 7500} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_C_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d8)));
+                case int n when (n >= 12 && n <= 14):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d8) * 5000} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_C_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d8)));
+                case int n when (n >= 15 && n <= 22):
+                    return $"{RandomSelectionHelpers.RollDie(3, DiceTypeEnum.d6) * 1000} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_D_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d6)));
+                case int n when (n >= 23 && n <= 30):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d10) * 2500} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_D_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d6)));
+                case int n when (n >= 31 && n <= 38):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d2) * 7500} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_D_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d6)));
+                case int n when (n >= 39 && n <= 46):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d8) * 5000} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_D_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d6)));
+                case int n when (n >= 47 && n <= 52):
+                    return $"{RandomSelectionHelpers.RollDie(3, DiceTypeEnum.d6) * 1000} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_E_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d6)));
+                case int n when (n >= 53 && n <= 58):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d10) * 2500} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_E_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d6)));
+                case int n when (n >= 59 && n <= 63):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d2) * 7500} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_E_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d6)));
+                case int n when (n >= 64 && n <= 68):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d8) * 5000} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_E_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d6)));
+                case int n when (n == 69):
+                    return $"{RandomSelectionHelpers.RollDie(3, DiceTypeEnum.d6) * 1000} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_G_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d4)));
+                case int n when (n == 70):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d10) * 2500} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_G_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d4)));
+                case int n when (n == 71):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d2) * 7500} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_G_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d4)));
+                case int n when (n == 72):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d8) * 5000} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_G_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d4)));
+                case int n when (n >= 73 && n <= 74):
+                    return $"{RandomSelectionHelpers.RollDie(3, DiceTypeEnum.d6) * 1000} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_H_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d4)));
+                case int n when (n >= 75 && n <= 76):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d10) * 2500} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_H_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d4)));
+                case int n when (n >= 77 && n <= 78):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d2) * 7500} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_H_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d4)));
+                case int n when (n >= 79 && n <= 80):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d8) * 5000} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_H_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d4)));
+                case int n when (n >= 81 && n <= 85):
+                    return $"{RandomSelectionHelpers.RollDie(3, DiceTypeEnum.d6) * 1000} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_I_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d4)));
+                case int n when (n >= 86 && n <= 90):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d10) * 2500} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_I_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d4)));
+                case int n when (n >= 91 && n <= 95):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d2) * 7500} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_I_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d4)));
+                case int n when (n >= 96 && n <= 100):
+                    return $"{RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d8) * 5000} credits. " + ListToString(_ultraModern5EJsonRepository.GetTechItemTable_I_RandomTable().GetRandomlyManyEntries(RandomSelectionHelpers.RollDie(1, DiceTypeEnum.d4)));
                 default:
                     throw new Exception("Invalid Roll");
             }
