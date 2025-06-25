@@ -1,6 +1,7 @@
 using TWP.Api.Infrastructure.Helpers;
 using TWP.Api.Infrastructure.CsvRepositories.Interfaces;
 using TWP.Api.Core.DataTransferObjects;
+using Common.Extensions;
 
 namespace TWP.Api.Infrastructure.CsvRepositories
 {
@@ -15,5 +16,8 @@ namespace TWP.Api.Infrastructure.CsvRepositories
 
         public List<Dnd5eMonsterDto> GetAllDnd5e2024MonsterStats()
             => GetCsvPath().MapCsvTo<Dnd5eMonsterDto>(true);
+
+        public List<Dnd5eMonsterDto> GetAllDnd5e2024MonsterStats(int cr)
+            => GetAllDnd5e2024MonsterStats().Where(m => m.CR.ToInt() <= cr).ToList();
     }
 } 
