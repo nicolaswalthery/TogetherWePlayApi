@@ -3,7 +3,7 @@
     public enum EncounterDifficultyEnum
     {
         None = 0,
-        Easy = 1,
+        Low = 1,
         Moderate = 2,
         High = 3,
     }
