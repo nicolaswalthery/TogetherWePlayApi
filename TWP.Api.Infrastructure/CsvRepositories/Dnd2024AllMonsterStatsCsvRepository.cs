@@ -1,4 +1,6 @@
-using TWP.Api.Infrastructure.CsvRepositories;
+using TWP.Api.Infrastructure.Helpers;
+using TWP.Api.Infrastructure.CsvRepositories.Interfaces;
+using TWP.Api.Core.DataTransferObjects;
 
 namespace TWP.Api.Infrastructure.CsvRepositories
 {
@@ -7,11 +9,11 @@ namespace TWP.Api.Infrastructure.CsvRepositories
     /// </summary>
     public class Dnd2024AllMonsterStatsCsvRepository : CsvRepositoryBase, IDnd2024AllMonsterStatsCsvRepository
     {
-        public Dnd2024AllMonsterStatsCsvRepository() : base(folderName: "CsvFiles", fileName: "Dnd2024AllMonsterStats.csv")
+        public Dnd2024AllMonsterStatsCsvRepository() : base(fileName: "Dnd2024AllMonsterStats.csv")
         {
         }
 
-        public string GetCsvString()
-            => GetCsvByFileName();
+        public List<Dnd5eMonsterDto> GetAllDnd5e2024MonsterStats()
+            => GetCsvPath().MapCsvTo<Dnd5eMonsterDto>(true);
     }
 } 

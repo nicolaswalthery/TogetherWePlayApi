@@ -1,6 +1,6 @@
 using Common.ResultPattern;
-using System.Threading.Tasks;
 using TWP.Api.Application.BusinessLayers.Interfaces;
+using TWP.Api.Core.DataTransferObjects;
 using TWP.Api.Infrastructure.CsvRepositories.Interfaces;
 
 namespace TWP.Api.Application.BusinessLayers
@@ -14,11 +14,13 @@ namespace TWP.Api.Application.BusinessLayers
             _csvRepository = csvRepository;
         }
 
-        public async Task<Result<string>> GetAllMonsterStatsCsv()
+        public async Task<Result<List<Dnd5eMonsterDto>>> GetAllMonsterStatsCsv()
             => await Safe.ExecuteAsync(async () =>
             {
-                var csv = _csvRepository.GetCsvString();
-                return Result<string>.Success(csv);
+                var results = _csvRepository.GetAllDnd5e2024MonsterStats().Verify(r => r.IsNull());
+                if(results.IsFailure)
+                    return Result<List<Dnd5eMonsterDto>>.Failure(results.Error!, results.ReasonType);
+                return results;
             });
     }
 } 

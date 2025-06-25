@@ -1,7 +1,9 @@
+using TWP.Api.Core.DataTransferObjects;
+
 namespace TWP.Api.Infrastructure.CsvRepositories.Interfaces
 {
     public interface IDnd2024AllMonsterStatsCsvRepository
     {
-        string GetCsvString();
+        List<Dnd5eMonsterDto> GetAllDnd5e2024MonsterStats();
     }
 } 

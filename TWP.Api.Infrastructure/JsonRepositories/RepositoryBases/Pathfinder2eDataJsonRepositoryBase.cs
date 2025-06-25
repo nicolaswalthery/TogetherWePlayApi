@@ -8,6 +8,5 @@ namespace TWP.Api.Infrastructure.JsonRepositories
             : base(parentFolderName: @"Pathfinders2eData", folderName)
         {
         }
-
     }
 }

@@ -1,9 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TWP.Api.Application.BusinessLayers.Interfaces;
 using TWP.Api.Controllers.Interfaces;
-using Common.ResultPattern;
-using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
 
 namespace TogetherWePlayApi.Controllers
 {
