@@ -2,6 +2,7 @@ using Common.ResultPattern;
 using Microsoft.AspNetCore.Mvc;
 using TWP.Api.Application.BusinessLayers.Interfaces;
 using TWP.Api.Controllers.Interfaces;
+using TWP.Api.Core.Enums;
 
 namespace TogetherWePlayApi.Controllers
 {
@@ -16,8 +17,8 @@ namespace TogetherWePlayApi.Controllers
             _dndEncounterBusinessLayer = dndEncounterBusinessLayer;
         }
 
-        [HttpGet(Name = "GetMonsterActivity")]
-        public async Task<IActionResult> GetMonsterActivity()
-            => HandleResult(await Safe.ExecuteAsync(() => _dndEncounterBusinessLayer.EncounterRandomGenerator()));
+        [HttpGet(Name = "GenerateRandomEncounter")]
+        public async Task<IActionResult> GenerateRandomEncounter([FromQuery] EncounterDifficultyEnum encounterDifficulty, [FromQuery] IList<int> playerLevels)
+            => HandleResult(await Safe.ExecuteAsync(() => _dndEncounterBusinessLayer.EncounterRandomGenerator(encounterDifficulty, playerLevels, "")));
     }
 }

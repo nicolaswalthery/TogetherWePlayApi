@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TWP.Api.Core.Enums;
 
 namespace TWP.Api.Controllers.Interfaces
 {
     public interface IDndController
     {
-        public Task<IActionResult> GetMonsterActivity();
+        Task<IActionResult> GenerateRandomEncounter(EncounterDifficultyEnum encounterDifficulty, IList<int> playerLevels);
     }
 }

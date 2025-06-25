@@ -1,10 +1,11 @@
 ﻿using Common.ResultPattern;
-using TWP.Api.Infrastructure.DataTransferObjects;
+using TWP.Api.Core.DataTransferObjects;
+using TWP.Api.Core.Enums;
 
 namespace TWP.Api.Application.BusinessLayers.Interfaces
 {
     public interface IDndEncounterBusinessLayer
     {
-        Task<Result<RollTableEntryDto>> EncounterRandomGenerator();
+        Task<Result<List<Dnd5eMonsterDto>>> EncounterRandomGenerator(EncounterDifficultyEnum encounterDifficulty, IList<int> playerLevels, string EncounterNarrativeContext);
     }
 }
