@@ -28,6 +28,9 @@ namespace TWP.Api.Application.BusinessLayers
             if (challengeRating >= 5 && challengeRating <= 10)
                 treasureHoard = GetTreasureHoardChallenge5_10();
 
+            if (challengeRating >= 11 && challengeRating <= 16)
+                treasureHoard = GetTreasureHoardChallenge11_16();
+
             var results = ShootAndLootGenerations(treasureHoard.CountOccurrences(_shootAndLootTextResult));
 
         }
