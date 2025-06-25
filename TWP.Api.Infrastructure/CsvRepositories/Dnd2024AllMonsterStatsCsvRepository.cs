@@ -17,7 +17,7 @@ namespace TWP.Api.Infrastructure.CsvRepositories
         public List<Dnd5eMonsterDto> GetAllDnd5e2024MonsterStats()
             => GetCsvPath().MapCsvTo<Dnd5eMonsterDto>(true);
 
-        public List<Dnd5eMonsterDto> GetAllDnd5e2024MonsterStats(int cr)
+        public List<Dnd5eMonsterDto> GetAllDnd5e2024MonsterStatsByCr(int cr)
             => GetAllDnd5e2024MonsterStats().Where(m => m.CR.ToInt() <= cr).ToList();
     }
 } 

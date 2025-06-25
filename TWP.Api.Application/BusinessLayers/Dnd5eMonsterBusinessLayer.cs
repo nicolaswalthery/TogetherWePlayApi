@@ -22,5 +22,14 @@ namespace TWP.Api.Application.BusinessLayers
                     return Result<List<Dnd5eMonsterDto>>.Failure(results.Error!, results.ReasonType);
                 return results;
             });
+
+        public async Task<Result<List<Dnd5eMonsterDto>>> GetAllMonsterStatsByCr(int cr)
+            => await Safe.ExecuteAsync(async () =>
+            {
+                var results = _csvRepository.GetAllDnd5e2024MonsterStatsByCr(cr).Verify(r => r.IsNull());
+                if(results.IsFailure)
+                    return Result<List<Dnd5eMonsterDto>>.Failure(results.Error!, results.ReasonType);
+                return results;
+            });
     }
 } 
