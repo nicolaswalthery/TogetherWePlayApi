@@ -1,4 +1,5 @@
 ﻿using Common.Extensions;
+using Common.Randomizer;
 using Common.ResultPattern;
 using TWP.Api.Application.BusinessLayers.Interfaces;
 using TWP.Api.Core.DataTransferObjects;
@@ -97,20 +98,16 @@ namespace TWP.Api.Application.BusinessLayers
         /// <returns>List of monsters for the encounter.</returns>
         private List<Dnd5eMonsterDto> GenerateEncounter(List<Dnd5eMonsterDto> monsters, int expEncounterBudget)
         {
-            var random = new Random();
-            var availableMonsters = monsters
-                .Where(m => m.XP.ToInt() <= expEncounterBudget)
-                .Shuffle();
-
             var encounter = new List<Dnd5eMonsterDto>();
             int remainingBudget = expEncounterBudget;
 
-            foreach (var monster in availableMonsters)
+            var availableShuffledMonsters = monsters.Where(m => m.XP.ToInt() <= expEncounterBudget).ToList().Shuffle();
+            foreach (var monster in availableShuffledMonsters)
             {
-                if (int.TryParse(monster.XP, out var xp) && xp <= remainingBudget)
+                if (monster.XP.ToInt() <= remainingBudget)
                 {
                     encounter.Add(monster);
-                    remainingBudget -= xp;
+                    remainingBudget -= monster.XP.ToInt();
                 }
                 if (remainingBudget <= 0)
                     break;
