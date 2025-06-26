@@ -31,7 +31,7 @@ namespace TWP.Api.Application.BusinessLayers
                 if(playerLevels.HasNoElement())
                     return Result<List<Dnd5eMonsterDto>>.Failure("No Elements", ReasonType.BadParameter);
 
-                var result = _dnd2024AllMonsterStatsCsvRepository.GetAllDnd5e2024MonsterStatsByCr(playerLevels.Min()).Where(m => m.Name.IsNotNullOrEmptyOrWhiteSpace()).ToList().Verify(data => data.IsNull());
+                var result = _dnd2024AllMonsterStatsCsvRepository.GetAllDnd5e2024MonsterStatsByCr(playerLevels.Min()+1).Where(m => m.Name.IsNotNullOrEmptyOrWhiteSpace()).ToList().Verify(data => data.IsNull());
                 if (result.IsFailure)
                     return Result<List<Dnd5eMonsterDto>>.Failure(result.Error!, result.ReasonType);
 
@@ -44,7 +44,7 @@ namespace TWP.Api.Application.BusinessLayers
 
                 var expEncounterBudget = ComputeExpBudget(encounterDifficulty, playerLevels);
 
-                var encounterGenerated = GenerateEncounter(filteredMonsters, expEncounterBudget, playerLevels.Count);
+                var encounterGenerated = GenerateEncounter(filteredMonsters, expEncounterBudget, playerLevels.Count, playerLevels.Min());
                 
                 //Introduice ChatGPT to create 
 
@@ -106,7 +106,7 @@ namespace TWP.Api.Application.BusinessLayers
         /// <param name="monsters">List of available monsters.</param>
         /// <param name="expEncounterBudget">Total XP budget for the encounter.</param>
         /// <returns>List of monsters for the encounter.</returns>
-        private List<Dnd5eMonsterDto> GenerateEncounter(IList<Dnd5eMonsterDto> monsters, int expEncounterBudget, int playerNumber)
+        private List<Dnd5eMonsterDto> GenerateEncounter(IList<Dnd5eMonsterDto> monsters, int expEncounterBudget, int playerNumber, int partyLevel)
         {
             var encounter = new List<Dnd5eMonsterDto>();
             int remainingBudget = expEncounterBudget;
@@ -135,9 +135,17 @@ namespace TWP.Api.Application.BusinessLayers
                         remainingBudget = 0;
                     }
                 }
+
+                //Make sure to only include one monster with partyLevel+1 in the encounter
+                if(IsCrPlusOneAlreadyIncludedInEncounter(encounter, partyLevel))
+                    availableShuffledMonsters.RemoveRange(availableShuffledMonsters.Where(m => m.CR == partyLevel + 1));
             }
 
             return encounter;
         }
     }
+
+    private static bool IsCrPlusOneAlreadyIncludedInEncounter(IList<Dnd5eMonsterDto> encounter, int partyLevel)
+        => encounter.Any(m => m.CR == partyLevel + 1);
+
 }
