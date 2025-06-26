@@ -99,9 +99,8 @@ namespace TWP.Api.Application.BusinessLayers
         {
             var random = new Random();
             var availableMonsters = monsters
-                .Where(m => int.TryParse(m.XP, out var xp) && xp > 0)
-                .OrderBy(m => random.Next()) // Shuffle for randomness
-                .ToList();
+                .Where(m => m.XP.ToInt() <= expEncounterBudget)
+                .Shuffle();
 
             var encounter = new List<Dnd5eMonsterDto>();
             int remainingBudget = expEncounterBudget;
