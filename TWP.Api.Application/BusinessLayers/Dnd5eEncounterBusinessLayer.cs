@@ -138,14 +138,14 @@ namespace TWP.Api.Application.BusinessLayers
 
                 //Make sure to only include one monster with partyLevel+1 in the encounter
                 if(IsCrPlusOneAlreadyIncludedInEncounter(encounter, partyLevel))
-                    availableShuffledMonsters.RemoveRange(availableShuffledMonsters.Where(m => m.CR == partyLevel + 1));
+                    foreach (var monsterCrPlusOneToRemove in availableShuffledMonsters.Where(m => m.SanitizedCr == partyLevel + 1))
+                        availableShuffledMonsters.Remove(monsterCrPlusOneToRemove);
             }
 
             return encounter;
         }
+
+        private static bool IsCrPlusOneAlreadyIncludedInEncounter(IList<Dnd5eMonsterDto> encounter, int partyLevel)
+            => encounter.Any(m => m.SanitizedCr == partyLevel + 1);
     }
-
-    private static bool IsCrPlusOneAlreadyIncludedInEncounter(IList<Dnd5eMonsterDto> encounter, int partyLevel)
-        => encounter.Any(m => m.CR == partyLevel + 1);
-
 }

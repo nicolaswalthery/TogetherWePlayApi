@@ -124,6 +124,25 @@ namespace TWP.Api.Core.DataTransferObjects
         /// </summary>
         public int SanitizedXp 
             => XP.Replace(",", "").Trim().ToInt();
+
+        public double SanitizedCr => ParseCrToDouble(CR);
+
+        private double ParseCrToDouble(string cr)
+        {
+            if (double.TryParse(cr, out var result))
+                return result;
+
+            var parts = cr.Split('/');
+            if (parts.Length == 2 &&
+                double.TryParse(parts[0], out var num) &&
+                double.TryParse(parts[1], out var den) &&
+                den != 0)
+            {
+                return num / den;
+            }
+
+            return 0;
+        }
     }
 
 
