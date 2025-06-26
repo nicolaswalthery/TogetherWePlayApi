@@ -45,7 +45,7 @@ namespace TWP.Api.Application.BusinessLayers
 
                 var expEncounterBudget = ComputeExpBudget(encounterDifficulty, playerLevels);
 
-                var encounterGenerated = GenerateEncounter(filteredMonsters, expEncounterBudget);
+                var encounterGenerated = GenerateEncounter(filteredMonsters, expEncounterBudget, playerLevels.Count);
                 
                 //Introduice ChatGPT to create 
 
@@ -107,19 +107,34 @@ namespace TWP.Api.Application.BusinessLayers
         /// <param name="monsters">List of available monsters.</param>
         /// <param name="expEncounterBudget">Total XP budget for the encounter.</param>
         /// <returns>List of monsters for the encounter.</returns>
-        private List<Dnd5eMonsterDto> GenerateEncounter(IList<Dnd5eMonsterDto> monsters, int expEncounterBudget)
+        private List<Dnd5eMonsterDto> GenerateEncounter(IList<Dnd5eMonsterDto> monsters, int expEncounterBudget, int playerNumber)
         {
             var encounter = new List<Dnd5eMonsterDto>();
             int remainingBudget = expEncounterBudget;
+            int maxMonsters = playerNumber * 2;
 
             var availableShuffledMonsters = monsters.Where(m => m.SanitizedXp <= expEncounterBudget).ToList().Shuffle();
-            for(var i = 0; i < availableShuffledMonsters.ToArray().Length && remainingBudget > 9/*10 is the minimum xp budget available for a dnd monster*/; i++)
+            for(var i = 0; i < availableShuffledMonsters.ToArray().Length && remainingBudget > 9/*10 is the minimum xp budget available for a dnd monster*/ && encounter.Count < maxMonsters; i++)
             {
                 var monster = availableShuffledMonsters[i];
-                if (monster.SanitizedXp <= remainingBudget)
+                if (monster.SanitizedXp <= remainingBudget && encounter.Count < maxMonsters)
                 {
                     encounter.Add(monster);
                     remainingBudget -= monster.SanitizedXp;
+                }
+                else  // If we have not reached the max number of monsters and have remaining budget, try to add one last monster that fits the budget
+                {
+                    var lastMonster = monsters.Where(m => m.SanitizedXp <= remainingBudget && !encounter.Contains(m))
+                                              .OrderByDescending(m => m.SanitizedXp).FirstOrDefault();
+                    if (lastMonster != null)
+                    {
+                        encounter.Add(lastMonster);
+                        remainingBudget -= lastMonster.SanitizedXp;
+                    }
+                    else
+                    {
+                        remainingBudget = 0;
+                    }
                 }
             }
 
