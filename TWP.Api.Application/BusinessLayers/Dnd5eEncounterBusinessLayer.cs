@@ -6,6 +6,7 @@ using TWP.Api.Core.DataTransferObjects;
 using TWP.Api.Core.Enums;
 using TWP.Api.Infrastructure.CsvRepositories.Interfaces;
 using TWP.Api.Infrastructure.JsonRepositories.Interfaces;
+using System.Linq;
 
 namespace TWP.Api.Application.BusinessLayers
 {
@@ -20,7 +21,11 @@ namespace TWP.Api.Application.BusinessLayers
             _dnd5ERelationBetweenXpAndCrJsonRepository = dnd5ERelationBetweenXpAndCrJsonRepository;
         }
 
-        public async Task<Result<List<Dnd5eMonsterDto>>> EncounterRandomGenerator(EncounterDifficultyEnum encounterDifficulty, IList<int> playerLevels, string encounterNarrativeContext)
+        public async Task<Result<List<Dnd5eMonsterDto>>> EncounterRandomGenerator(
+            EncounterDifficultyEnum encounterDifficulty,
+            IList<int> playerLevels,
+            string encounterNarrativeContext,
+            IList<MonsterHabitatEnum> monsterHabitats)
             => await Safe.ExecuteAsync(async () =>
             {
                 if(playerLevels.HasNoElement())
@@ -35,9 +40,20 @@ namespace TWP.Api.Application.BusinessLayers
                 foreach (var datum in result.Data!.Where(d => d.XP.IsNullOrEmptyOrWhiteSpace()))
                     datum.XP = resultCrRelatedToXp.First(r => r.CR == datum.CR).XP.ToString();
 
+                // Filter by habitats if provided
+                var filteredMonsters = result.Data;
+                if (monsterHabitats != null && monsterHabitats.Count > 0)
+                {
+                    var habitatStrings = monsterHabitats.Select(h => h.ToString().ToLower()).ToList();
+                    filteredMonsters = filteredMonsters.Where(m =>
+                        !string.IsNullOrWhiteSpace(m.Habitat) &&
+                        habitatStrings.Any(hab => m.Habitat.ToLower().Contains(hab))
+                    ).ToList();
+                }
+
                 var expEncounterBudget = ComputeExpBudget(encounterDifficulty, playerLevels);
 
-                var encounterGenerated = GenerateEncounter(result.Data!, expEncounterBudget);
+                var encounterGenerated = GenerateEncounter(filteredMonsters!, expEncounterBudget);
                 
                 //Introduice ChatGPT to create 
 
