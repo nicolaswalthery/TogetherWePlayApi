@@ -5,6 +5,6 @@ namespace TWP.Api.Controllers.Interfaces
 {
     public interface IDndController
     {
-        Task<IActionResult> GenerateRandomEncounter(EncounterDifficultyEnum encounterDifficulty, IList<int> playerLevels, string encounterNarrativeContext);
+        Task<IActionResult> GenerateRandomEncounter(EncounterDifficultyEnum encounterDifficulty, IList<int> playerLevels, string encounterNarrativeContext, IList<MonsterHabitatEnum> monsterHabitats);
     }
 }
