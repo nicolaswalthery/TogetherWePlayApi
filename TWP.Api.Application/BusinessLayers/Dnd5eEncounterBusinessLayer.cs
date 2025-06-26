@@ -1,11 +1,9 @@
 ﻿using Common.Extensions;
 using Common.ResultPattern;
 using TWP.Api.Application.BusinessLayers.Interfaces;
-using TWP.Api.Application.Helpers;
 using TWP.Api.Core.DataTransferObjects;
 using TWP.Api.Core.Enums;
 using TWP.Api.Infrastructure.CsvRepositories.Interfaces;
-using TWP.Api.Infrastructure.DataTransferObjects;
 using TWP.Api.Infrastructure.JsonRepositories.Interfaces;
 
 namespace TWP.Api.Application.BusinessLayers
@@ -29,11 +27,12 @@ namespace TWP.Api.Application.BusinessLayers
                 if(playerLevels.HasNoElement())
                     return Result<List<Dnd5eMonsterDto>>.Failure("No Elements", ReasonType.BadParameter);
 
-                var expEncounterBudget = ComputeExpBudget(encounterDifficulty, playerLevels);
-               
                 var result = _dnd2024AllMonsterStatsCsvRepository.GetAllDnd5e2024MonsterStatsByCr(playerLevels.Min()).Verify(data => data.IsNull());
                 if (result.IsFailure)
                     return Result<List<Dnd5eMonsterDto>>.Failure(result.Error!, result.ReasonType);
+
+                var expEncounterBudget = ComputeExpBudget(encounterDifficulty, playerLevels);
+
 
                 //Introduice ChatGPT to create 
 
@@ -49,7 +48,7 @@ namespace TWP.Api.Application.BusinessLayers
             if(playerLevels.Any(pl => pl <= 0 || pl > 20))
                 return 0;
 
-            // XP budget table as per the image
+            // XP budget table as per the image (dnd2024 version)
             var xpTable = new Dictionary<int, (int Low, int Moderate, int High)>
             {
                 {1, (50, 75, 100)},
