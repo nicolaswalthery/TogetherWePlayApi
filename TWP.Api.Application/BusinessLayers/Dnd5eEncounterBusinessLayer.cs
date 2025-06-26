@@ -34,6 +34,7 @@ namespace TWP.Api.Application.BusinessLayers
                 var expEncounterBudget = ComputeExpBudget(encounterDifficulty, playerLevels);
 
                 var encounterGenerated = GenerateEncounter(result.Data, expEncounterBudget);
+                
                 //Introduice ChatGPT to create 
 
                 return Result<List<Dnd5eMonsterDto>>.Success(encounterGenerated);
