@@ -130,10 +130,6 @@ namespace TWP.Api.Application.BusinessLayers
                         encounter.Add(lastMonster);
                         remainingBudget -= lastMonster.SanitizedXp;
                     }
-                    else
-                    {
-                        remainingBudget = 0;
-                    }
                 }
 
                 //Make sure to only include one monster with partyLevel+1 in the encounter
