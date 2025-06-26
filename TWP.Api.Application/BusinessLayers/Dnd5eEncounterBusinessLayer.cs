@@ -41,7 +41,6 @@ namespace TWP.Api.Application.BusinessLayers
                 foreach (var datum in result.Data!.Where(d => d.XP.IsNullOrEmptyOrWhiteSpace()))
                     datum.XP = resultCrRelatedToXp.First(r => r.CR == datum.CR).XP.ToString();
 
-
                 var filteredMonsters = monsterHabitats.Contains(MonsterHabitatEnum.Any) ? result.Data : result.Data!.Where(d => monsterHabitats.Contains(d.Habitat.ToEnum())).ToList();
 
                 var expEncounterBudget = ComputeExpBudget(encounterDifficulty, playerLevels);
