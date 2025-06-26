@@ -33,10 +33,10 @@ namespace TWP.Api.Application.BusinessLayers
 
                 var expEncounterBudget = ComputeExpBudget(encounterDifficulty, playerLevels);
 
-
+                var encounterGenerated = GenerateEncounter(result.Data, expEncounterBudget);
                 //Introduice ChatGPT to create 
 
-                return result;
+                return Result<List<Dnd5eMonsterDto>>.Success(encounterGenerated);
             });
 
         /// <summary>
@@ -86,6 +86,37 @@ namespace TWP.Api.Application.BusinessLayers
                 total += xp;
             }
             return total;
+        }
+
+        /// <summary>
+        /// Generates a single encounter by selecting monsters whose total XP does not exceed the given budget.
+        /// </summary>
+        /// <param name="monsters">List of available monsters.</param>
+        /// <param name="expEncounterBudget">Total XP budget for the encounter.</param>
+        /// <returns>List of monsters for the encounter.</returns>
+        private List<Dnd5eMonsterDto> GenerateEncounter(List<Dnd5eMonsterDto> monsters, int expEncounterBudget)
+        {
+            var random = new Random();
+            var availableMonsters = monsters
+                .Where(m => int.TryParse(m.XP, out var xp) && xp > 0)
+                .OrderBy(m => random.Next()) // Shuffle for randomness
+                .ToList();
+
+            var encounter = new List<Dnd5eMonsterDto>();
+            int remainingBudget = expEncounterBudget;
+
+            foreach (var monster in availableMonsters)
+            {
+                if (int.TryParse(monster.XP, out var xp) && xp <= remainingBudget)
+                {
+                    encounter.Add(monster);
+                    remainingBudget -= xp;
+                }
+                if (remainingBudget <= 0)
+                    break;
+            }
+
+            return encounter;
         }
     }
 }
