@@ -44,7 +44,7 @@ namespace TWP.Api.Application.BusinessLayers
 
                 var expEncounterBudget = ComputeExpBudget(encounterDifficulty, playerLevels);
 
-                var encounterGenerated = GenerateEncounter(filteredMonsters, expEncounterBudget, playerLevels.Count, playerLevels.Min());
+                var encounterGenerated = GenerateEncounter(filteredMonsters!, expEncounterBudget, playerLevels.Count, playerLevels.Min());
                 
                 //Introduice ChatGPT to create 
 
@@ -109,13 +109,22 @@ namespace TWP.Api.Application.BusinessLayers
         private List<Dnd5eMonsterDto> GenerateEncounter(IList<Dnd5eMonsterDto> monsters, int expEncounterBudget, int playerNumber, int partyLevel)
         {
             var encounter = new List<Dnd5eMonsterDto>();
-            int remainingBudget = expEncounterBudget;
-            int maxMonsters = playerNumber * 2;
+            var remainingBudget = expEncounterBudget;
+            var maxMonsters = playerNumber * 2;
+            var maxDifferentMonster = 4;
 
-            var availableShuffledMonsters = monsters.Where(m => m.SanitizedXp <= expEncounterBudget).ToList().Shuffle();
-            for(var i = 0; i < availableShuffledMonsters.ToArray().Length && remainingBudget > 9/*10 is the minimum xp budget available for a dnd monster*/ && encounter.Count < maxMonsters; i++)
+            var computedMaxDifferentMonster = new Dice(1, maxDifferentMonster).Roll;
+            // Group monsters by type 
+            var monstersGroup = monsters.Where(m => m.SanitizedXp <= expEncounterBudget).GroupBy(m => m.Type)
+                                        .OrderBy(_ => Guid.NewGuid()) // Shuffle types
+                                        .Take(1).First();
+
+            // Flatten the selected groups, but keep track of type
+            var selectedAvailableMonsters = monstersGroup.Select(m => m).OrderBy(_ => Guid.NewGuid()).Take(computedMaxDifferentMonster).ToList();
+
+            for(var i = 0; i < selectedAvailableMonsters.ToArray().Length && remainingBudget > 9/*10 is the minimum xp budget available for a dnd monster*/ && encounter.Count < maxMonsters; i++)
             {
-                var monster = availableShuffledMonsters[i];
+                var monster = selectedAvailableMonsters[i];
                 if (monster.SanitizedXp <= remainingBudget && encounter.Count < maxMonsters)
                 {
                     encounter.Add(monster);
@@ -123,7 +132,7 @@ namespace TWP.Api.Application.BusinessLayers
                 }
                 else  // If we have not reached the max number of monsters and have remaining budget, try to add one last monster that fits the budget
                 {
-                    var lastMonster = monsters.Where(m => m.SanitizedXp <= remainingBudget && !encounter.Contains(m))
+                    var lastMonster = selectedAvailableMonsters.Where(m => m.SanitizedXp <= remainingBudget && !encounter.Contains(m))
                                               .OrderByDescending(m => m.SanitizedXp).FirstOrDefault();
                     if (lastMonster != null)
                     {
@@ -134,8 +143,7 @@ namespace TWP.Api.Application.BusinessLayers
 
                 //Make sure to only include one monster with partyLevel+1 in the encounter
                 if(IsCrPlusOneAlreadyIncludedInEncounter(encounter, partyLevel))
-                    foreach (var monsterCrPlusOneToRemove in availableShuffledMonsters.Where(m => m.SanitizedCr == partyLevel + 1))
-                        availableShuffledMonsters.Remove(monsterCrPlusOneToRemove);
+                    selectedAvailableMonsters = selectedAvailableMonsters.Where(m => m.SanitizedCr == partyLevel).ToList();
             }
 
             return encounter;
