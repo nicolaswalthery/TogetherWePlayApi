@@ -9,6 +9,7 @@
         Shadowdark = 1,
         UM5e,
         Dnd4e,
+        Dnd5eData,
         Pathfinder2eMonsterCore,
         Pathfinder2eNpcCore,
         Pathfinder2eRollableTables,
