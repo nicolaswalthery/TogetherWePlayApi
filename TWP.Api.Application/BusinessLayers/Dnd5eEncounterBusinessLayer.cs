@@ -26,30 +26,30 @@ namespace TWP.Api.Application.BusinessLayers
             IList<int> playerLevels,
             string encounterNarrativeContext,
             IList<MonsterHabitatEnum> monsterHabitats)
-            => await Safe.ExecuteAsync(async () =>
-            {
-                if(playerLevels.HasNoElement())
-                    return Result<List<Dnd5eMonsterDto>>.Failure("No Elements", ReasonType.BadParameter);
+                => await Safe.ExecuteAsync(async () =>
+                {
+                    if(playerLevels.HasNoElement())
+                        return Result<List<Dnd5eMonsterDto>>.Failure("No Elements", ReasonType.BadParameter);
 
-                var result = _dnd2024AllMonsterStatsCsvRepository.GetAllDnd5e2024MonsterStatsByCr(playerLevels.Min()+1).Where(m => m.Name.IsNotNullOrEmptyOrWhiteSpace()).ToList().Verify(data => data.IsNull());
-                if (result.IsFailure)
-                    return Result<List<Dnd5eMonsterDto>>.Failure(result.Error!, result.ReasonType);
+                    var result = _dnd2024AllMonsterStatsCsvRepository.GetAllDnd5e2024MonsterStatsByCr(playerLevels.Min()+1).Where(m => m.Name.IsNotNullOrEmptyOrWhiteSpace()).ToList().Verify(data => data.IsNull());
+                    if (result.IsFailure)
+                        return Result<List<Dnd5eMonsterDto>>.Failure(result.Error!, result.ReasonType);
 
-                //Fix the fact that the csv do not have XP data for each monster. This code is not intended to stay.
-                var resultCrRelatedToXp = _dnd5ERelationBetweenXpAndCrJsonRepository.GetAll();
-                foreach (var datum in result.Data!.Where(d => d.XP.IsNullOrEmptyOrWhiteSpace()))
-                    datum.XP = resultCrRelatedToXp.First(r => r.CR == datum.CR).XP.ToString();
+                    //Fix the fact that the csv do not have XP data for each monster. This code is not intended to stay.
+                    var resultCrRelatedToXp = _dnd5ERelationBetweenXpAndCrJsonRepository.GetAll();
+                    foreach (var datum in result.Data!.Where(d => d.XP.IsNullOrEmptyOrWhiteSpace()))
+                        datum.XP = resultCrRelatedToXp.First(r => r.CR == datum.CR).XP.ToString();
 
-                var filteredMonsters = monsterHabitats.Contains(MonsterHabitatEnum.Any) ? result.Data : result.Data!.Where(d => monsterHabitats.Contains(d.Habitat.ToEnum())).ToList();
+                    var filteredMonsters = monsterHabitats.Contains(MonsterHabitatEnum.Any) ? result.Data : result.Data!.Where(d => monsterHabitats.Contains(d.Habitat.ToEnum())).ToList();
 
-                var expEncounterBudget = ComputeExpBudget(encounterDifficulty, playerLevels);
+                    var expEncounterBudget = ComputeExpBudget(encounterDifficulty, playerLevels);
 
-                var encounterGenerated = GenerateEncounter(filteredMonsters!, expEncounterBudget, playerLevels.Count, playerLevels.Min());
+                    var encounterGenerated = GenerateEncounter(filteredMonsters!, expEncounterBudget, playerLevels.Count, playerLevels.Min());
                 
-                //Introduice ChatGPT to create 
+                    //Introduice ChatGPT to create 
 
-                return Result<List<Dnd5eMonsterDto>>.Success(encounterGenerated);
-            });
+                    return Result<List<Dnd5eMonsterDto>>.Success(encounterGenerated);
+                });
 
         /// <summary>
         /// Compute the experience budget for a party
