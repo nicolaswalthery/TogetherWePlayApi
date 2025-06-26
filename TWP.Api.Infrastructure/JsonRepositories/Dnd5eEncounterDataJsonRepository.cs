@@ -6,7 +6,7 @@ using TWP.Api.Infrastructure.JsonRepositories.RepositoryBases;
 
 namespace TWP.Api.Infrastructure.JsonRepositories
 {
-    public class Dnd5eEncounterDataJsonRepository : Dnd5eDataJsonRepositoryBase, IDnd5eRelationBetweenXpAndCrJsonRepository
+    public class Dnd5eEncounterDataJsonRepository : Dnd5eDataJsonRepositoryBase, IDnd5eEncounterDataJsonRepository
     {
         private string _dnd5eRelationBetweenXpAndCrJsonFileName = "Dnd5eRelationBetweenXpAndCr";
         public Dnd5eEncounterDataJsonRepository() : base(SourceFolderEnum.Dnd5eEncounterData)

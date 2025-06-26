@@ -12,9 +12,9 @@ namespace TWP.Api.Application.BusinessLayers
     public class Dnd5eEncounterBusinessLayer : IDndEncounterBusinessLayer
     {
         private readonly IDnd2024AllMonsterStatsCsvRepository _dnd2024AllMonsterStatsCsvRepository;
-        private readonly IDnd5eRelationBetweenXpAndCrJsonRepository _dnd5ERelationBetweenXpAndCrJsonRepository;
+        private readonly IDnd5eEncounterDataJsonRepository _dnd5ERelationBetweenXpAndCrJsonRepository;
 
-        public Dnd5eEncounterBusinessLayer(IDnd2024AllMonsterStatsCsvRepository dnd2024AllMonsterStatsCsvRepository, IDnd5eRelationBetweenXpAndCrJsonRepository dnd5ERelationBetweenXpAndCrJsonRepository)
+        public Dnd5eEncounterBusinessLayer(IDnd2024AllMonsterStatsCsvRepository dnd2024AllMonsterStatsCsvRepository, IDnd5eEncounterDataJsonRepository dnd5ERelationBetweenXpAndCrJsonRepository)
         {
             _dnd2024AllMonsterStatsCsvRepository = dnd2024AllMonsterStatsCsvRepository;
             _dnd5ERelationBetweenXpAndCrJsonRepository = dnd5ERelationBetweenXpAndCrJsonRepository;
@@ -26,7 +26,7 @@ namespace TWP.Api.Application.BusinessLayers
                 if(playerLevels.HasNoElement())
                     return Result<List<Dnd5eMonsterDto>>.Failure("No Elements", ReasonType.BadParameter);
 
-                var result = _dnd2024AllMonsterStatsCsvRepository.GetAllDnd5e2024MonsterStatsByCr(playerLevels.Min()).Verify(data => data.IsNull());
+                var result = _dnd2024AllMonsterStatsCsvRepository.GetAllDnd5e2024MonsterStatsByCr(playerLevels.Min()).Where(m => m.Name.IsNotNullOrEmptyOrWhiteSpace()).ToList().Verify(data => data.IsNull());
                 if (result.IsFailure)
                     return Result<List<Dnd5eMonsterDto>>.Failure(result.Error!, result.ReasonType);
 
@@ -99,18 +99,18 @@ namespace TWP.Api.Application.BusinessLayers
         /// <param name="monsters">List of available monsters.</param>
         /// <param name="expEncounterBudget">Total XP budget for the encounter.</param>
         /// <returns>List of monsters for the encounter.</returns>
-        private List<Dnd5eMonsterDto> GenerateEncounter(List<Dnd5eMonsterDto> monsters, int expEncounterBudget)
+        private List<Dnd5eMonsterDto> GenerateEncounter(IList<Dnd5eMonsterDto> monsters, int expEncounterBudget)
         {
             var encounter = new List<Dnd5eMonsterDto>();
             int remainingBudget = expEncounterBudget;
 
-            var availableShuffledMonsters = monsters.Where(m => m.XP.ToInt() <= expEncounterBudget).ToList().Shuffle();
+            var availableShuffledMonsters = monsters.Where(m => m.SanitizedXp <= expEncounterBudget).ToList().Shuffle();
             foreach (var monster in availableShuffledMonsters)
             {
-                if (monster.XP.ToInt() <= remainingBudget)
+                if (monster.SanitizedXp <= remainingBudget)
                 {
                     encounter.Add(monster);
-                    remainingBudget -= monster.XP.ToInt();
+                    remainingBudget -= monster.SanitizedXp;
                 }
                 if (remainingBudget <= 0)
                     break;

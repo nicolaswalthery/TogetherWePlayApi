@@ -18,6 +18,7 @@ builder.Services.AddTransient<IPathfinder2eMonsterCoreJsonRepository, Pathfinder
 builder.Services.AddTransient<IPathfinder2eConditionsJsonRepository, Pathfinder2eConditionsJsonRepository>();
 builder.Services.AddTransient<CsvRepositoryBase>();
 builder.Services.AddTransient<IDnd2024AllMonsterStatsCsvRepository, Dnd2024AllMonsterStatsCsvRepository>();
+builder.Services.AddTransient<IDnd5eEncounterDataJsonRepository, Dnd5eEncounterDataJsonRepository>();
 
 builder.Services.AddTransient<IDndEncounterBusinessLayer, Dnd5eEncounterBusinessLayer>();
 builder.Services.AddTransient<IUltraModern5eBusinessLayer, UltraModern5eBusinessLayer>();

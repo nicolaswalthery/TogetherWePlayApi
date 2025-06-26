@@ -14,7 +14,7 @@ namespace Common.Randomizer
         /// </summary>
         /// <typeparam name="T">Type of elements in the list.</typeparam>
         /// <param name="list">The list to shuffle.</param>
-        private static void Shuffle<T>(this IList<T> list)
+        private static void FisherYatesShuffle<T>(this IList<T> list)
         {
             if (list == null)
                 throw new ArgumentNullException(nameof(list));
@@ -36,8 +36,10 @@ namespace Common.Randomizer
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
-            Shuffle(source);
-            return source.ToList();
+
+            var list = source.ToList();
+            FisherYatesShuffle(list);
+            return list;
         }
     }
 } 

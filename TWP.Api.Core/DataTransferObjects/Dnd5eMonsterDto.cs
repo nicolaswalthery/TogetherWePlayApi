@@ -1,4 +1,6 @@
-﻿namespace TWP.Api.Core.DataTransferObjects
+﻿using Common.Extensions;
+
+namespace TWP.Api.Core.DataTransferObjects
 {
     public class Dnd5eMonsterDto
     {
@@ -116,6 +118,12 @@
         public string LairSavingThrows { get; set; }
 
         public string Other { get; set; }
+
+        /// <summary>
+        /// XP data without any commas.
+        /// </summary>
+        public int SanitizedXp 
+            => XP.Replace(",", "").Trim().ToInt();
     }
 
 
