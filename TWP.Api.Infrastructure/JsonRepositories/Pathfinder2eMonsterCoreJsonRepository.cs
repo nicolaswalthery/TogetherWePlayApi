@@ -10,7 +10,7 @@ namespace TWP.Api.Infrastructure.JsonRepositories
     /// </summary>
     public class Pathfinder2eMonsterCoreJsonRepository : Pathfinder2eDataJsonRepositoryBase, IPathfinder2eMonsterCoreJsonRepository
     {
-        public Pathfinder2eMonsterCoreJsonRepository() : base(folderName: SourceFolderEnum.Pathfinder2eMonsterCore)
+        public Pathfinder2eMonsterCoreJsonRepository() : base(nestedfolderName: SourceFolderEnum.Pathfinder2eMonsterCore)
         {
         }
 

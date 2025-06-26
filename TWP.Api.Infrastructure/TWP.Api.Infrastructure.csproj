@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="JsonFiles\Dnd5eData\" />
     <Folder Include="JsonFiles\RandomTables\Dnd5e\" />
     <Folder Include="JsonFiles\RandomTables\Dnd4e\" />
   </ItemGroup>
