@@ -105,15 +105,14 @@ namespace TWP.Api.Application.BusinessLayers
             int remainingBudget = expEncounterBudget;
 
             var availableShuffledMonsters = monsters.Where(m => m.SanitizedXp <= expEncounterBudget).ToList().Shuffle();
-            foreach (var monster in availableShuffledMonsters)
+            for(var i = 0; i < availableShuffledMonsters.ToArray().Length && remainingBudget > 9/*10 is the minimum xp budget available for a dnd monster*/; i++)
             {
+                var monster = availableShuffledMonsters[i];
                 if (monster.SanitizedXp <= remainingBudget)
                 {
                     encounter.Add(monster);
                     remainingBudget -= monster.SanitizedXp;
                 }
-                if (remainingBudget <= 0)
-                    break;
             }
 
             return encounter;
