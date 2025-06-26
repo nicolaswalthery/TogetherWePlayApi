@@ -1,6 +1,7 @@
 using TWP.Api.Core.DataTransferObjects;
 using TWP.Api.Core.Enums;
 using TWP.Api.Infrastructure.JsonRepositories.Interfaces;
+using TWP.Api.Infrastructure.JsonRepositories.Mappers;
 using TWP.Api.Infrastructure.JsonRepositories.RepositoryBases;
 
 namespace TWP.Api.Infrastructure.JsonRepositories
@@ -13,6 +14,6 @@ namespace TWP.Api.Infrastructure.JsonRepositories
         }
 
         public List<Dnd5eRelationBetweenXpAndCrDto> GetAll()
-           => base.GetJsonByFileName(fileName: _dnd5eRelationBetweenXpAndCrJsonFileName);
+           => base.GetJsonByFileName(fileName: _dnd5eRelationBetweenXpAndCrJsonFileName).ToDnd5eRelationBetweenXpAndCrDtoList();
     }
 } 

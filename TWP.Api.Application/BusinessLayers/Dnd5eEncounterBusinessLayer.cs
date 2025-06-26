@@ -12,14 +12,12 @@ namespace TWP.Api.Application.BusinessLayers
     public class Dnd5eEncounterBusinessLayer : IDndEncounterBusinessLayer
     {
         private readonly IDnd2024AllMonsterStatsCsvRepository _dnd2024AllMonsterStatsCsvRepository;
-        private readonly IMonsterActivitiesJsonRepository _monsterActivitiesJsonRepository;
-        private readonly ISomethingHappenJsonRepository _somethingHappenJsonRepository;
+        private readonly IDnd5eRelationBetweenXpAndCrJsonRepository _dnd5ERelationBetweenXpAndCrJsonRepository;
 
-        public Dnd5eEncounterBusinessLayer(IDnd2024AllMonsterStatsCsvRepository dnd2024AllMonsterStatsCsvRepository, IMonsterActivitiesJsonRepository monsterActivitiesJsonRepository, ISomethingHappenJsonRepository somethingHappenJsonRepository)
+        public Dnd5eEncounterBusinessLayer(IDnd2024AllMonsterStatsCsvRepository dnd2024AllMonsterStatsCsvRepository, IDnd5eRelationBetweenXpAndCrJsonRepository dnd5ERelationBetweenXpAndCrJsonRepository)
         {
             _dnd2024AllMonsterStatsCsvRepository = dnd2024AllMonsterStatsCsvRepository;
-            _monsterActivitiesJsonRepository = monsterActivitiesJsonRepository;
-            _somethingHappenJsonRepository = somethingHappenJsonRepository;
+            _dnd5ERelationBetweenXpAndCrJsonRepository = dnd5ERelationBetweenXpAndCrJsonRepository;
         }
 
         public async Task<Result<List<Dnd5eMonsterDto>>> EncounterRandomGenerator(EncounterDifficultyEnum encounterDifficulty, IList<int> playerLevels, string encounterNarrativeContext)
@@ -32,9 +30,14 @@ namespace TWP.Api.Application.BusinessLayers
                 if (result.IsFailure)
                     return Result<List<Dnd5eMonsterDto>>.Failure(result.Error!, result.ReasonType);
 
+                //Fix the fact that the csv do not have XP data for each monster. This code is not intended to stay.
+                var resultCrRelatedToXp = _dnd5ERelationBetweenXpAndCrJsonRepository.GetAll();
+                foreach (var datum in result.Data!.Where(d => d.XP.IsNullOrEmptyOrWhiteSpace()))
+                    datum.XP = resultCrRelatedToXp.First(r => r.CR == datum.CR).XP.ToString();
+
                 var expEncounterBudget = ComputeExpBudget(encounterDifficulty, playerLevels);
 
-                var encounterGenerated = GenerateEncounter(result.Data, expEncounterBudget);
+                var encounterGenerated = GenerateEncounter(result.Data!, expEncounterBudget);
                 
                 //Introduice ChatGPT to create 
 

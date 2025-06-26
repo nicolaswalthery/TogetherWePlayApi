@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Common.Extensions;
 using TWP.Api.Core.DataTransferObjects;
 
