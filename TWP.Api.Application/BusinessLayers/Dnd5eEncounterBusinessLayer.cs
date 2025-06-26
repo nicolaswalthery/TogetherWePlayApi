@@ -7,6 +7,7 @@ using TWP.Api.Core.Enums;
 using TWP.Api.Infrastructure.CsvRepositories.Interfaces;
 using TWP.Api.Infrastructure.JsonRepositories.Interfaces;
 using System.Linq;
+using TWP.Api.Application.Helpers.Mappers;
 
 namespace TWP.Api.Application.BusinessLayers
 {
@@ -40,20 +41,12 @@ namespace TWP.Api.Application.BusinessLayers
                 foreach (var datum in result.Data!.Where(d => d.XP.IsNullOrEmptyOrWhiteSpace()))
                     datum.XP = resultCrRelatedToXp.First(r => r.CR == datum.CR).XP.ToString();
 
-                // Filter by habitats if provided
-                var filteredMonsters = result.Data;
-                if (monsterHabitats != null && monsterHabitats.Count > 0)
-                {
-                    var habitatStrings = monsterHabitats.Select(h => h.ToString().ToLower()).ToList();
-                    filteredMonsters = filteredMonsters.Where(m =>
-                        !string.IsNullOrWhiteSpace(m.Habitat) &&
-                        habitatStrings.Any(hab => m.Habitat.ToLower().Contains(hab))
-                    ).ToList();
-                }
+
+                var filteredMonsters = result.Data!.Where(d => monsterHabitats.Contains(d.Habitat.ToEnum())).ToList();
 
                 var expEncounterBudget = ComputeExpBudget(encounterDifficulty, playerLevels);
 
-                var encounterGenerated = GenerateEncounter(filteredMonsters!, expEncounterBudget);
+                var encounterGenerated = GenerateEncounter(filteredMonsters, expEncounterBudget);
                 
                 //Introduice ChatGPT to create 
 
