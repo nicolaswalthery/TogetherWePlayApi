@@ -42,7 +42,7 @@ namespace TWP.Api.Application.BusinessLayers
                     datum.XP = resultCrRelatedToXp.First(r => r.CR == datum.CR).XP.ToString();
 
 
-                var filteredMonsters = result.Data!.Where(d => monsterHabitats.Contains(d.Habitat.ToEnum())).ToList();
+                var filteredMonsters = monsterHabitats.Contains(MonsterHabitatEnum.Any) ? result.Data : result.Data!.Where(d => monsterHabitats.Contains(d.Habitat.ToEnum())).ToList();
 
                 var expEncounterBudget = ComputeExpBudget(encounterDifficulty, playerLevels);
 
