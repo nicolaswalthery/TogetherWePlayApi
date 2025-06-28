@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 
 namespace TWP.Api.Infrastructure.Interops
 {
-    public interface ILlmServices
+    public interface IOpenAiServices
     {
         /// <summary>
         /// Sends a message to ChatGPT and returns the response

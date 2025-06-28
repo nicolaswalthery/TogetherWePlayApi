@@ -1,18 +1,16 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
-using System;
-using System.Threading.Tasks;
 
 namespace TWP.Api.Infrastructure.Interops
 {
-    public class ChatGptService : ILlmServices
+    public class OpenAiServices : IOpenAiServices
     {
         private readonly Kernel _kernel;
         private readonly IChatCompletionService _chatCompletionService;
         private readonly string _modelName;
 
-        public ChatGptService(IConfiguration configuration)
+        public OpenAiServices(IConfiguration configuration)
         {
             var apiKey = configuration["OpenAI:ApiKey"] 
                 ?? throw new ArgumentNullException("OpenAI:ApiKey configuration is missing");

@@ -7,9 +7,9 @@ namespace TogetherWePlayApi.Controllers
     [Route("api/[controller]")]
     public class LlmController : ControllerBase
     {
-        private readonly ILlmServices _llmServices;
+        private readonly IOpenAiServices _llmServices;
 
-        public LlmController(ILlmServices llmServices)
+        public LlmController(IOpenAiServices llmServices)
         {
             _llmServices = llmServices;
         }
