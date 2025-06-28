@@ -5,13 +5,13 @@ using Microsoft.SemanticKernel.Connectors.OpenAI;
 
 namespace TWP.Api.Infrastructure.Interops
 {
-    public class OpenAiServices : IOpenAiServices
+    public class OpenAiInterops : IOpenAiInterops
     {
         private readonly Kernel _kernel;
         private readonly IChatCompletionService _chatCompletionService;
         private readonly string _modelName;
 
-        public OpenAiServices(IConfiguration configuration)
+        public OpenAiInterops(IConfiguration configuration)
         {
             var apiKey = configuration["OpenAI:ApiKey"] 
                 ?? throw new ArgumentNullException("OpenAI:ApiKey configuration is missing");

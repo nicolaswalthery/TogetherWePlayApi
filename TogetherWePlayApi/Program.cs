@@ -22,7 +22,7 @@ builder.Services.AddTransient<IDnd2024AllMonsterStatsCsvRepository, Dnd2024AllMo
 builder.Services.AddTransient<IDnd5eEncounterDataJsonRepository, Dnd5eEncounterDataJsonRepository>();
 
 // Add LLM Services
-builder.Services.AddTransient<IOpenAiServices, OpenAiServices>();
+builder.Services.AddTransient<IOpenAiInterops, OpenAiInterops>();
 
 builder.Services.AddTransient<IDndEncounterBusinessLayer, Dnd5eEncounterBusinessLayer>();
 builder.Services.AddTransient<IUltraModern5eBusinessLayer, UltraModern5eBusinessLayer>();
