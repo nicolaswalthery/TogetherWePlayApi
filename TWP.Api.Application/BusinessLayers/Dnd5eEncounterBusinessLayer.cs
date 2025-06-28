@@ -49,9 +49,12 @@ namespace TWP.Api.Application.BusinessLayers
 
                     var encounterGenerated = GenerateEncounter(filteredMonsters!, expEncounterBudget, playerLevels.Count, playerLevels.Min());
 
-                    //var openAiresult = await _openAiInterops.GetChatGptResponseAsync(
-                    //    message: $"Create an Dnd5e Encounter using these data : Monsters : {encounterGenerated} which were picked according to Difficulty : {encounterDifficulty.ToString()}, Number of players : {playerLevels.Count}, Party Level : {playerLevels.Min()}, NarrativeContext : {encounterNarrativeContext}, Monster Habitats : {string.Join(",", monsterHabitats.Select(h => h.ToString()))}",
-                    //    systemPrompt: "");
+                    //TODO : Fix this mess
+                    var formattedEncounterData = await GetFormattedEncounterAsync(encounterDifficulty: encounterDifficulty, playerLevels: playerLevels, encounterNarrativeContext, monsterHabitats: monsterHabitats);
+
+                    var openAiresult = await _openAiInterops.GetChatGptResponseAsync(
+                        message: $"Create an Dnd5e Encounter using these data : Encounter data for you to use : {GetFormattedEncounterAsync(encounterGenerated)} which were picked according to Difficulty : {encounterDifficulty.ToString()}, Number of players : {playerLevels.Count}, Party Level : {playerLevels.Min()}, NarrativeContext : {encounterNarrativeContext}, Monster Habitats : {string.Join(",", monsterHabitats.Select(h => h.ToString()))}",
+                        systemPrompt: "");
 
                     return Result<List<Dnd5eMonsterDto>>.Success(encounterGenerated);
                 });
