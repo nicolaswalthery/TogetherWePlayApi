@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
+using Microsoft.SemanticKernel.Connectors.OpenAI;
 
 namespace TWP.Api.Infrastructure.Interops
 {
@@ -25,9 +26,7 @@ namespace TWP.Api.Infrastructure.Interops
         }
 
         public async Task<string> GetChatGptResponseAsync(string message, string? systemPrompt = null)
-        {
-            return await GetChatGptResponseAsync(message, systemPrompt, 0.7, 1000);
-        }
+            => await GetChatGptResponseAsync(message, systemPrompt, 0.7, 1000);
 
         public async Task<string> GetChatGptResponseAsync(string message, string? systemPrompt = null, double temperature = 0.7, int maxTokens = 1000)
         {
