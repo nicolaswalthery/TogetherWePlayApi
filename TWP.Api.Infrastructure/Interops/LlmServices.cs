@@ -25,10 +25,10 @@ namespace TWP.Api.Infrastructure.Interops
             _chatCompletionService = _kernel.GetRequiredService<IChatCompletionService>();
         }
 
-        public async Task<string> GetChatGptResponseAsync(string message, string? systemPrompt = null)
-            => await GetChatGptResponseAsync(message, systemPrompt, 0.7, 1000);
+        public async Task<string> GetChatGptResponseAsync(string message, double temperature = 0.1, int maxTokens = 1000, string? systemPrompt = null)
+            => await GetChatGptResponseAsync(message, systemPrompt, temperature, maxTokens);
 
-        public async Task<string> GetChatGptResponseAsync(string message, string? systemPrompt = null, double temperature = 0.7, int maxTokens = 1000)
+        public async Task<string> GetChatGptResponseAsync(string message, string? systemPrompt = null, double temperature = 0.1, int maxTokens = 1000)
         {
             try
             {
