@@ -6,6 +6,7 @@ using TWP.Api.Infrastructure.JsonRepositories;
 using TWP.Api.Infrastructure.JsonRepositories.Interfaces;
 using TWP.Api.Infrastructure.CsvRepositories;
 using TWP.Api.Infrastructure.CsvRepositories.Interfaces;
+using TWP.Api.Infrastructure.Interops;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,9 @@ builder.Services.AddTransient<IPathfinder2eConditionsJsonRepository, Pathfinder2
 builder.Services.AddTransient<CsvRepositoryBase>();
 builder.Services.AddTransient<IDnd2024AllMonsterStatsCsvRepository, Dnd2024AllMonsterStatsCsvRepository>();
 builder.Services.AddTransient<IDnd5eEncounterDataJsonRepository, Dnd5eEncounterDataJsonRepository>();
+
+// Add LLM Services
+builder.Services.AddTransient<ILlmServices, ChatGptService>();
 
 builder.Services.AddTransient<IDndEncounterBusinessLayer, Dnd5eEncounterBusinessLayer>();
 builder.Services.AddTransient<IUltraModern5eBusinessLayer, UltraModern5eBusinessLayer>();
