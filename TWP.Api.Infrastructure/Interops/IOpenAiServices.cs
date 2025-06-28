@@ -10,7 +10,7 @@ namespace TWP.Api.Infrastructure.Interops
         /// <param name="message">The message to send to ChatGPT</param>
         /// <param name="systemPrompt">Optional system prompt to set the context</param>
         /// <returns>The response from ChatGPT</returns>
-        Task<string> GetChatGptResponseAsync(string message, string? systemPrompt = null);
+        Task<string> GetChatGptResponseAsync(string message, double temperature = 0.1, int maxTokens = 1000, string? systemPrompt = null);
 
         /// <summary>
         /// Sends a message to ChatGPT with custom parameters
