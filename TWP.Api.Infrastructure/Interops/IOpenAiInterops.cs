@@ -20,6 +20,6 @@ namespace TWP.Api.Infrastructure.Interops
         /// <param name="temperature">Controls randomness in the response (0.0 to 2.0)</param>
         /// <param name="maxTokens">Maximum number of tokens in the response</param>
         /// <returns>The response from ChatGPT</returns>
-        Task<string> GetChatGptResponseAsync(string message, string? systemPrompt = null, double temperature = 0.7, int maxTokens = 1000);
+        Task<string> ChatGptResponseAsync(string message, string? systemPrompt = null, double temperature = 0.7, int maxTokens = 1000);
     }
 } 

@@ -6,6 +6,7 @@ using TWP.Api.Application.Helpers.Mappers;
 using TWP.Api.Core.DataTransferObjects;
 using TWP.Api.Core.Enums;
 using TWP.Api.Infrastructure.CsvRepositories.Interfaces;
+using TWP.Api.Infrastructure.Interops;
 using TWP.Api.Infrastructure.JsonRepositories.Interfaces;
 
 namespace TWP.Api.Application.BusinessLayers
@@ -14,11 +15,13 @@ namespace TWP.Api.Application.BusinessLayers
     {
         private readonly IDnd2024AllMonsterStatsCsvRepository _dnd2024AllMonsterStatsCsvRepository;
         private readonly IDnd5eEncounterDataJsonRepository _dnd5ERelationBetweenXpAndCrJsonRepository;
+        private readonly IOpenAiInterops _openAiInterops;
 
-        public Dnd5eEncounterBusinessLayer(IDnd2024AllMonsterStatsCsvRepository dnd2024AllMonsterStatsCsvRepository, IDnd5eEncounterDataJsonRepository dnd5ERelationBetweenXpAndCrJsonRepository)
+        public Dnd5eEncounterBusinessLayer(IDnd2024AllMonsterStatsCsvRepository dnd2024AllMonsterStatsCsvRepository, IDnd5eEncounterDataJsonRepository dnd5ERelationBetweenXpAndCrJsonRepository, IOpenAiInterops openAiInterops)
         {
             _dnd2024AllMonsterStatsCsvRepository = dnd2024AllMonsterStatsCsvRepository;
             _dnd5ERelationBetweenXpAndCrJsonRepository = dnd5ERelationBetweenXpAndCrJsonRepository;
+            _openAiInterops = openAiInterops;
         }
 
         public async Task<Result<List<Dnd5eMonsterDto>>> EncounterRandomGenerator(
@@ -45,8 +48,10 @@ namespace TWP.Api.Application.BusinessLayers
                     var expEncounterBudget = ComputeExpBudget(encounterDifficulty, playerLevels);
 
                     var encounterGenerated = GenerateEncounter(filteredMonsters!, expEncounterBudget, playerLevels.Count, playerLevels.Min());
-                
-                    //Introduice ChatGPT to create 
+
+                    //var openAiresult = await _openAiInterops.GetChatGptResponseAsync(
+                    //    message: $"Create an Dnd5e Encounter using these data : Monsters : {encounterGenerated} which were picked according to Difficulty : {encounterDifficulty.ToString()}, Number of players : {playerLevels.Count}, Party Level : {playerLevels.Min()}, NarrativeContext : {encounterNarrativeContext}, Monster Habitats : {string.Join(",", monsterHabitats.Select(h => h.ToString()))}",
+                    //    systemPrompt: "");
 
                     return Result<List<Dnd5eMonsterDto>>.Success(encounterGenerated);
                 });

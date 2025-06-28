@@ -16,7 +16,7 @@ namespace TWP.Api.Infrastructure.Interops
             var apiKey = configuration["OpenAI:ApiKey"] 
                 ?? throw new ArgumentNullException("OpenAI:ApiKey configuration is missing");
             
-            _modelName = configuration["OpenAI:ModelName"] ?? "gpt-3.5-turbo";
+            _modelName = configuration["OpenAI:ModelName"] ?? configuration["OpenAI:DefaultModelName"];
             
             var builder = Kernel.CreateBuilder();
             builder.AddOpenAIChatCompletion(_modelName, apiKey);
@@ -26,9 +26,9 @@ namespace TWP.Api.Infrastructure.Interops
         }
 
         public async Task<string> GetChatGptResponseAsync(string message, double temperature = 0.1, int maxTokens = 1000, string? systemPrompt = null)
-            => await GetChatGptResponseAsync(message, systemPrompt, temperature, maxTokens);
+            => await ChatGptResponseAsync(message, systemPrompt, temperature, maxTokens);
 
-        public async Task<string> GetChatGptResponseAsync(string message, string? systemPrompt = null, double temperature = 0.1, int maxTokens = 1000)
+        public async Task<string> ChatGptResponseAsync(string message, string? systemPrompt = null, double temperature = 0.1, int maxTokens = 1000)
         {
             try
             {
