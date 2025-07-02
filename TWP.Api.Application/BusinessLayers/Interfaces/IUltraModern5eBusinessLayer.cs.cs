@@ -1,9 +1,11 @@
-﻿using TWP.Api.Application.DataTransferObjects;
+﻿using Common.ResultPattern;
+using TWP.Api.Application.DataTransferObjects;
 
 namespace TWP.Api.Application.BusinessLayers.Interfaces
 {
     public interface IUltraModern5eBusinessLayer
     {
-        public ShootAndLootDto ShootAndLootGeneration();
+        Task<Result<ShootAndLootDto>> ShootAndLootGeneration();
+        Task<Result<string>> GenerateTreasureHoard(int challengeRating);
     }
 }

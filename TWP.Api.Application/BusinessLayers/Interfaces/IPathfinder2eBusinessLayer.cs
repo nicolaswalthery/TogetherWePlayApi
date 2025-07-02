@@ -1,10 +1,11 @@
-﻿using TWP.Api.Core.DataTransferObjects;
+﻿using Common.ResultPattern;
+using TWP.Api.Core.DataTransferObjects;
 
 namespace TWP.Api.Application.BusinessLayers.Interfaces
 {
     public interface IPathfinder2eBusinessLayer
     {
-        public Pf2eMonsterDto GetOneRandomPf2eCoreMonster();
-        public Pf2eConditionDto GetOneRandomPf2eCondition();
+        Task<Result<Pf2eMonsterDto>> GetOneRandomPf2eCoreMonster();
+        Task<Result<Pf2eConditionDto>> GetOneRandomPf2eCondition();
     }
 }

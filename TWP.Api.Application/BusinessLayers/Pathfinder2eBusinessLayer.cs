@@ -2,6 +2,7 @@
 using TWP.Api.Application.BusinessLayers.Interfaces;
 using TWP.Api.Core.DataTransferObjects;
 using TWP.Api.Infrastructure.JsonRepositories.Interfaces;
+using Common.ResultPattern;
 
 namespace TWP.Api.Application.BusinessLayers
 {
@@ -16,16 +17,27 @@ namespace TWP.Api.Application.BusinessLayers
             _pathfinder2eConditionsJsonRepository = pathfinder2EConditionsJsonRepository;
         }
 
-        public Pf2eMonsterDto GetOneRandomPf2eCoreMonster()
-        {
-            var randomSelector = new RandomSelector<Pf2eMonsterDto>();
-            return randomSelector.SelectOneRandomly(_pathfinder2eCoreMonsterJsonRepository.GetAllPf2eCoreMonsters().ToArray());
-        }
+        public async Task<Result<Pf2eMonsterDto>> GetOneRandomPf2eCoreMonster()
+            => await Safe.ExecuteAsync(async () =>
+            {
+                var randomSelector = new RandomSelector<Pf2eMonsterDto>();
+                var result = randomSelector.SelectOneRandomly(_pathfinder2eCoreMonsterJsonRepository.GetAllPf2eCoreMonsters().ToArray())
+                                          .Verify(data => data.IsNull());
+                if (result.IsFailure)
+                    return Result<Pf2eMonsterDto>.Failure(result.Error!, result.ReasonType);
+                return result;
+            });
+    
 
-        public Pf2eConditionDto GetOneRandomPf2eCondition()
-        {
-            var randomSelector = new RandomSelector<Pf2eConditionDto>();
-            return randomSelector.SelectOneRandomly(_pathfinder2eConditionsJsonRepository.GetAll().ToArray());
-        }
-    }
+        public async Task<Result<Pf2eConditionDto>> GetOneRandomPf2eCondition()
+            =>  await Safe.ExecuteAsync(async () =>
+            {
+                var randomSelector = new RandomSelector<Pf2eConditionDto>();
+                var result = randomSelector.SelectOneRandomly(_pathfinder2eConditionsJsonRepository.GetAll().ToArray())
+                                          .Verify(data => data.IsNull());
+                if (result.IsFailure)
+                    return Result<Pf2eConditionDto>.Failure(result.Error!, result.ReasonType);
+                return result;
+            });
+    }   
 }
