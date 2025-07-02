@@ -50,10 +50,10 @@ namespace TWP.Api.Application.BusinessLayers
                     var encounterGenerated = GenerateEncounter(filteredMonsters!, expEncounterBudget, playerLevels.Count, playerLevels.Min());
 
                     //TODO : Fix this mess
-                    var formattedEncounterData = await GetFormattedEncounterAsync(encounterDifficulty: encounterDifficulty, playerLevels: playerLevels, encounterNarrativeContext, monsterHabitats: monsterHabitats);
+                    var formattedEncounterData = GetFormattedEncounter(encounterDifficulty: encounterDifficulty, playerLevels: playerLevels, encounterNarrativeContext, monsterHabitats: monsterHabitats, filteredMonsters: filteredMonsters, expEncounterBudget: expEncounterBudget);
 
                     var openAiresult = await _openAiInterops.GetChatGptResponseAsync(
-                        message: $"Create an Dnd5e Encounter using these data : Encounter data for you to use : {GetFormattedEncounterAsync(encounterGenerated)} which were picked according to Difficulty : {encounterDifficulty.ToString()}, Number of players : {playerLevels.Count}, Party Level : {playerLevels.Min()}, NarrativeContext : {encounterNarrativeContext}, Monster Habitats : {string.Join(",", monsterHabitats.Select(h => h.ToString()))}",
+                        message: $"Create an Dnd5e Encounter using these data : Encounter data for you to use : {formattedEncounterData.Data} which were picked according to Difficulty : {encounterDifficulty.ToString()}, Number of players : {playerLevels.Count}, Party Level : {playerLevels.Min()}, NarrativeContext : {encounterNarrativeContext}, Monster Habitats : {string.Join(",", monsterHabitats.Select(h => h.ToString()))}",
                         systemPrompt: "");
 
                     return Result<List<Dnd5eMonsterDto>>.Success(encounterGenerated);
@@ -68,24 +68,23 @@ namespace TWP.Api.Application.BusinessLayers
         /// <param name="monsterHabitats">Monster habitats</param>
         /// <param name="formatType">Type of formatting (Full, Summary, or List)</param>
         /// <returns>Formatted text representation of the encounter</returns>
-        public async Task<Result<string>> GetFormattedEncounterAsync(
+        public Result<string> GetFormattedEncounter(
             EncounterDifficultyEnum encounterDifficulty,
             IList<int> playerLevels,
             string encounterNarrativeContext,
             IList<MonsterHabitatEnum> monsterHabitats,
+            IList<Dnd5eMonsterDto> filteredMonsters,
+            int expEncounterBudget,
             string formatType = "Summary")
         {
-            var encounterResult = await EncounterRandomGenerator(encounterDifficulty, playerLevels, encounterNarrativeContext, monsterHabitats);
-            
-            if (encounterResult.IsFailure)
-                return Result<string>.Failure(encounterResult.Error!, encounterResult.ReasonType);
+            var encounterResult = GenerateEncounter(filteredMonsters!, expEncounterBudget, playerLevels.Count, playerLevels.Min());
 
             var formattedText = formatType.ToLower() switch
             {
-                "full" => MonsterDataFormatter.FormatMonstersList(encounterResult.Data!),
-                "list" => MonsterDataFormatter.FormatMonstersList(encounterResult.Data!),
-                "summary" => MonsterDataFormatter.FormatMonstersSummary(encounterResult.Data!),
-                _ => MonsterDataFormatter.FormatMonstersSummary(encounterResult.Data!)
+                "full" => MonsterDataFormatter.FormatMonstersList(encounterResult!),
+                "list" => MonsterDataFormatter.FormatMonstersList(encounterResult!),
+                "summary" => MonsterDataFormatter.FormatMonstersSummary(encounterResult!),
+                _ => MonsterDataFormatter.FormatMonstersSummary(encounterResult!)
             };
 
             return Result<string>.Success(formattedText);
