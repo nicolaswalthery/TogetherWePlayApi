@@ -49,7 +49,6 @@ namespace TWP.Api.Application.BusinessLayers
 
                     var encounterGenerated = GenerateEncounter(filteredMonsters!, expEncounterBudget, playerLevels.Count, playerLevels.Min());
 
-                    //TODO : Fix this mess
                     var formattedEncounterData = GetFormattedEncounter(encounterDifficulty: encounterDifficulty, playerLevels: playerLevels, encounterNarrativeContext, monsterHabitats: monsterHabitats, filteredMonsters: filteredMonsters, expEncounterBudget: expEncounterBudget);
 
                     var openAiresult = await _openAiInterops.GetChatGptResponseAsync(
