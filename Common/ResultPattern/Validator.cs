@@ -8,7 +8,7 @@ namespace Common.ResultPattern
         /// Main method of the Validator. Its function is to verify data according to the 'checking method' its given.
         /// </summary>
         /// <typeparam name="T">Data Type.</typeparam>
-        /// <param name="data">Data to be verified.</param>
+        /// <param name="data">Data to be validated.</param>
         /// <param name="validators">List of methods that validate the data.</param>
         /// <returns>[SUCCESS] - Return the data in a Result object. [FAILURE] - Return the first Result object where its state is 'IsFailure == true'.</returns>
         public static Result<T> Verify<T>(this T data, params Func<T, Result<T>>[] validators)

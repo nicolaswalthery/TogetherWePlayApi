@@ -12,6 +12,9 @@ namespace TogetherWePlayApi.Controllers
             Logger = logger;
         }
 
+        //[TODO] - Authorization and permission. Decorator Pattern
+        //Capte un token -> valider -> gestion des auth et permission (generic et centralisé au mieux)
+
         protected IActionResult HandleResult<TData>(Result<TData> result)
         {
             if (result.IsSuccess)
