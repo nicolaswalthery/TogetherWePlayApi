@@ -52,7 +52,7 @@ namespace TWP.Api.Application.BusinessLayers
 
                     var encounterGenerated = GenerateEncounter(filteredMonsters!, expEncounterBudget, playerLevels.Count, playerLevels.Min());
 
-                    var formattedEncounterData = GetFormattedEncounter(encounterDifficulty: encounterDifficulty, playerLevels: playerLevels, encounterNarrativeContext, monsterHabitats: monsterHabitats, filteredMonsters: filteredMonsters, expEncounterBudget: expEncounterBudget);
+                    var formattedEncounterData = GetFormattedEncounter(encounterDifficulty: encounterDifficulty, playerLevels: playerLevels, encounterNarrativeContext, monsterHabitats: monsterHabitats, pickedMonsters: encounterGenerated, expEncounterBudget: expEncounterBudget);
 
                     var openAiresult = await _openAiInterops.GetChatGptResponseAsync(
                         message: $"Create an Dnd5e Encounter using these data : Encounter data for the Master Game Master to use : {formattedEncounterData.Data} which were picked according to Difficulty : {encounterDifficulty.ToString()}, Number of players : {playerLevels.Count}, Party Level : {playerLevels.Min()}, NarrativeContext : {encounterNarrativeContext}, Monster Habitats : {string.Join(",", monsterHabitats.Select(h => h.ToString()))}",
@@ -85,18 +85,16 @@ namespace TWP.Api.Application.BusinessLayers
             IList<int> playerLevels,
             string encounterNarrativeContext,
             IList<MonsterHabitatEnum> monsterHabitats,
-            IList<Dnd5eMonsterDto> filteredMonsters,
+            IList<Dnd5eMonsterDto> pickedMonsters,
             int expEncounterBudget,
-            string formatType = "Summary")
+            string formatType = "full")
         {
-            var encounterResult = GenerateEncounter(filteredMonsters!, expEncounterBudget, playerLevels.Count, playerLevels.Min());
-
             var formattedText = formatType.ToLower() switch
             {
-                "full" => MonsterDataFormatter.FormatMonstersList(encounterResult!),
-                "list" => MonsterDataFormatter.FormatMonstersList(encounterResult!),
-                "summary" => MonsterDataFormatter.FormatMonstersSummary(encounterResult!),
-                _ => MonsterDataFormatter.FormatMonstersSummary(encounterResult!)
+                "full" => MonsterDataFormatter.FormatMonstersList(pickedMonsters!),
+                "list" => MonsterDataFormatter.FormatMonstersList(pickedMonsters!),
+                "summary" => MonsterDataFormatter.FormatMonstersSummary(pickedMonsters!),
+                _ => MonsterDataFormatter.FormatMonstersSummary(pickedMonsters!)
             };
 
             return Result<string>.Success(formattedText);
