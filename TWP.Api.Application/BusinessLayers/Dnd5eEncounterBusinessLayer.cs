@@ -2,6 +2,7 @@
 using Common.Randomizer;
 using Common.ResultPattern;
 using TWP.Api.Application.BusinessLayers.Interfaces;
+using TWP.Api.Application.DataTransferObjects;
 using TWP.Api.Application.Helpers.Mappers;
 using TWP.Api.Core.DataTransferObjects;
 using TWP.Api.Core.Enums;
@@ -24,7 +25,7 @@ namespace TWP.Api.Application.BusinessLayers
             _openAiInterops = openAiInterops;
         }
 
-        public async Task<Result<List<Dnd5eMonsterDto>>> EncounterRandomGenerator(
+        public async Task<Result<Dnd5eEncounterGeneratedDto>> EncounterRandomGenerator(
             EncounterDifficultyEnum encounterDifficulty,
             IList<int> playerLevels,
             string encounterNarrativeContext,
@@ -32,11 +33,11 @@ namespace TWP.Api.Application.BusinessLayers
                 => await Safe.ExecuteAsync(async () =>
                 {
                     if(playerLevels.HasNoElement())
-                        return Result<List<Dnd5eMonsterDto>>.Failure("No Elements", ReasonType.BadParameter);
-
-                    var result = _dnd2024AllMonsterStatsCsvRepository.GetAllDnd5e2024MonsterStatsByCr(playerLevels.Min()+1).Where(m => m.Name.IsNotNullOrEmptyOrWhiteSpace()).ToList().Verify(data => data.IsNull());
+                        return Result<Dnd5eEncounterGeneratedDto>.Failure("No Elements", ReasonType.BadParameter);
+                    var cr = playerLevels.Min();
+                    var result = _dnd2024AllMonsterStatsCsvRepository.GetAllDnd5e2024MonsterStatsByCr(cr + 1).Where(m => m.Name.IsNotNullOrEmptyOrWhiteSpace()).ToList().Verify(data => data.IsNull());
                     if (result.IsFailure)
-                        return Result<List<Dnd5eMonsterDto>>.Failure(result.Error!, result.ReasonType);
+                        return Result<Dnd5eEncounterGeneratedDto>.Failure(result.Error!, result.ReasonType);
 
                     //Fix the fact that the csv do not have XP data for each monster. This code is not intended to stay.
                     var resultCrRelatedToXp = _dnd5ERelationBetweenXpAndCrJsonRepository.GetAll();
@@ -55,7 +56,17 @@ namespace TWP.Api.Application.BusinessLayers
                         message: $"Create an Dnd5e Encounter using these data : Encounter data for you to use : {formattedEncounterData.Data} which were picked according to Difficulty : {encounterDifficulty.ToString()}, Number of players : {playerLevels.Count}, Party Level : {playerLevels.Min()}, NarrativeContext : {encounterNarrativeContext}, Monster Habitats : {string.Join(",", monsterHabitats.Select(h => h.ToString()))}",
                         systemPrompt: "");
 
-                    return Result<List<Dnd5eMonsterDto>>.Success(encounterGenerated);
+                    var finaleResult = new Dnd5eEncounterGeneratedDto() 
+                                        { 
+                                            Cr = cr, EncounterDifficulty = encounterDifficulty, 
+                                            EncounterNarrativeContext = encounterNarrativeContext, 
+                                            MonsterHabitats = monsterHabitats, 
+                                            Monsters = encounterGenerated, 
+                                            OpenAiResponse = openAiresult,
+                                            FormattedEncounterData = formattedEncounterData.Data!
+                    };
+
+                    return Result<Dnd5eEncounterGeneratedDto>.Success(finaleResult);
                 });
 
         /// <summary>
