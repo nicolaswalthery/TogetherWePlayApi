@@ -45,6 +45,8 @@ namespace TWP.Api.Application.BusinessLayers
                         datum.XP = resultCrRelatedToXp.First(r => r.CR == datum.CR).XP.ToString();
 
                     var filteredMonsters = monsterHabitats.Contains(MonsterHabitatEnum.Any) ? result.Data : result.Data!.Where(d => monsterHabitats.Contains(d.Habitat.ToEnum())).ToList();
+                    if(filteredMonsters is null || filteredMonsters.HasNoElement())
+                        return Result<Dnd5eEncounterGeneratedDto>.Failure("No Monsters Found", ReasonType.NotFound);
 
                     var expEncounterBudget = ComputeExpBudget(encounterDifficulty, playerLevels);
 
