@@ -1,0 +1,108 @@
+{
+  "TechItemTableD": [
+    {
+      "Range": "01-29",
+      "Tech": "Loot And Shoot"
+    },
+    {
+      "Range": "30-34",
+      "Tech": "Engineering Kit (TL3) 800"
+    },
+    {
+      "Range": "35-39",
+      "Tech": "Ballistics Armor MK2"
+    },
+    {
+      "Range": "40-42",
+      "Tech": "Rocket Launcher MK2 1000"
+    },
+    {
+      "Range": "43-45",
+      "Tech": "Dark Brew (Supreme)"
+    },
+    {
+      "Range": "46-48",
+      "Tech": "Big Ear"
+    },
+    {
+      "Range": "49-51",
+      "Tech": "Autocannon"
+    },
+    {
+      "Range": "52-54",
+      "Tech": "Vigor Injection (Supreme)"
+    },
+    {
+      "Range": "55-57",
+      "Tech": "Acid Thrower"
+    },
+    {
+      "Range": "58-59",
+      "Tech": "Flamethrower"
+    },
+    {
+      "Range": "60-61",
+      "Tech": "Mifune Self-Shield"
+    },
+    {
+      "Range": "62-63",
+      "Tech": "Psycho Self-Shield"
+    },
+    {
+      "Range": "64-65",
+      "Tech": "Somatic Surrogate"
+    },
+    {
+      "Range": "66-67",
+      "Tech": "Sigil Projector"
+    },
+    {
+      "Range": "68-69",
+      "Tech": "Vocal Proxy"
+    },
+    {
+      "Range": "71-72",
+      "Tech": "Spider-Silk Suit"
+    },
+    {
+      "Range": "73-74",
+      "Tech": "Viper Self-Shield"
+    },
+    {
+      "Range": "75-76",
+      "Tech": "Lie Detector"
+    },
+    {
+      "Range": "77-78",
+      "Tech": "Battle Drill"
+    },
+    {
+      "Range": "79-80",
+      "Tech": "Aramid Combat Suit, MK2"
+    },
+    {
+      "Range": "81-82",
+      "Tech": "Tesla Glove"
+    },
+    {
+      "Range": "83-84",
+      "Tech": "Chainsaw"
+    },
+    {
+      "Range": "85-86",
+      "Tech": "Flash Goggles"
+    },
+    {
+      "Range": "87-88",
+      "Tech": "Engineering Kit (TL4)"
+    },
+    {
+      "Range": "89-90",
+      "Tech": "Moses Self-Shield"
+    },
+    {
+      "Range": "100",
+      "Tech": "Taidan Self-Shield"
+    }
+  ]
+}

@@ -1,17 +1,20 @@
-﻿using TWP.Api.Infrastructure.JsonRepositories.Interfaces;
+﻿using TWP.Api.Core.Enums;
+using TWP.Api.Infrastructure.DataTransferObjects;
+using TWP.Api.Infrastructure.JsonRepositories.Interfaces;
+using TWP.Api.Infrastructure.JsonRepositories.Mappers;
 
 namespace TWP.Api.Infrastructure.JsonRepositories
 {
-    public class MonsterActivitiesJsonRepository : IJsonRepository<string>
+    /// <summary>
+    /// The Json Repositories have the responsability to retreive and map the json data to a data transfer object
+    /// </summary>
+    public class MonsterActivitiesJsonRepository : RandomTableJsonRepositoryBase, IMonsterActivitiesJsonRepository
     {
-        public string Get(string fileName)
-        {
-            throw new NotImplementedException();
+        public MonsterActivitiesJsonRepository() : base(folderName: SourceFolderEnum.Shadowdark, fileName: "MonsterActivitiesRandomTable")
+        {   
         }
 
-        public IEnumerable<string> GetAll(string folderPath)
-        {
-            throw new NotImplementedException();
-        }
+        public RollTableDto GetRollTable() 
+            => base.GetJsonByFileName().ToMonsterActivitiesRollTableDto();
     }
 }

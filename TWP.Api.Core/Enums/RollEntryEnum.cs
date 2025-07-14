@@ -12,6 +12,6 @@
         Linked = 3, 
 
         //The result ask to roll a certain amount of time on the table.
-        MultiRoll = 4
+        MultiRoll = 4,
     }
 }

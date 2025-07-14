@@ -1,8 +1,13 @@
-﻿namespace TWP.Api.Infrastructure.JsonRepositories.Interfaces
+﻿using TWP.Api.Infrastructure.DataTransferObjects;
+
+namespace TWP.Api.Infrastructure.JsonRepositories.Interfaces
 {
-    public interface IJsonRepository<TReturn>
+    public interface IJsonRepository
     {
-        TReturn Get(string fileName);
-        IEnumerable<TReturn> GetAll(string folderPath);
+        /// <summary>
+        /// Get a roll table.
+        /// </summary>
+        /// <returns>The RollTableDto representing a random table</returns>
+        RollTableDto GetRollTable();
     }
 }

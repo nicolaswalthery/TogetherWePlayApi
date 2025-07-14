@@ -1,0 +1,160 @@
+{
+  "TechItemTableB": [
+    {
+      "Range": "01-10",
+      "Tech": "Loot & Shoot"
+    },
+    {
+      "Range": "11-20",
+      "Tech": "Grenade, EMP"
+    },
+    {
+      "Range": "21-30",
+      "Tech": "Grenade, Booster"
+    },
+    {
+      "Range": "31-40",
+      "Tech": "Grenade, Tag"
+    },
+    {
+      "Range": "41-45",
+      "Tech": "Vigor Shooter"
+    },
+    {
+      "Range": "46-50",
+      "Tech": "Grenade, Shockwave"
+    },
+    {
+      "Range": "51-54",
+      "Tech": "Spike Bayonet"
+    },
+    {
+      "Range": "55-57",
+      "Tech": "Targeting Scope"
+    },
+    {
+      "Range": "58-59",
+      "Tech": "Engineering Kit (TL0)"
+    },
+    {
+      "Range": "60-61",
+      "Tech": "Rover Robot"
+    },
+    {
+      "Range": "62-63",
+      "Tech": "Grenade, Smoke Signal"
+    },
+    {
+      "Range": "64-65",
+      "Tech": "Two-Handed Grappling Hook"
+    },
+    {
+      "Range": "66-67",
+      "Tech": "Flak Longcoat"
+    },
+    {
+      "Range": "68-69",
+      "Tech": "Grenade, Mother"
+    },
+    {
+      "Range": "70-71",
+      "Tech": "The Arch"
+    },
+    {
+      "Range": "72-73",
+      "Tech": "Air Dart Pistol"
+    },
+    {
+      "Range": "74-75",
+      "Tech": "Revolver"
+    },
+    {
+      "Range": "76-77",
+      "Tech": "Pocket Pistol"
+    },
+    {
+      "Range": "78-79",
+      "Tech": "Grenade, White Phosphorous"
+    },
+    {
+      "Range": "80-81",
+      "Tech": "Carbide Armor"
+    },
+    {
+      "Range": "82",
+      "Tech": "Grenade, Gravity Well"
+    },
+    {
+      "Range": "83",
+      "Tech": "Suspension Filament"
+    },
+    {
+      "Range": "84",
+      "Tech": "Implant Vessel (Mark I)"
+    },
+    {
+      "Range": "85",
+      "Tech": "Engineering Kit (TL1)"
+    },
+    {
+      "Range": "86",
+      "Tech": "Aramid Combat Suit"
+    },
+    {
+      "Range": "87",
+      "Tech": "Linked Vessel (Mark I)"
+    },
+    {
+      "Range": "88",
+      "Tech": "Piton-Gauntlet"
+    },
+    {
+      "Range": "89",
+      "Tech": "Combine Rifle"
+    },
+    {
+      "Range": "90",
+      "Tech": "Grenade, Magnetic Mine"
+    },
+    {
+      "Range": "91",
+      "Tech": "Grenade, Nerve Toxin"
+    },
+    {
+      "Range": "92",
+      "Tech": "Nano-Healer"
+    },
+    {
+      "Range": "93",
+      "Tech": "High-Calibre Autoloader"
+    },
+    {
+      "Range": "94",
+      "Tech": "Rocket Launcher"
+    },
+    {
+      "Range": "95",
+      "Tech": "Vigor Injection (Superior)"
+    },
+    {
+      "Range": "96",
+      "Tech": "Carbide Armor, MK2"
+    },
+    {
+      "Range": "97",
+      "Tech": "Dark Brew (Superior)"
+    },
+    {
+      "Range": "98",
+      "Tech": "Grenade, Seeker"
+    },
+    {
+      "Range": "99",
+      "Tech": "Forced Defense Shield"
+    },
+    {
+      "Range": "100",
+      "Tech": "Assault Rifle"
+    }
+  ]
+}

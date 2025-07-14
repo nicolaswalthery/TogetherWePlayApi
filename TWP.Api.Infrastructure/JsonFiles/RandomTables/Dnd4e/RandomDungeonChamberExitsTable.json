@@ -1,0 +1,11 @@
+{
+  "chamberExits": [
+    {"d20": "1-5", "exits": "None"},
+    {"d20": "6-11", "exits": "One"},
+    {"d20": "12-15", "exits": "Two"},
+    {"d20": "16-17", "exits": "Three"},
+    {"d20": "18", "exits": "Four"},
+    {"d20": "19", "exits": "Stairs only"},
+    {"d20": "20", "exits": "One exit plus stairs"}
+  ]
+}

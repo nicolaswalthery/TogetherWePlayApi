@@ -1,0 +1,59 @@
+﻿using TWP.Api.Core.Enums;
+
+namespace TWP.Api.Application.Helpers.Mappers
+{
+    public static class MonsterHabitatMappers
+    {
+        public static MonsterHabitatEnum ToEnum(this string habitat)
+        {
+            if (string.IsNullOrWhiteSpace(habitat))
+                return MonsterHabitatEnum.None;
+
+            switch (habitat.Trim())
+            {
+                case "Any": return MonsterHabitatEnum.Any;
+                case "Arctic": return MonsterHabitatEnum.Arctic;
+                case "Coastal": return MonsterHabitatEnum.Coastal;
+                case "Desert": return MonsterHabitatEnum.Desert;
+                case "Feywild": // cleaned from Feywild)
+                case "Feywild)": return MonsterHabitatEnum.Feywild;
+                case "Forest": return MonsterHabitatEnum.Forest;
+                case "Grassland": return MonsterHabitatEnum.Grassland;
+                case "Hill": return MonsterHabitatEnum.Hill;
+                case "Mountain": return MonsterHabitatEnum.Mountain;
+                case "Swamp": return MonsterHabitatEnum.Swamp;
+                case "Underdark": return MonsterHabitatEnum.Underdark;
+                case "Underwater": return MonsterHabitatEnum.Underwater;
+                case "Urban": return MonsterHabitatEnum.Urban;
+
+                case "Planar (Abyss)": return MonsterHabitatEnum.Planar_Abyss;
+                case "Planar (Acheron)":
+                case "Planar (Acheron": return MonsterHabitatEnum.Planar_Acheron;
+                case "Planar (Astral Plane)": return MonsterHabitatEnum.Planar_AstralPlane;
+                case "Planar (Beastlands)": return MonsterHabitatEnum.Planar_Beastlands;
+                case "Planar (Elemental Chaos)": return MonsterHabitatEnum.Planar_ElementalChaos;
+                case "Planar (Elemental Plane of Air)": return MonsterHabitatEnum.Planar_ElementalPlaneOfAir;
+                case "Planar (Elemental Plane of Earth)": return MonsterHabitatEnum.Planar_ElementalPlaneOfEarth;
+                case "Planar (Elemental Plane of Fire)":
+                case "Planar (Elemental Plane of FIre)": return MonsterHabitatEnum.Planar_ElementalPlaneOfFire;
+                case "Planar (Elemental Plane of Water)": return MonsterHabitatEnum.Planar_ElementalPlaneOfWater;
+                case "Planar (Elemental Planes)": return MonsterHabitatEnum.Planar_ElementalPlanes;
+                case "Planar (Ethereal)": return MonsterHabitatEnum.Planar_Ethereal;
+                case "Planar (Feywild)": return MonsterHabitatEnum.Planar_Feywild;
+                case "Planar (Gehenna)": return MonsterHabitatEnum.Planar_Gehenna;
+                case "Planar (Limbo)": return MonsterHabitatEnum.Planar_Limbo;
+                case "Planar (Lower Planes)": return MonsterHabitatEnum.Planar_LowerPlanes;
+                case "Planar (Mechanus)": return MonsterHabitatEnum.Planar_Mechanus;
+                case "Planar (Nine Hells)": return MonsterHabitatEnum.Planar_NineHells;
+                case "Planar (Shadowfell)": return MonsterHabitatEnum.Planar_Shadowfell;
+                case "Planar (Upper Planes)":
+                case "Plannar (Upper Planes)": return MonsterHabitatEnum.Planar_UpperPlanes;
+
+                default: return MonsterHabitatEnum.None;
+            }
+        }
+    }
+}
+
+
+

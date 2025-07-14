@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TWP.Api.Core\TWP.Api.Core.csproj" />
+    <ProjectReference Include="..\TWP.Api.Infrastructure\TWP.Api.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -32,5 +32,14 @@ namespace Common.Extensions
 
         public static int ToInt(this string str) 
             => int.TryParse(str, out int result) ? result : throw new ConversionException("Can't parse string to int");
+
+        /// <summary>
+        /// Deserialize a json into an object
+        /// </summary>
+        /// <typeparam name="T">Object Type</typeparam>
+        /// <param name="json">Json to deserialize</param>
+        /// <returns></returns>
+        public static T JsonToObject<T>(this string json) 
+            => JsonSerializer.Deserialize<T>(json);
     }
 }

@@ -1,8 +1,47 @@
+using TogetherWePlayApi.Controllers;
+using TWP.Api.Application.BusinessLayers;
+using TWP.Api.Application.BusinessLayers.Interfaces;
+using TWP.Api.Controllers.Interfaces;
+using TWP.Api.Infrastructure.JsonRepositories;
+using TWP.Api.Infrastructure.JsonRepositories.Interfaces;
+using TWP.Api.Infrastructure.CsvRepositories;
+using TWP.Api.Infrastructure.CsvRepositories.Interfaces;
+using TWP.Api.Infrastructure.Interops;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddTransient<JsonRepositoryBase>();
+builder.Services.AddTransient<IMonsterActivitiesJsonRepository, MonsterActivitiesJsonRepository>();
+builder.Services.AddTransient<ISomethingHappenJsonRepository, SomethingHappenJsonRepository>();
+builder.Services.AddTransient<IUltraModern5eJsonRepository, UltraModern5eJsonRepository>();
+builder.Services.AddTransient<IPathfinder2eMonsterCoreJsonRepository, Pathfinder2eMonsterCoreJsonRepository>();
+builder.Services.AddTransient<IPathfinder2eConditionsJsonRepository, Pathfinder2eConditionsJsonRepository>();
+builder.Services.AddTransient<CsvRepositoryBase>();
+builder.Services.AddTransient<IDnd2024AllMonsterStatsCsvRepository, Dnd2024AllMonsterStatsCsvRepository>();
+builder.Services.AddTransient<IDnd5eEncounterDataJsonRepository, Dnd5eEncounterDataJsonRepository>();
 
-builder.Services.AddControllers();
+// Add LLM Services
+builder.Services.AddTransient<IOpenAiInterops, OpenAiInterops>();
+
+builder.Services.AddTransient<IDndEncounterBusinessLayer, Dnd5eEncounterBusinessLayer>();
+builder.Services.AddTransient<IUltraModern5eBusinessLayer, UltraModern5eBusinessLayer>();
+builder.Services.AddTransient<IPathfinder2eBusinessLayer, Pathfinder2eBusinessLayer>();
+builder.Services.AddTransient<IDnd5eMonsterBusinessLayer, Dnd5eMonsterBusinessLayer>();
+
+builder.Services.AddTransient<IDndController, DndController>();
+builder.Services.AddTransient<IUltraModern5eController, UltraModern5eController>();
+builder.Services.AddTransient<IPathfinder2eController, Pathfinder2eController>();
+builder.Services.AddTransient<IDnd5eMonsterController, Dnd5eMonsterController>();
+
+builder.Services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
+                    options.JsonSerializerOptions.PropertyNamingPolicy = null;
+                    options.JsonSerializerOptions.WriteIndented = false;
+                });
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

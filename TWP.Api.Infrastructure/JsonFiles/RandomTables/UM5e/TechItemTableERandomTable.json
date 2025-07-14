@@ -1,0 +1,168 @@
+{
+  "TechItemTableE": [
+    {
+      "Range": "01-20",
+      "Tech": "Loot And Shoot"
+    },
+    {
+      "Range": "21-23",
+      "Tech": "Laser Sight"
+    },
+    {
+      "Range": "24-26",
+      "Tech": "Tech-Mail"
+    },
+    {
+      "Range": "27-29",
+      "Tech": "Yowie Suit"
+    },
+    {
+      "Range": "30-32",
+      "Tech": "Portable Jammer"
+    },
+    {
+      "Range": "33-35",
+      "Tech": "ET/M Scope"
+    },
+    {
+      "Range": "36-37",
+      "Tech": "Tactical Body Armor, MK2"
+    },
+    {
+      "Range": "38-39",
+      "Tech": "Union Cannon"
+    },
+    {
+      "Range": "40-41",
+      "Tech": "The Demigod"
+    },
+    {
+      "Range": "42-43",
+      "Tech": "Grip Gloves"
+    },
+    {
+      "Range": "44-45",
+      "Tech": "Engineering Kit (TL5)"
+    },
+    {
+      "Range": "46-47",
+      "Tech": "Space Suit (Medium)"
+    },
+    {
+      "Range": "48-49",
+      "Tech": "Permatek"
+    },
+    {
+      "Range": "50-51",
+      "Tech": "Bradbury Self-Shield"
+    },
+    {
+      "Range": "52-53",
+      "Tech": "Aramid Survival Suit, MK2"
+    },
+    {
+      "Range": "54-55",
+      "Tech": "Infinity"
+    },
+    {
+      "Range": "56-57",
+      "Tech": "Buzz Baton"
+    },
+    {
+      "Range": "58-59",
+      "Tech": "Cyclotron Rifle"
+    },
+    {
+      "Range": "60-61",
+      "Tech": "River Expansion"
+    },
+    {
+      "Range": "62-63",
+      "Tech": "Sonic Stunner"
+    },
+    {
+      "Range": "64-65",
+      "Tech": "Blinder Mail"
+    },
+    {
+      "Range": "66-67",
+      "Tech": "Super Heavy Grappling Hook"
+    },
+    {
+      "Range": "68-69",
+      "Tech": "Darktech Regenerator"
+    },
+    {
+      "Range": "70-71",
+      "Tech": "Boom Gauntlet"
+    },
+    {
+      "Range": "72-73",
+      "Tech": "Covenant Rifle"
+    },
+    {
+      "Range": "74-75",
+      "Tech": "Power Hooks"
+    },
+    {
+      "Range": "76-77",
+      "Tech": "Rocket Hammer"
+    },
+    {
+      "Range": "78-79",
+      "Tech": "Electro-Optical Sensor"
+    },
+    {
+      "Range": "80-81",
+      "Tech": "Nanotech Armor"
+    },
+    {
+      "Range": "82-83",
+      "Tech": "Fatal Volley"
+    },
+    {
+      "Range": "84-85",
+      "Tech": "Advanced Wasteland Armor"
+    },
+    {
+      "Range": "86-87",
+      "Tech": "Molten Mail"
+    },
+    {
+      "Range": "88-89",
+      "Tech": "Space Suit (Heavy)"
+    },
+    {
+      "Range": "90-91",
+      "Tech": "Gravity Lens"
+    },
+    {
+      "Range": "92-93",
+      "Tech": "Cambion"
+    },
+    {
+      "Range": "94-95",
+      "Tech": "Energy Shield"
+    },
+    {
+      "Range": "96",
+      "Tech": "ESP Pistol"
+    },
+    {
+      "Range": "97",
+      "Tech": "Sick Stick"
+    },
+    {
+      "Range": "98",
+      "Tech": "Yowie Suit MK2"
+    },
+    {
+      "Range": "99",
+      "Tech": "SPP Pistol"
+    },
+    {
+      "Range": "100",
+      "Tech": "SPP Rifle"
+    }
+  ]
+}

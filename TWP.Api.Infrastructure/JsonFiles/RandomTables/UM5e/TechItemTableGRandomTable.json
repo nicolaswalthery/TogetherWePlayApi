@@ -1,0 +1,108 @@
+{
+  "TechItemTableG": [
+    {
+      "Range": "01-19",
+      "Tech": "Loot And Shoot"
+    },
+    {
+      "Range": "20-25",
+      "Tech": "Ultrasound Goggles"
+    },
+    {
+      "Range": "25-30",
+      "Tech": "Ion Cannon"
+    },
+    {
+      "Range": "31-37",
+      "Tech": "Necrotizer"
+    },
+    {
+      "Range": "38-42",
+      "Tech": "Barrel Blaster"
+    },
+    {
+      "Range": "43-47",
+      "Tech": "Deployable Shield"
+    },
+    {
+      "Range": "48-51",
+      "Tech": "Nuclear Pellet Pistol"
+    },
+    {
+      "Range": "52-55",
+      "Tech": "Coil Pistol"
+    },
+    {
+      "Range": "56-59",
+      "Tech": "Coil Light Gun"
+    },
+    {
+      "Range": "60-62",
+      "Tech": "Nuclear Particle Lance"
+    },
+    {
+      "Range": "63-65",
+      "Tech": "Endothermic Rifle"
+    },
+    {
+      "Range": "66-68",
+      "Tech": "Light Bender"
+    },
+    {
+      "Range": "69-71",
+      "Tech": "Smart Pistol"
+    },
+    {
+      "Range": "72-74",
+      "Tech": "Holographic Generator"
+    },
+    {
+      "Range": "75-77",
+      "Tech": "Repulsor Engine"
+    },
+    {
+      "Range": "78-80",
+      "Tech": "Proton Wand"
+    },
+    {
+      "Range": "81-83",
+      "Tech": "Rail Pistol"
+    },
+    {
+      "Range": "84-86",
+      "Tech": "Nailgun"
+    },
+    {
+      "Range": "87-89",
+      "Tech": "Linear Collider"
+    },
+    {
+      "Range": "90-91",
+      "Tech": "Solid Laser Pistol"
+    },
+    {
+      "Range": "92-93",
+      "Tech": "Harmonic Blade"
+    },
+    {
+      "Range": "94-95",
+      "Tech": "F.A.S.T."
+    },
+    {
+      "Range": "96-97",
+      "Tech": "Punch Laser Gun"
+    },
+    {
+      "Range": "98",
+      "Tech": "Solid Laser Rifle"
+    },
+    {
+      "Range": "99",
+      "Tech": "Arc Rifle"
+    },
+    {
+      "Range": "100",
+      "Tech": "Biosuit"
+    }
+  ]
+}

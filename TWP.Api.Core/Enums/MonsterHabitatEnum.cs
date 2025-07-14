@@ -1,0 +1,39 @@
+﻿namespace TWP.Api.Core.Enums
+{
+    public enum MonsterHabitatEnum
+    {
+        None = 0,
+        Any,
+        Arctic,
+        Coastal,
+        Desert,
+        Feywild,
+        Forest,
+        Grassland,
+        Hill,
+        Mountain,
+        Planar_Abyss,
+        Planar_Acheron,
+        Planar_AstralPlane,
+        Planar_Beastlands,
+        Planar_ElementalChaos,
+        Planar_ElementalPlaneOfAir,
+        Planar_ElementalPlaneOfEarth,
+        Planar_ElementalPlaneOfFire,
+        Planar_ElementalPlaneOfWater,
+        Planar_ElementalPlanes,
+        Planar_Ethereal,
+        Planar_Feywild,
+        Planar_Gehenna,
+        Planar_Limbo,
+        Planar_LowerPlanes,
+        Planar_Mechanus,
+        Planar_NineHells,
+        Planar_Shadowfell,
+        Planar_UpperPlanes,
+        Swamp,
+        Underdark,
+        Underwater,
+        Urban
+    }
+}

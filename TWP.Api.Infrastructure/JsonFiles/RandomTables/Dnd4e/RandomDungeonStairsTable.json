@@ -1,0 +1,11 @@
+{
+  "stairs": [
+    {"d20": "1", "stairs": "Up to dead end"},
+    {"d20": "2", "stairs": "Down to dead end"},
+    {"d20": "3-9", "stairs": "Down one floor"},
+    {"d20": "10-14", "stairs": "Up one floor"},
+    {"d20": "15-17", "stairs": "Trapdoor plus ladder up one floor"},
+    {"d20": "18-19", "stairs": "Trapdoor plus ladder down one floor"},
+    {"d20": "20", "stairs": "Shaft up and down, one floor each way"}
+  ]
+}

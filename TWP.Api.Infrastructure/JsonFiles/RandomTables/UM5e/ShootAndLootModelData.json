@@ -1,0 +1,104 @@
+{
+    "ModelData": [
+      {
+        "d20": "1",
+        "Model": "X-T-R",
+        "Benefit": "Ricochet : If a target is within 5 feet of indestructible terrain and you miss with your initial hit, you can make a second attack and infl ict half damage. If you impose a Dexterity saving throw, increases the DC by 2."
+      },
+      {
+        "d20": "2",
+        "Model": "2000",
+        "Benefit": "Chain : If you score a critical hit on a target, make a second attack against one creature within 20 feet (your choice) of the first one."
+      },
+      {
+        "d20": "3",
+        "Model": "DL-44",
+        "Benefit": "Lingering : If you score a critical hit on a target, it suffers additional damage equal to your attack ability modifier at the beginning of your next turn."
+      },
+      {
+        "d20": "4",
+        "Model": "M-99",
+        "Benefit": "Gunner : Increase magazine size by 100%; reduce attack bonus by 1 (min 0)."
+      },
+      {
+        "d20": "5",
+        "Model": "90K",
+        "Benefit": "Rifling : Reduce magazine size by 60% (round down); increase attack bonus by 1 (max +3)."
+      },
+        {
+            "d20": "6",
+            "Model": "Special",
+            "Benefit": "Defense"
+        },
+      {
+        "d20": "7",
+        "Model": "Cannon",
+        "Benefit": "Caliber : Reduce magazine size by 60% (round down); increase damage by one step (1d4 to 1d6 to 1d8 to 1d10 to 1d12 to 2d6 to 2d8 to 1d6+6 to 1d8+8 to 1d10+10 to 1d12+12)."
+      },
+      {
+        "d20": "8",
+        "Model": "Model One",
+        "Benefit": "Regeneration : No matter the magazine size or type, at the beginning of your turn, you regenerate one round. Increase the tech level of the item to 4 (unless already higher)."
+      },
+      {
+        "d20": "9",
+        "Model": "VC5",
+        "Benefit": "Blade : Your weapon is equipped with a blade either as an undermount or as part of the barrel. One-handed and two-handed small arms gain any one light weapon. Heavy weapons can have a two-handed weapon, and a super heavy weapon can have up to a heavy weapon (for some reason)."
+      },
+      {
+        "d20": "10",
+        "Model": "EX",
+        "Benefit": "Velocity : When infl icting a critical hit, roll all damage dice thrice instead of twice."
+      },
+      {
+        "d20": "11",
+        "Model": "Pearl",
+        "Benefit": "Expensive : This is a well-made weapon; its base cost is tripled for the purpose of selling it."
+      },
+      {
+        "d20": "12",
+        "Model": "VF",
+        "Benefit": "Tracking : Spend a bonus action to lock onto a target you can see; you have advantage with all attack rolls against the target until the beginning of your next turn. Increase the tech level of the item to 4 (unless already higher)."
+      },
+      {
+        "d20": "13",
+        "Model": "PPP",
+        "Benefit": "Rust : If you hit a nonmagical ferrous metal object not being worn or carried, you destroy a 1-foot cube of it. If you score a critical hit on armor, it takes a permanent and cumulative -1 penalty to AC. Armor reduced to an AC of 10 or a Shield that drops to a +0 bonus is destroyed. Increase the tech level of the item to 4 (unless already higher)."
+      },
+      {
+        "d20": "14",
+        "Model": "GG",
+        "Benefit": "Void : As an action, your weapon assembles in your hand/s from a warp pocket contained in a bracelet you wear. A two-handed or larger weapon requires two bracelets. Stowing your weapon also takes an action. Increase the tech level of the item to 5 (unless already)."
+      },
+      {
+        "d20": "15",
+        "Model": "1337",
+        "Benefit": "Extension : Increase normal range by 100%; increase maximum range by 200%."
+      },
+      {
+        "d20": "16",
+        "Model": "E-Tech",
+        "Benefit": "Criticality : You infl ict a critical hit with a natural 19 or 20. With area affects, you score a critical hit if the target rolls a natural 1 or 2 and fails the save."
+      },
+      {
+        "d20": "17",
+        "Model": "ZF-1",
+        "Benefit": "Replay : If you score a critical hit on a target, you have advantage to attack rolls against that same target until you change targets or miss. Increase the tech level of the item to 4 (unless already higher)."
+      },
+      {
+        "d20": "18",
+        "Model": "101",
+        "Benefit": "Echo : Once per turn, if you hit a target, make an identical attack against that same target."
+      },
+      {
+        "d20": "19",
+        "Model": "XM-18",
+        "Benefit": "Polymer : Reduce the weapon’s weight by 75%. It is considered one class of weapon smaller (super heavy weapon > heavy weapon > two-handed small arm > one-handed small arm). Its combat stats do not change. It can lose the heavy property or gain the light property."
+      },
+      {
+        "d20": "20",
+        "Model": "EM-1",
+        "Benefit": "Vigor : If you hit a target with this weapon or a target fails a save against you, you recover 1 hit point. This can only occur during your turn, and the maximum number of hit points recovered this way depends on your level (1st-5th level—1 hit point; 6th-10th level—2 hit points; 11th-15th level—3 hit points; 16th-20th level—4 hit points). Increase the tech level of the item to 5 (unless already)"
+      }
+    ]
+}

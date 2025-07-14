@@ -70,5 +70,22 @@
 
         public static string DisplayLineByLine(this string[] strings)
             => string.Join("\r\n", strings);
+
+        public static int CountOccurrences(this string text, string searchString)
+        {
+            if (string.IsNullOrEmpty(text) || string.IsNullOrEmpty(searchString))
+                return 0;
+
+            int count = 0;
+            int currentIndex = 0;
+
+            while ((currentIndex = text.IndexOf(searchString, currentIndex, StringComparison.Ordinal)) != -1)
+            {
+                count++;
+                currentIndex += searchString.Length;
+            }
+
+            return count;
+        }
     }
 }
