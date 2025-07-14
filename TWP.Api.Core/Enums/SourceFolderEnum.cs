@@ -12,6 +12,7 @@
         Pathfinder2eMonsterCore,
         Pathfinder2eNpcCore,
         Pathfinder2eRollableTables,
-        Pathfinder2eConditions
+        Pathfinder2eConditions,
+        Dnd5eEncounterData
     }
 }

@@ -4,10 +4,9 @@ namespace TWP.Api.Infrastructure.JsonRepositories
 {
     public class Pathfinder2eDataJsonRepositoryBase : JsonRepositoryBase
     {
-        public Pathfinder2eDataJsonRepositoryBase(SourceFolderEnum folderName) 
-            : base(parentFolderName: @"Pathfinders2eData", folderName)
+        public Pathfinder2eDataJsonRepositoryBase(SourceFolderEnum nestedfolderName) 
+            : base(parentFolderName: @"Pathfinders2eData", nestedfolderName)
         {
         }
-
     }
 }
