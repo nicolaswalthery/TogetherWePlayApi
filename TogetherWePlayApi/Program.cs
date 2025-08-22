@@ -1,14 +1,56 @@
+using Common.Extensions;
+using Common.Security;
+using Microsoft.OpenApi.Models;
 using TogetherWePlayApi.Controllers;
 using TWP.Api.Application.BusinessLayers;
 using TWP.Api.Application.BusinessLayers.Interfaces;
 using TWP.Api.Controllers.Interfaces;
-using TWP.Api.Infrastructure.JsonRepositories;
-using TWP.Api.Infrastructure.JsonRepositories.Interfaces;
 using TWP.Api.Infrastructure.CsvRepositories;
 using TWP.Api.Infrastructure.CsvRepositories.Interfaces;
 using TWP.Api.Infrastructure.Interops;
+using TWP.Api.Infrastructure.JsonRepositories;
+using TWP.Api.Infrastructure.JsonRepositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//Api Key Settings
+builder.Services.Configure<ApiKeyOptions>(builder.Configuration.GetSection(ApiKeyOptions.SectionName));
+
+//Singleton pour le middleware d'API Key
+builder.Services.AddSingleton<ApiKeyOptions>(sp =>
+{ 
+    var options = new ApiKeyOptions();
+    builder.Configuration.GetSection(ApiKeyOptions.SectionName).Bind(options);
+
+    var envApiKey = Environment.GetEnvironmentVariable("API_KEY");
+    if (envApiKey.IsNotNullOrEmptyOrWhiteSpace())
+    {
+        options.ApiKeys.Clear();
+        options.ApiKeys.Add(new ApiKeyConfiguration
+        {
+            Key = envApiKey!,
+            Name = "Production",
+            IsActive = true
+        });
+    }
+
+    return options;
+
+});
+
+// 3. Cache pour le rate limiting (Api Key)
+builder.Services.AddMemoryCache();
+
+// 4. CORS pour Make/n8n
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("ApiPolicy", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
 
 // Add services to the container.
 builder.Services.AddTransient<JsonRepositoryBase>();
@@ -42,23 +84,84 @@ builder.Services.AddControllers()
                     options.JsonSerializerOptions.WriteIndented = false;
                 });
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+//Swagger
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "TogetherWePlay API",
+        Version = "v1",
+        Description = "API sécurisée pour D&D et autres jeux de rôle"
+    });
+
+    // Ajouter le support de l'API Key dans Swagger
+    c.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
+    {
+        Type = SecuritySchemeType.ApiKey,
+        In = ParameterLocation.Header,
+        Name = "X-API-Key",
+        Description = "Entrez votre API Key"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "ApiKey"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// ===== PIPELINE =====
+
+// CORS (avant tout le reste)
+app.UseCors("ApiPolicy");
+
+// HTTPS Redirection
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
+
+// Swagger UI (seulement en dev)
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "TogetherWePlay API v1");
+    });
 }
 
-app.UseHttpsRedirection();
+// Health Check PUBLIC (pour Railway)
+app.MapGet("/health", () => Results.Ok(new
+{
+    status = "healthy",
+    timestamp = DateTime.UtcNow,
+    environment = app.Environment.EnvironmentName
+}))
+.AllowAnonymous()
+.WithName("HealthCheck")
+.WithTags("Monitoring");
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Log de démarrage
+app.Logger.LogInformation("?? TogetherWePlay API Started");
+app.Logger.LogInformation($"?? Environment: {app.Environment.EnvironmentName}");
+app.Logger.LogInformation($"?? API Key Security: Enabled");
+app.Logger.LogInformation($"?? Ready for D&D adventures!");
 
 app.Run();
