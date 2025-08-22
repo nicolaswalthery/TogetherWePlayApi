@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Common.Security
@@ -10,37 +11,30 @@ namespace Common.Security
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class RequiredApiKeyAttribute : Attribute, IAsyncActionFilter
     {
-        public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        // Common/Security/RequiredApiKeyAttribute.cs
+        public async Task OnActionExecutionAsync(
+            ActionExecutingContext context,
+            ActionExecutionDelegate next)
         {
-            // 1. Vérifier le header
+            // 1. Récupérer la clé fournie
             if (!context.HttpContext.Request.Headers.TryGetValue("X-API-Key", out var providedKey))
             {
                 context.Result = new UnauthorizedObjectResult(new
                 {
                     status = "error",
-                    message = "API Key is missing"
+                    message = "API Key missing"
                 });
                 return;
             }
 
-            // 2. Récupérer les options de configuration
-            var options = context.HttpContext.RequestServices.GetRequiredService<ApiKeyOptions>();
+            // 2. Récupérer LA clé valide (une seule source de vérité)
+            var validKey =
+                Environment.GetEnvironmentVariable("API_KEY") ??  // Priorité 1: Env
+                context.HttpContext.RequestServices
+                    .GetRequiredService<IConfiguration>()["Security:ApiKey"];  // Priorité 2: Config
 
-            // 3. Vérifier d'abord la variable d'environnement
-            var envKey = Environment.GetEnvironmentVariable("API_KEY");
-            if (!string.IsNullOrEmpty(envKey) && envKey.Equals(providedKey.ToString()))
-            {
-                context.HttpContext.Items["ApiKey"] = providedKey.ToString();
-                await next();
-                return;
-            }
-
-            // 4. Vérifier dans la liste des API Keys configurées
-            var isValid = options.ApiKeys.Any(k =>
-                k.IsActive &&
-                k.Key.Equals(providedKey.ToString()));
-
-            if (!isValid)
+            // 3. Valider
+            if (string.IsNullOrEmpty(validKey) || !validKey.Equals(providedKey.ToString()))
             {
                 context.Result = new UnauthorizedObjectResult(new
                 {
@@ -50,6 +44,7 @@ namespace Common.Security
                 return;
             }
 
+            // 4. Succès - continuer vers le controller
             context.HttpContext.Items["ApiKey"] = providedKey.ToString();
             await next();
         }
