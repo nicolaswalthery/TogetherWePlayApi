@@ -1,13 +1,13 @@
+using Common.Security;
 using Microsoft.AspNetCore.Mvc;
 using TWP.Api.Application.BusinessLayers.Interfaces;
-using TWP.Api.Application.DataTransferObjects;
 using TWP.Api.Controllers.Interfaces;
-using Common.ResultPattern;
 
 namespace TogetherWePlayApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [RequiredApiKey]
     public class UltraModern5eController : ControllerBase<UltraModern5eController>, IUltraModern5eController
     {
         private readonly IUltraModern5eBusinessLayer _ultraModern5eBusinessLayer;
