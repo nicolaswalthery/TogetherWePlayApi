@@ -19,7 +19,7 @@ namespace Common.Security
         /// </summary>
         /// <param name="headerName">HTTP Header name</param>
         /// <param name="configKey">configuration for the Api Key</param>
-        public RequiredApiKeyAttribute(string headerName, string configKey)
+        public RequiredApiKeyAttribute(string configKey, string headerName = "X-API-Key")
         {
             _headerName = headerName;
             _configKey = configKey;
