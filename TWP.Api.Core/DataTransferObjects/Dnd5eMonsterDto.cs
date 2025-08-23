@@ -123,7 +123,7 @@ namespace TWP.Api.Core.DataTransferObjects
         /// XP data without any commas.
         /// </summary>
         public int SanitizedXp 
-            => XP.Replace(",", "").Trim().ToInt();
+            => XP.IsNotNullOrEmptyOrWhiteSpace() ? XP.Replace(",", "").Trim().ToInt() : 0;
 
         public double SanitizedCr => ParseCrToDouble(CR);
 
