@@ -1,7 +1,8 @@
-using Common.Extensions;
+﻿using Common.Extensions;
 using Common.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using System.Text.Json;
 using TogetherWePlayApi.Controllers;
 using TWP.Api.Application.BusinessLayers;
 using TWP.Api.Application.BusinessLayers.Interfaces;
@@ -14,11 +15,27 @@ using TWP.Api.Infrastructure.JsonRepositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// ===== CONFIGURATION DU LOGGING SELON L'ENVIRONNEMENT =====
+if (builder.Environment.IsDevelopment())
+{
+    builder.Logging.ClearProviders();
+    builder.Logging.AddConsole();
+    builder.Logging.AddDebug();
+    builder.Logging.SetMinimumLevel(LogLevel.Debug);
+}
+else
+{
+    builder.Logging.ClearProviders();
+    builder.Logging.AddConsole();
+    builder.Logging.AddFilter("Microsoft.EntityFrameworkCore", LogLevel.Warning);
+    builder.Logging.SetMinimumLevel(LogLevel.Information);
+}
+
 //Api Key Settings
 builder.Services.Configure<ApiKeyOptions>(builder.Configuration.GetSection(ApiKeyOptions.SectionName));
 
 //Singleton pour le middleware d'API Key
-builder.Services.AddSingleton<ApiKeyOptions>(sp =>
+builder.Services.AddSingleton(sp =>
 { 
     var options = new ApiKeyOptions();
     builder.Configuration.GetSection(ApiKeyOptions.SectionName).Bind(options);
@@ -42,32 +59,85 @@ builder.Services.AddSingleton<ApiKeyOptions>(sp =>
 // 3. Cache pour le rate limiting (Api Key)
 builder.Services.AddMemoryCache();
 
-// 4. CORS pour Make/n8n
+// ===== CORS CONFIGURATION =====
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("ApiPolicy", policy =>
     {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
+        if (builder.Environment.IsDevelopment())
+        {
+            // Dev : Accepter toutes les origines
+            policy.AllowAnyOrigin()
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
+        }
+        else
+        {
+            // Production : Être plus restrictif
+            var allowedOrigins = Environment.GetEnvironmentVariable("ALLOWED_ORIGINS")?.Split(',')
+                                ?? new[] { "*" }; // Fallback si non configuré
+
+            if (allowedOrigins.Contains("*"))
+            {
+                policy.AllowAnyOrigin()
+                      .AllowAnyMethod()
+                      .AllowAnyHeader();
+            }
+            else
+            {
+                policy.WithOrigins(allowedOrigins)
+                      .AllowAnyMethod()
+                      .AllowAnyHeader()
+                      .AllowCredentials();
+            }
+        }
     });
 });
 
+// ===== ENTITY FRAMEWORK / DATABASE CONFIGURATION =====
 builder.Services.AddDbContext<DataContext>(options =>
 {
-    options.UseNpgsql(connectionString)
-           .EnableSensitiveDataLogging() // En d�veloppement seulement
-           .EnableServiceProviderCaching()
-           .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+    // Récupérer la connection string depuis les variables d'environnement en priorité
+    var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL")
+                          ?? builder.Configuration.GetConnectionString("DefaultConnection");
+
+    if (string.IsNullOrEmpty(connectionString))
+        throw new InvalidOperationException("Connection string 'DATABASE_URL' or 'DefaultConnection' not found.");
+
+    // Configuration PostgreSQL
+    options.UseNpgsql(connectionString, npgsqlOptions =>
+    {
+        npgsqlOptions.MigrationsAssembly(typeof(DataContext).Assembly.FullName);
+        npgsqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 3,
+            maxRetryDelay: TimeSpan.FromSeconds(5),
+            errorCodesToAdd: null);
+    });
+
+    // Options spécifiques à l'environnement
+    if (builder.Environment.IsDevelopment())
+    {
+        options.EnableSensitiveDataLogging() // Affiche les valeurs des paramètres dans les logs
+               .EnableDetailedErrors()        // Erreurs détaillées
+               .LogTo(Console.WriteLine, LogLevel.Information); // Log SQL dans la console
+    }
+    else
+    {
+        options.EnableServiceProviderCaching()
+               .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+    }
 });
 
-// Add services to the container.
+// ===== REPOSITORIES =====
+// JSON Repositories
 builder.Services.AddTransient<JsonRepositoryBase>();
 builder.Services.AddTransient<IMonsterActivitiesJsonRepository, MonsterActivitiesJsonRepository>();
 builder.Services.AddTransient<ISomethingHappenJsonRepository, SomethingHappenJsonRepository>();
 builder.Services.AddTransient<IUltraModern5eJsonRepository, UltraModern5eJsonRepository>();
 builder.Services.AddTransient<IPathfinder2eMonsterCoreJsonRepository, Pathfinder2eMonsterCoreJsonRepository>();
 builder.Services.AddTransient<IPathfinder2eConditionsJsonRepository, Pathfinder2eConditionsJsonRepository>();
+
+// CSV Repositories
 builder.Services.AddTransient<CsvRepositoryBase>();
 builder.Services.AddTransient<IDnd2024AllMonsterStatsCsvRepository, Dnd2024AllMonsterStatsCsvRepository>();
 builder.Services.AddTransient<IDnd5eEncounterDataJsonRepository, Dnd5eEncounterDataJsonRepository>();
@@ -75,11 +145,13 @@ builder.Services.AddTransient<IDnd5eEncounterDataJsonRepository, Dnd5eEncounterD
 // Add LLM Services
 builder.Services.AddTransient<IOpenAiInterops, OpenAiInterops>();
 
+// ===== BUSINESS LAYERS =====
 builder.Services.AddTransient<IDndEncounterBusinessLayer, Dnd5eEncounterBusinessLayer>();
 builder.Services.AddTransient<IUltraModern5eBusinessLayer, UltraModern5eBusinessLayer>();
 builder.Services.AddTransient<IPathfinder2eBusinessLayer, Pathfinder2eBusinessLayer>();
 builder.Services.AddTransient<IDnd5eMonsterBusinessLayer, Dnd5eMonsterBusinessLayer>();
 
+// ===== CONTROLLERS =====
 builder.Services.AddTransient<IDndController, DndController>();
 builder.Services.AddTransient<IUltraModern5eController, UltraModern5eController>();
 builder.Services.AddTransient<IPathfinder2eController, Pathfinder2eController>();
@@ -93,84 +165,254 @@ builder.Services.AddControllers()
                     options.JsonSerializerOptions.WriteIndented = false;
                 });
 
-//Swagger
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
+// ===== SWAGGER CONFIGURATION =====
+// Swagger activé en dev ou si explicitement demandé
+if (builder.Environment.IsDevelopment() ||
+    Environment.GetEnvironmentVariable("ENABLE_SWAGGER") == "true")
 {
-    c.SwaggerDoc("v1", new OpenApiInfo
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen(c =>
     {
-        Title = "TogetherWePlay API",
-        Version = "v1",
-        Description = "API s�curis�e pour D&D et autres jeux de r�le"
-    });
-
-    // Ajouter le support de l'API Key dans Swagger
-    c.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
-    {
-        Type = SecuritySchemeType.ApiKey,
-        In = ParameterLocation.Header,
-        Name = "X-API-Key",
-        Description = "Entrez votre API Key"
-    });
-
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
+        c.SwaggerDoc("v1", new OpenApiInfo
         {
-            new OpenApiSecurityScheme
+            Title = "TogetherWePlay API",
+            Version = "v1",
+            Description = builder.Environment.IsDevelopment()
+                ? "API sécurisée pour D&D et autres jeux de rôle (Development)"
+                : "API sécurisée pour D&D et autres jeux de rôle",
+            Contact = new OpenApiContact
             {
-                Reference = new OpenApiReference
+                Name = "TWP Support",
+                Email = "support@togetherweplay.com"
+            }
+        });
+
+        // Support de l'API Key dans Swagger
+        c.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
+        {
+            Type = SecuritySchemeType.ApiKey,
+            In = ParameterLocation.Header,
+            Name = "X-API-Key",
+            Description = "Entrez votre API Key"
+        });
+
+        c.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
                 {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "ApiKey"
-                }
-            },
-            Array.Empty<string>()
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "ApiKey"
+                    }
+                },
+                Array.Empty<string>()
+            }
+        });
+
+        // Si vous avez des commentaires XML
+        var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+        var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+        if (File.Exists(xmlPath))
+        {
+            c.IncludeXmlComments(xmlPath);
         }
     });
-});
+}
+
+// ===== HEALTH CHECKS =====
+builder.Services.AddHealthChecks().AddDbContextCheck<DataContext>("database");
 
 var app = builder.Build();
 
-// ===== PIPELINE =====
+// ===== DATABASE MIGRATION & SEEDING =====
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var loggerService = services.GetRequiredService<ILogger<Program>>();
 
+    try
+    {
+        var context = services.GetRequiredService<DataContext>();
+
+        if (app.Environment.IsDevelopment())
+        {
+            // En dev, appliquer automatiquement les migrations
+            loggerService.LogInformation("📦 Applying database migrations...");
+            await context.Database.MigrateAsync();
+            loggerService.LogInformation("✅ Database migrations applied successfully");
+        }
+        else
+        {
+            // En production, vérifier que la DB est accessible
+            var canConnect = await context.Database.CanConnectAsync();
+            if (!canConnect)
+            {
+                loggerService.LogError("❌ Cannot connect to database!");
+                throw new Exception("Database connection failed");
+            }
+            loggerService.LogInformation("✅ Database connection verified");
+
+            // Optionnel : Vérifier si des migrations sont en attente
+            var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
+            if (pendingMigrations.Any())
+            {
+                loggerService.LogWarning($"⚠️ There are {pendingMigrations.Count()} pending migrations");
+                // En production, vous pourriez vouloir les appliquer automatiquement ou non
+                // await context.Database.MigrateAsync();
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        loggerService.LogError(ex, "❌ An error occurred while setting up the database");
+        if (!app.Environment.IsDevelopment())
+        {
+            throw; // En production, arrêter l'application si la DB n'est pas accessible
+        }
+    }
+}
+
+// ===== MIDDLEWARE PIPELINE =====
 // CORS (avant tout le reste)
 app.UseCors("ApiPolicy");
 
-// HTTPS Redirection
+// HTTPS Redirection & HSTS
 if (!app.Environment.IsDevelopment())
 {
     app.UseHttpsRedirection();
+    app.UseHsts(); // HTTP Strict Transport Security
 }
 
-// Swagger UI (seulement en dev)
+// Request logging en développement
 if (app.Environment.IsDevelopment())
+{
+    app.Use(async (context, next) =>
+    {
+        app.Logger.LogDebug($"📥 {context.Request.Method} {context.Request.Path}");
+        await next();
+        app.Logger.LogDebug($"📤 {context.Request.Method} {context.Request.Path} -> {context.Response.StatusCode}");
+    });
+}
+
+// Swagger UI
+if (app.Environment.IsDevelopment() ||
+    Environment.GetEnvironmentVariable("ENABLE_SWAGGER") == "true")
 {
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "TogetherWePlay API v1");
+
+        if (!app.Environment.IsDevelopment())
+        {
+            c.RoutePrefix = "api-docs"; // Change l'URL en production
+        }
+
+        // Personnalisation UI
+        c.DocumentTitle = "TWP API Documentation";
+        c.EnableDeepLinking();
+        c.DisplayRequestDuration();
     });
 }
 
-// Health Check PUBLIC (pour Railway)
-app.MapGet("/health", () => Results.Ok(new
+// Health Check Endpoints
+app.MapHealthChecks("/health", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
 {
-    status = "healthy",
-    timestamp = DateTime.UtcNow,
-    environment = app.Environment.EnvironmentName
-}))
+    ResponseWriter = async (context, report) =>
+    {
+        context.Response.ContentType = "application/json";
+
+        var result = new
+        {
+            status = report.Status.ToString(),
+            timestamp = DateTime.UtcNow,
+            environment = app.Environment.EnvironmentName,
+            version = Environment.GetEnvironmentVariable("APP_VERSION") ?? "1.0.0",
+            checks = report.Entries.Select(e => new
+            {
+                name = e.Key,
+                status = e.Value.Status.ToString(),
+                description = e.Value.Description,
+                duration = e.Value.Duration.TotalMilliseconds
+            })
+        };
+
+        var json = JsonSerializer.Serialize(result, new JsonSerializerOptions
+        {
+            WriteIndented = true
+        });
+
+        await context.Response.WriteAsync(json);
+    }
+})
 .AllowAnonymous()
 .WithName("HealthCheck")
 .WithTags("Monitoring");
 
+// Endpoint simple pour Railway/monitoring
+app.MapGet("/health/simple", () => "OK")
+    .AllowAnonymous()
+    .ExcludeFromDescription(); // Exclure de Swagger
+
+// Debug endpoints (seulement en dev)
+if (app.Environment.IsDevelopment())
+{
+    app.MapGet("/debug/config", (IConfiguration config) => Results.Ok(new
+    {
+        environment = app.Environment.EnvironmentName,
+        connectionStringConfigured = !string.IsNullOrEmpty(config.GetConnectionString("DefaultConnection")),
+        openAiConfigured = !string.IsNullOrEmpty(config["OpenAI:ApiKey"]),
+        securityEnabled = config.GetValue<bool>("Security:EnableRateLimiting"),
+        apiKeyConfigured = !string.IsNullOrEmpty(config["Security:ApiKey"])
+    }))
+    .WithName("DebugConfig")
+    .WithTags("Debug")
+    .AllowAnonymous();
+
+    app.MapGet("/debug/env", () => Results.Ok(new
+    {
+        environment = app.Environment.EnvironmentName,
+        isDevelopment = app.Environment.IsDevelopment(),
+        isProduction = app.Environment.IsProduction(),
+        contentRoot = app.Environment.ContentRootPath,
+        webRoot = app.Environment.WebRootPath
+    }))
+    .WithName("DebugEnvironment")
+    .WithTags("Debug")
+    .AllowAnonymous();
+}
+
+// Authorization middleware
 app.UseAuthorization();
 
+// Map controllers
 app.MapControllers();
 
-// Log de d�marrage
-app.Logger.LogInformation("?? TogetherWePlay API Started");
-app.Logger.LogInformation($"?? Environment: {app.Environment.EnvironmentName}");
-app.Logger.LogInformation($"?? API Key Security: Enabled");
-app.Logger.LogInformation($"?? Ready for D&D adventures!");
+// ===== STARTUP LOGS =====
+var logger = app.Services.GetRequiredService<ILogger<Program>>();
+logger.LogInformation("🚀 TogetherWePlay API Started");
+logger.LogInformation($"📍 Environment: {app.Environment.EnvironmentName}");
+logger.LogInformation($"🔒 API Key Security: Enabled");
+logger.LogInformation($"📊 Database: {(app.Environment.IsDevelopment() ? "Local PostgreSQL" : "Production Database")}");
+logger.LogInformation($"🌐 CORS: {(app.Environment.IsDevelopment() ? "Allow All Origins" : "Restricted")}");
 
+if (app.Environment.IsDevelopment())
+{
+    var urls = app.Urls.FirstOrDefault() ?? "http://localhost:5000";
+    logger.LogInformation($"📚 Swagger UI: {urls}/swagger");
+    logger.LogInformation($"🔍 Health Check: {urls}/health");
+    logger.LogInformation($"🐛 Debug Endpoints: {urls}/debug/config & {urls}/debug/env");
+    logger.LogInformation($"💡 Tip: Set ASPNETCORE_ENVIRONMENT to 'Production' to test prod config");
+}
+else
+{
+    logger.LogInformation($"🔐 Production mode active - Sensitive data logging disabled");
+    logger.LogInformation($"📈 Health endpoint: /health");
+}
+
+logger.LogInformation($"🐉 Ready for D&D adventures!");
+
+// Run the application
 app.Run();

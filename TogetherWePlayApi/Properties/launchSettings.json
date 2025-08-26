@@ -1,30 +1,67 @@
 ﻿{
-  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "$schema": "https://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:29469",
-      "sslPort": 44386
+      "applicationUrl": "http://localhost:5000",
+      "sslPort": 44300
     }
   },
   "profiles": {
-    "http": {
+    "Development": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "http://localhost:5087",
+      "applicationUrl": "https://localhost:7001;http://localhost:5001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "https": {
+    "Development (No HTTPS)": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7212;http://localhost:5087",
+      "applicationUrl": "http://localhost:5001",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "Production (Local Test)": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "applicationUrl": "https://localhost:7002;http://localhost:5002",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production",
+        "DATABASE_URL": "Host=localhost;Port=5432;Database=TogetherWePlay_Prod;Username=postgres;Password=prodpassword",
+        "API_KEY": "test-production-key-secure-123",
+        "OPENAI_API_KEY": "sk-production-test-key",
+        "ALLOWED_ORIGINS": "https://localhost:3000,http://localhost:3000",
+        "ENABLE_SWAGGER": "true",
+        "APP_VERSION": "1.0.0-local"
+      }
+    },
+    "Staging": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "applicationUrl": "https://localhost:7003;http://localhost:5003",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Staging",
+        "DATABASE_URL": "Host=localhost;Port=5432;Database=TogetherWePlay_Staging;Username=postgres;Password=stagingpassword",
+        "API_KEY": "staging-key-123",
+        "ENABLE_SWAGGER": "true"
+      }
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
+      "publishAllPorts": true,
+      "useSSL": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
