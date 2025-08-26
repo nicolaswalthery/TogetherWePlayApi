@@ -1,5 +1,6 @@
 using Common.Extensions;
 using Common.Security;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using TogetherWePlayApi.Controllers;
 using TWP.Api.Application.BusinessLayers;
@@ -50,6 +51,14 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod()
               .AllowAnyHeader();
     });
+});
+
+builder.Services.AddDbContext<DataContext>(options =>
+{
+    options.UseNpgsql(connectionString)
+           .EnableSensitiveDataLogging() // En développement seulement
+           .EnableServiceProviderCaching()
+           .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
 
 // Add services to the container.
