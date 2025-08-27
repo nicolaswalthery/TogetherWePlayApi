@@ -17,10 +17,8 @@ public class DataContext : DbContext
         IWebHostEnvironment? environment = null)
         : base(options)
     {
-        _logger = logger;
-        _environment = environment;
     }
-    // DbSets for all entities
+    
     public DbSet<Monster5eDbEntity> Monsters { get; set; }
     public DbSet<ActionDbEntity> MonsterActions { get; set; }
     public DbSet<FeatureDbEntity> Features { get; set; }
