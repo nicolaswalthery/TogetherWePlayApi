@@ -2,7 +2,8 @@
 {
     public enum AlignmentEnum
     {
-        LawfulGood = 1,
+        Any = 1,
+        LawfulGood,
         NeutralGood,
         ChaoticGood,
         LawfulNeutral,
