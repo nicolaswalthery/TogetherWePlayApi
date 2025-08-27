@@ -7,13 +7,13 @@ namespace TWP.Api.Core.DbEntities
     {
         public string Name { get; set; } = string.Empty;
         public AlignmentEnum? Alignment { get; set; }
-        public string ChallengeRating { get; set; }
+        public string ChallengeRating { get; set; } = String.Empty;
         public int Xp { get; set; }
         public CombatRoleEnum? Role { get; set; }
 
         // Defense
-        public int? ArmorClass { get; set; }
-        public int? HitPoints { get; set; }
+        public int ArmorClass { get; set; }
+        public int HitPoints { get; set; }
 
         // Movement
         public string? Speed { get; set; }

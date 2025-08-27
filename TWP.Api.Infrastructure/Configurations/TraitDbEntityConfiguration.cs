@@ -21,11 +21,13 @@ namespace TWP.Api.Infrastructure.Configurations
 
             builder.Property(e => e.Description)
                 .HasColumnName("description")
-                .HasMaxLength(2000);
+                .HasMaxLength(3500)
+                .IsRequired();
 
             builder.Property(e => e.Title)
                 .HasColumnName("title")
-                .HasMaxLength(255);
+                .HasMaxLength(255)
+                .IsRequired();
 
             // Indexes
             builder.HasIndex(e => e.Title)

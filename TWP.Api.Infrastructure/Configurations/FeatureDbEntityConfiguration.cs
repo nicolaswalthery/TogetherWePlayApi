@@ -25,11 +25,13 @@ namespace TWP.Api.Infrastructure.Configurations
 
             builder.Property(e => e.Description)
                 .HasColumnName("description")
-                .HasMaxLength(2000);
+                .HasMaxLength(2000)
+                .IsRequired();
 
             builder.Property(e => e.Title)
                 .HasColumnName("title")
-                .HasMaxLength(255);
+                .HasMaxLength(255)
+                .IsRequired();
 
             builder.Property(e => e.IsOptional)
                 .HasColumnName("is_optional")

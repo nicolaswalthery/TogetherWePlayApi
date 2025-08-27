@@ -1,4 +1,4 @@
-﻿namespace TWP.Api.Core.DbEntities
+﻿namespace TWP.Api.Core.Enums
 {
     public enum ActionTypeEnum
     {

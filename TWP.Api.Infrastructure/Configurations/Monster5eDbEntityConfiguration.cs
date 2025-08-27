@@ -44,10 +44,12 @@ namespace TWP.Api.Infrastructure.Configurations
 
             // Defense Properties
             builder.Property(e => e.ArmorClass)
-                .HasColumnName("armor_class");
+                .HasColumnName("armor_class")
+                .IsRequired();
 
             builder.Property(e => e.HitPoints)
-                .HasColumnName("hit_points");
+                .HasColumnName("hit_points")
+                .IsRequired();
 
             // Movement Properties
             builder.Property(e => e.Speed)

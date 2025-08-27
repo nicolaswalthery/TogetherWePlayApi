@@ -7,7 +7,7 @@ namespace TWP.Api.Core.DbEntities
         public Guid MonsterId { get; set; }
         public string Name { get; set; } = string.Empty;
         public ActionTypeEnum Type { get; set; }
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
         public int? AttackBonus { get; set; }
         public DiceTypeEnum? DamageDice { get; set; }
         public int? NumberDamageDice { get; set; }

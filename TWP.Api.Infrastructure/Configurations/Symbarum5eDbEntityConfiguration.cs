@@ -25,7 +25,8 @@ namespace TWP.Api.Infrastructure.Configurations
 
             builder.Property(e => e.Shadow)
                 .HasColumnName("shadow")
-                .HasMaxLength(500);
+                .HasMaxLength(1500)
+                .IsRequired();
 
             // Indexes
             builder.HasIndex(e => e.MonsterId)
