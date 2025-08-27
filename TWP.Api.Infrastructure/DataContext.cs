@@ -22,7 +22,7 @@ public class DataContext : DbContext
     }
     // DbSets for all entities
     public DbSet<Monster5eDbEntity> Monsters { get; set; }
-    public DbSet<MonsterActionDbEntity> MonsterActions { get; set; }
+    public DbSet<ActionDbEntity> MonsterActions { get; set; }
     public DbSet<FeatureDbEntity> Features { get; set; }
     public DbSet<TraitDbEntity> Traits { get; set; }
     public DbSet<MonsterTraitDbEntity> MonsterTraits { get; set; }

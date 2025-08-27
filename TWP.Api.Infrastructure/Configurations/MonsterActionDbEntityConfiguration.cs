@@ -4,9 +4,9 @@ using TWP.Api.Core.DbEntities;
 
 namespace TWP.Api.Infrastructure.Configurations
 {
-    public class MonsterActionDbEntityConfiguration : IEntityTypeConfiguration<MonsterActionDbEntity>
+    public class MonsterActionDbEntityConfiguration : IEntityTypeConfiguration<ActionDbEntity>
     {
-        public void Configure(EntityTypeBuilder<MonsterActionDbEntity> builder)
+        public void Configure(EntityTypeBuilder<ActionDbEntity> builder)
         {
             // Table name
             builder.ToTable("actions");

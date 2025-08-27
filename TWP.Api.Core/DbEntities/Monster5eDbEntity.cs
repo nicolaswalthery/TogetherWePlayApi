@@ -1,15 +1,15 @@
 ﻿using System.Text.Json;
+using TWP.Api.Core.Enums;
 
 namespace TWP.Api.Core.DbEntities
 {
     public class Monster5eDbEntity : DbEntity
     {
         public string Name { get; set; } = string.Empty;
-        public string? Type { get; set; }
-        public string? Alignment { get; set; }
-        public string? ChallengeRating { get; set; }
-        public int? Xp { get; set; }
-        public string? Role { get; set; }
+        public AlignmentEnum? Alignment { get; set; }
+        public string ChallengeRating { get; set; }
+        public int Xp { get; set; }
+        public CombatRoleEnum? Role { get; set; }
 
         // Defense
         public int? ArmorClass { get; set; }
@@ -57,7 +57,7 @@ namespace TWP.Api.Core.DbEntities
         public string? Source { get; set; }
 
         // Navigation Properties
-        public virtual ICollection<MonsterActionDbEntity> Actions { get; set; } = new List<MonsterActionDbEntity>();
+        public virtual ICollection<ActionDbEntity> Actions { get; set; } = new List<ActionDbEntity>();
         public virtual ICollection<FeatureDbEntity> Features { get; set; } = new List<FeatureDbEntity>();
         public virtual ICollection<MonsterTraitDbEntity> MonsterTraits { get; set; } = new List<MonsterTraitDbEntity>();
         public virtual Symbarum5eDbEntity? Symbarum5e { get; set; }
