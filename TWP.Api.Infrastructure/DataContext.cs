@@ -7,7 +7,7 @@ using TWP.Api.Infrastructure.Configurations;
 
 public class DataContext : DbContext
 {
-    private readonly string _defaultSchema = "dbo";
+    private readonly string _defaultPostgresSchema = "public";
     private readonly ILogger<DataContext>? _logger;
     private readonly IWebHostEnvironment? _environment;
 
@@ -26,7 +26,7 @@ public class DataContext : DbContext
     public DbSet<FeatureDbEntity> Features { get; set; }
     public DbSet<TraitDbEntity> Traits { get; set; }
     public DbSet<MonsterTraitDbEntity> MonsterTraits { get; set; }
-    public DbSet<Symbarum5eDbEntity> Symbarum5e { get; set; }
+    public DbSet<Symbarum5eDbEntity> Symbarum5es { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -47,8 +47,8 @@ public class DataContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.HasDefaultSchema(_defaultSchema);
-        // Apply all configurations
+        modelBuilder.HasDefaultSchema(_defaultPostgresSchema);
+        
         modelBuilder.ApplyConfiguration(new Monster5eDbEntityConfiguration());
         modelBuilder.ApplyConfiguration(new ActionDbEntityConfiguration());
         modelBuilder.ApplyConfiguration(new FeatureDbEntityConfiguration());

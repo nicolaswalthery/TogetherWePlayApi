@@ -240,7 +240,7 @@ using (var scope = app.Services.CreateScope())
         {
             // En dev, appliquer automatiquement les migrations
             loggerService.LogInformation("📦 Applying database migrations...");
-            await context.Database.MigrateAsync();
+            //await context.Database.MigrateAsync();
             loggerService.LogInformation("✅ Database migrations applied successfully");
         }
         else
