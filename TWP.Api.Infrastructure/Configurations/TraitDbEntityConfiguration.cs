@@ -56,6 +56,18 @@ namespace TWP.Api.Infrastructure.Configurations
                 .HasColumnName("is_optional")
                 .HasDefaultValue(false);
 
+            builder.Property(e => e.traitTrigger)
+                .HasColumnName("trait_trigger")
+                .HasMaxLength(500);
+
+            builder.Property(e => e.advantageCondition)
+                .HasColumnName("advantage_condition")
+                .HasMaxLength(500);
+
+            builder.Property(e => e.disadvantageCondition)
+                .HasColumnName("disadvantage_condition")
+                .HasMaxLength(500);
+
             // Indexes
             builder.HasIndex(e => e.MonsterId)
                 .HasDatabaseName("IX_feature_monster_id");

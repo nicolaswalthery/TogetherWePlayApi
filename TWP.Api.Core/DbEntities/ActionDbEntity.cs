@@ -9,6 +9,8 @@ namespace TWP.Api.Core.DbEntities
         public ActionTypeEnum Type { get; set; }
         public AttackTypeEnum AttackType { get; set; }
         public string Description { get; set; } = string.Empty;
+        public int? ShortRange { get; set; }
+        public int? LongRange { get; set; }
         public int? AttackBonus { get; set; }
         public int? DamageBonus { get; set; }
         public DiceTypeEnum? DamageDice { get; set; }
@@ -16,6 +18,9 @@ namespace TWP.Api.Core.DbEntities
         public DamageTypeEnum? DamageType { get; set; }
         public int? LimitPerDay { get; set; }
         public bool IsProhibitedForMinion { get; set; }
+        public string? actionTrigger { get; set; } = String.Empty;
+        public string? advantageCondition { get; set; } = String.Empty;
+        public string? disadvantageCondition { get; set; } = String.Empty;
 
         // Navigation Property
         public virtual Monster5eDbEntity Monster { get; set; } = null!;

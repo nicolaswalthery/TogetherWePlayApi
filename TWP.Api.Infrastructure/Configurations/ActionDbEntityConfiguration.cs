@@ -40,6 +40,12 @@ namespace TWP.Api.Infrastructure.Configurations
                 .HasMaxLength(50)
                 .IsRequired();
 
+            builder.Property(e => e.ShortRange)
+                .HasColumnName("short_range");
+
+            builder.Property(e => e.LongRange)
+                .HasColumnName("long_range");
+
             builder.Property(e => e.Description)
                 .HasColumnName("description")
                 .HasColumnType("text");
@@ -70,6 +76,18 @@ namespace TWP.Api.Infrastructure.Configurations
                 .HasColumnName("is_prohibited_for_minion")
                 .HasDefaultValue(false)
                 .IsRequired();
+
+            builder.Property(e => e.actionTrigger)
+                .HasColumnName("action_trigger")
+                .HasMaxLength(1000);
+
+            builder.Property(e => e.advantageCondition)
+                .HasColumnName("advantage_condition")
+                .HasMaxLength(1000);
+
+            builder.Property(e => e.disadvantageCondition)
+                .HasColumnName("disadvantage_condition")
+                .HasMaxLength(1000);
 
             // Indexes
             builder.HasIndex(e => e.MonsterId)

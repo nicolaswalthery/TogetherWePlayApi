@@ -156,6 +156,10 @@ namespace TWP.Api.Infrastructure.Configurations
                 .HasColumnName("creature_type")
                 .HasMaxLength(100);
 
+            builder.Property(e => e.CreatureSubType)
+                .HasColumnName("creature_sub_type")
+                .HasMaxLength(100);
+
             builder.Property(e => e.MonsterGroup)
                 .HasColumnName("monster_group")
                 .HasMaxLength(100);

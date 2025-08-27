@@ -13,6 +13,9 @@ namespace TWP.Api.Core.DbEntities
         public DiceTypeEnum? DamageDice { get; set; }
         public int? NumberDamageDice { get; set; }
         public DamageTypeEnum? DamageType { get; set; }
+        public string? traitTrigger { get; set; } = String.Empty;
+        public string? advantageCondition { get; set; } = String.Empty;
+        public string? disadvantageCondition { get; set; } = String.Empty;
 
         public bool IsOptional { get; set; }
 

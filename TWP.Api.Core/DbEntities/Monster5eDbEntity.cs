@@ -52,6 +52,7 @@ namespace TWP.Api.Core.DbEntities
         public string? Equipments { get; set; } // JSON
         public string? Habitats { get; set; }
         public string? CreatureType { get; set; }
+        public string? CreatureSubType { get; set; }
         public string? MonsterGroup { get; set; }
 
         // Lore
