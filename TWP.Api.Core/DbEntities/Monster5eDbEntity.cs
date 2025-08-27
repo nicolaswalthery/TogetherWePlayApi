@@ -11,11 +11,13 @@ namespace TWP.Api.Core.DbEntities
         public int Xp { get; set; }
         public int InitiativeBonus { get; set; }
         public CombatRoleEnum? Role { get; set; }
+        public CreatureSizeEnum CreatureSize { get; set; }
 
         // Defense
         public int ArmorClass { get; set; }
         public int? MinionArmorClass { get; set; }
         public int HitPoints { get; set; }
+        public string HitDice { get; set; } = String.Empty;
 
         // Movement
         public string? Speed { get; set; }

@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace TWP.Api.Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250827144032_MonsterRelatedTablesV1")]
-    partial class MonsterRelatedTablesV1
+    [Migration("20250827184320_AddMonsterRelatedTables")]
+    partial class AddMonsterRelatedTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,6 +36,16 @@ namespace TWP.Api.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("attack_bonus");
 
+                    b.Property<string>("AttackType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("attack_type");
+
+                    b.Property<int?>("DamageBonus")
+                        .HasColumnType("integer")
+                        .HasColumnName("damage_bonus");
+
                     b.Property<string>("DamageDice")
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)")
@@ -50,6 +60,12 @@ namespace TWP.Api.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("description");
+
+                    b.Property<bool>("IsProhibitedForMinion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("is_prohibited_for_minion");
 
                     b.Property<int?>("LimitPerDay")
                         .HasColumnType("integer")
@@ -208,6 +224,10 @@ namespace TWP.Api.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("hit_points");
 
+                    b.Property<int>("InitiativeBonus")
+                        .HasColumnType("integer")
+                        .HasColumnName("initiative_bonus");
+
                     b.Property<int?>("IntSavingThrow")
                         .HasColumnType("integer")
                         .HasColumnName("int_saving_throw");
@@ -222,13 +242,17 @@ namespace TWP.Api.Infrastructure.Migrations
                         .HasColumnName("languages");
 
                     b.Property<string>("Lore")
-                        .HasColumnType("text")
+                        .HasColumnType("jsonb")
                         .HasColumnName("lore");
 
                     b.Property<string>("Manner")
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)")
                         .HasColumnName("manner");
+
+                    b.Property<int?>("MinionArmorClass")
+                        .HasColumnType("integer")
+                        .HasColumnName("minion_armor_class");
 
                     b.Property<string>("MonsterGroup")
                         .HasMaxLength(100)

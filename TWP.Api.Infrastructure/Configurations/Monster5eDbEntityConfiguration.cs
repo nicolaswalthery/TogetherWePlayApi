@@ -59,6 +59,15 @@ namespace TWP.Api.Infrastructure.Configurations
                 .HasColumnName("hit_points")
                 .IsRequired();
 
+            builder.Property(e => e.HitDice)
+                .HasColumnName("hit_dice");
+
+            builder.Property(e => e.CreatureSize)
+                .HasColumnName("creature_size")
+                .HasConversion<string>() // Converts enum to string in database
+                .HasMaxLength(20)
+                .IsRequired();
+
             // Movement Properties
             builder.Property(e => e.Speed)
                 .HasColumnName("speed")

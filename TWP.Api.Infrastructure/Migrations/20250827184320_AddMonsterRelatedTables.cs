@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TWP.Api.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class MonsterRelatedTablesV1 : Migration
+    public partial class AddMonsterRelatedTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -24,8 +24,10 @@ namespace TWP.Api.Infrastructure.Migrations
                     alignment = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     challenge_rating = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
                     xp = table.Column<int>(type: "integer", nullable: false),
+                    initiative_bonus = table.Column<int>(type: "integer", nullable: false),
                     role = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     armor_class = table.Column<int>(type: "integer", nullable: false),
+                    minion_armor_class = table.Column<int>(type: "integer", nullable: true),
                     hit_points = table.Column<int>(type: "integer", nullable: false),
                     speed = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     climb = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
@@ -53,7 +55,7 @@ namespace TWP.Api.Infrastructure.Migrations
                     creature_type = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     monster_group = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     manner = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
-                    lore = table.Column<string>(type: "text", nullable: true),
+                    lore = table.Column<string>(type: "jsonb", nullable: true),
                     page_source = table.Column<int>(type: "integer", nullable: false),
                     source = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false)
                 },
@@ -85,12 +87,15 @@ namespace TWP.Api.Infrastructure.Migrations
                     monster_id = table.Column<Guid>(type: "uuid", nullable: false),
                     name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     type = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    attack_type = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     description = table.Column<string>(type: "text", nullable: false),
                     attack_bonus = table.Column<int>(type: "integer", nullable: true),
+                    damage_bonus = table.Column<int>(type: "integer", nullable: true),
                     damage_dice = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
                     number_damage_dice = table.Column<int>(type: "integer", nullable: true),
                     damage_type = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
-                    limit_per_day = table.Column<int>(type: "integer", nullable: true)
+                    limit_per_day = table.Column<int>(type: "integer", nullable: true),
+                    is_prohibited_for_minion = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
