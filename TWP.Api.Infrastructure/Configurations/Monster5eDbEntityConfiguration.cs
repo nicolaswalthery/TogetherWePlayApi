@@ -153,11 +153,13 @@ namespace TWP.Api.Infrastructure.Configurations
                 .HasColumnType("text");
 
             builder.Property(e => e.PageSource)
-                .HasColumnName("page_source");
+                .HasColumnName("page_source")
+                .IsRequired();
 
             builder.Property(e => e.Source)
                 .HasColumnName("source")
-                .HasMaxLength(255);
+                .HasMaxLength(255)
+                .IsRequired();
 
             // Indexes
             builder.HasIndex(e => e.Name)

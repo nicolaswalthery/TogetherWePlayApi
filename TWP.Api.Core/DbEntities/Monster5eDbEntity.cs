@@ -53,8 +53,8 @@ namespace TWP.Api.Core.DbEntities
         // Lore
         public string? Manner { get; set; }
         public string? Lore { get; set; }
-        public int? PageSource { get; set; }
-        public string? Source { get; set; }
+        public int PageSource { get; set; }
+        public string Source { get; set; } = String.Empty;
 
         // Navigation Properties
         public virtual ICollection<ActionDbEntity> Actions { get; set; } = new List<ActionDbEntity>();
