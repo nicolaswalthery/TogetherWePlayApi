@@ -24,23 +24,22 @@ namespace TWP.Api.Infrastructure.Configurations
                 .HasMaxLength(255)
                 .IsRequired();
 
-            builder.Property(e => e.Type)
-                .HasColumnName("type")
-                .HasMaxLength(100);
-
             builder.Property(e => e.Alignment)
                 .HasColumnName("alignment")
+                .HasConversion<string>() // Converts enum to string in database
                 .HasMaxLength(50);
 
             builder.Property(e => e.ChallengeRating)
                 .HasColumnName("challenge_rating")
-                .HasMaxLength(10);
+                .HasMaxLength(10)
+                .IsRequired();
 
             builder.Property(e => e.Xp)
                 .HasColumnName("xp");
 
             builder.Property(e => e.Role)
                 .HasColumnName("role")
+                .HasConversion<string>() // Converts enum to string in database
                 .HasMaxLength(50);
 
             // Defense Properties
@@ -165,8 +164,11 @@ namespace TWP.Api.Infrastructure.Configurations
             builder.HasIndex(e => e.ChallengeRating)
                 .HasDatabaseName("IX_monster_challenge_rating");
 
-            builder.HasIndex(e => e.Type)
-                .HasDatabaseName("IX_monster_type");
+            builder.HasIndex(e => e.CreatureType)
+                .HasDatabaseName("IX_monster_creature_type");
+
+            builder.HasIndex(e => e.MonsterGroup)
+                .HasDatabaseName("IX_monster_group");
 
             // Relationships
             builder.HasMany(e => e.Actions)

@@ -50,7 +50,7 @@ public class DataContext : DbContext
         modelBuilder.HasDefaultSchema(_defaultSchema);
         // Apply all configurations
         modelBuilder.ApplyConfiguration(new Monster5eDbEntityConfiguration());
-        modelBuilder.ApplyConfiguration(new MonsterActionDbEntityConfiguration());
+        modelBuilder.ApplyConfiguration(new ActionDbEntityConfiguration());
         modelBuilder.ApplyConfiguration(new FeatureDbEntityConfiguration());
         modelBuilder.ApplyConfiguration(new TraitDbEntityConfiguration());
         modelBuilder.ApplyConfiguration(new MonsterTraitDbEntityConfiguration());

@@ -4,7 +4,7 @@ using TWP.Api.Core.DbEntities;
 
 namespace TWP.Api.Infrastructure.Configurations
 {
-    public class MonsterActionDbEntityConfiguration : IEntityTypeConfiguration<ActionDbEntity>
+    public class ActionDbEntityConfiguration : IEntityTypeConfiguration<ActionDbEntity>
     {
         public void Configure(EntityTypeBuilder<ActionDbEntity> builder)
         {
@@ -28,6 +28,12 @@ namespace TWP.Api.Infrastructure.Configurations
                 .HasMaxLength(255)
                 .IsRequired();
 
+            builder.Property(e => e.Type)
+                .HasColumnName("type")
+                .HasConversion<string>() // Converts ActionTypeEnum to string in database
+                .HasMaxLength(50)
+                .IsRequired();
+
             builder.Property(e => e.Description)
                 .HasColumnName("description")
                 .HasColumnType("text");
@@ -35,46 +41,31 @@ namespace TWP.Api.Infrastructure.Configurations
             builder.Property(e => e.AttackBonus)
                 .HasColumnName("attack_bonus");
 
-            builder.Property(e => e.Damage)
-                .HasColumnName("damage")
-                .HasMaxLength(100);
+            builder.Property(e => e.DamageDice)
+                .HasColumnName("damage_dice")
+                .HasConversion<string>() // Converts DiceTypeEnum to string in database
+                .HasMaxLength(20);
+
+            builder.Property(e => e.NumberDamageDice)
+                .HasColumnName("number_damage_dice");
 
             builder.Property(e => e.DamageType)
-                .HasColumnName("damageType")
+                .HasColumnName("damage_type")
+                .HasConversion<string>() // Converts DamageTypeEnum to string in database
                 .HasMaxLength(50);
 
             builder.Property(e => e.LimitPerDay)
-                .HasColumnName("limitPerDay");
-
-            builder.Property(e => e.IsMovement)
-                .HasColumnName("is_movement")
-                .HasDefaultValue(false);
-
-            builder.Property(e => e.IsAction)
-                .HasColumnName("is_action")
-                .HasDefaultValue(false);
-
-            builder.Property(e => e.IsBonus)
-                .HasColumnName("is_bonus")
-                .HasDefaultValue(false);
-
-            builder.Property(e => e.IsReaction)
-                .HasColumnName("is_reaction")
-                .HasDefaultValue(false);
-
-            builder.Property(e => e.IsLegendary)
-                .HasColumnName("is_legendary")
-                .HasDefaultValue(false);
+                .HasColumnName("limit_per_day");
 
             // Indexes
             builder.HasIndex(e => e.MonsterId)
-                .HasDatabaseName("IX_monsters_action_monster_id");
+                .HasDatabaseName("IX_action_monster_id");
 
             builder.HasIndex(e => e.Name)
-                .HasDatabaseName("IX_monsters_action_name");
+                .HasDatabaseName("IX_action_name");
 
-            builder.HasIndex(e => e.IsLegendary)
-                .HasDatabaseName("IX_monsters_action_is_legendary");
+            builder.HasIndex(e => e.Type)
+                .HasDatabaseName("IX_action_type");
 
             // Relationship
             builder.HasOne(e => e.Monster)
