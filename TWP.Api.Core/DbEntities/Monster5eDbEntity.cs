@@ -62,8 +62,7 @@ namespace TWP.Api.Core.DbEntities
 
         // Navigation Properties
         public virtual ICollection<ActionDbEntity> Actions { get; set; } = new List<ActionDbEntity>();
-        public virtual ICollection<FeatureDbEntity> Features { get; set; } = new List<FeatureDbEntity>();
-        public virtual ICollection<MonsterTraitDbEntity> MonsterTraits { get; set; } = new List<MonsterTraitDbEntity>();
+        public virtual ICollection<TraitDbEntity> Traits { get; set; } = new List<TraitDbEntity>();
         public virtual Symbarum5eDbEntity? Symbarum5e { get; set; }
 
         // Helper methods for JSON parsing

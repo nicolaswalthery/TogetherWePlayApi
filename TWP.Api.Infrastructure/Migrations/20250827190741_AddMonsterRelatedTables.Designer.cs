@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace TWP.Api.Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250827184320_AddMonsterRelatedTables")]
+    [Migration("20250827190741_AddMonsterRelatedTables")]
     partial class AddMonsterRelatedTables
     {
         /// <inheritdoc />
@@ -105,46 +105,6 @@ namespace TWP.Api.Infrastructure.Migrations
                     b.ToTable("actions", "public");
                 });
 
-            modelBuilder.Entity("TWP.Api.Core.DbEntities.FeatureDbEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("character varying(2000)")
-                        .HasColumnName("description");
-
-                    b.Property<bool>("IsOptional")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false)
-                        .HasColumnName("is_optional");
-
-                    b.Property<Guid>("MonsterId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("monster_id");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
-                        .HasColumnName("title");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MonsterId")
-                        .HasDatabaseName("IX_feature_monster_id");
-
-                    b.HasIndex("Title")
-                        .HasDatabaseName("IX_feature_title");
-
-                    b.ToTable("features", "public");
-                });
-
             modelBuilder.Entity("TWP.Api.Core.DbEntities.Monster5eDbEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -188,6 +148,12 @@ namespace TWP.Api.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("constitution");
 
+                    b.Property<string>("CreatureSize")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("creature_size");
+
                     b.Property<string>("CreatureType")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
@@ -219,6 +185,11 @@ namespace TWP.Api.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)")
                         .HasColumnName("habitats");
+
+                    b.Property<string>("HitDice")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("hit_dice");
 
                     b.Property<int>("HitPoints")
                         .HasColumnType("integer")
@@ -340,36 +311,6 @@ namespace TWP.Api.Infrastructure.Migrations
                     b.ToTable("monsters", "public");
                 });
 
-            modelBuilder.Entity("TWP.Api.Core.DbEntities.MonsterTraitDbEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
-
-                    b.Property<Guid>("MonsterId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("monster_id");
-
-                    b.Property<Guid>("TraitId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("trait_id");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MonsterId")
-                        .HasDatabaseName("IX_monster_trait_monster_id");
-
-                    b.HasIndex("TraitId")
-                        .HasDatabaseName("IX_monster_trait_trait_id");
-
-                    b.HasIndex("MonsterId", "TraitId")
-                        .IsUnique()
-                        .HasDatabaseName("IX_monster_trait_monster_trait");
-
-                    b.ToTable("monsters_traits", "public");
-                });
-
             modelBuilder.Entity("TWP.Api.Core.DbEntities.Symbarum5eDbEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -405,9 +346,19 @@ namespace TWP.Api.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(3500)
-                        .HasColumnType("character varying(3500)")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)")
                         .HasColumnName("description");
+
+                    b.Property<bool>("IsOptional")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("is_optional");
+
+                    b.Property<Guid>("MonsterId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("monster_id");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -417,8 +368,11 @@ namespace TWP.Api.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("MonsterId")
+                        .HasDatabaseName("IX_feature_monster_id");
+
                     b.HasIndex("Title")
-                        .HasDatabaseName("IX_trait_title");
+                        .HasDatabaseName("IX_feature_title");
 
                     b.ToTable("traits", "public");
                 });
@@ -434,36 +388,6 @@ namespace TWP.Api.Infrastructure.Migrations
                     b.Navigation("Monster");
                 });
 
-            modelBuilder.Entity("TWP.Api.Core.DbEntities.FeatureDbEntity", b =>
-                {
-                    b.HasOne("TWP.Api.Core.DbEntities.Monster5eDbEntity", "Monster")
-                        .WithMany("Features")
-                        .HasForeignKey("MonsterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Monster");
-                });
-
-            modelBuilder.Entity("TWP.Api.Core.DbEntities.MonsterTraitDbEntity", b =>
-                {
-                    b.HasOne("TWP.Api.Core.DbEntities.Monster5eDbEntity", "Monster")
-                        .WithMany("MonsterTraits")
-                        .HasForeignKey("MonsterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TWP.Api.Core.DbEntities.TraitDbEntity", "Trait")
-                        .WithMany("MonsterTraits")
-                        .HasForeignKey("TraitId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Monster");
-
-                    b.Navigation("Trait");
-                });
-
             modelBuilder.Entity("TWP.Api.Core.DbEntities.Symbarum5eDbEntity", b =>
                 {
                     b.HasOne("TWP.Api.Core.DbEntities.Monster5eDbEntity", "Monster")
@@ -475,20 +399,24 @@ namespace TWP.Api.Infrastructure.Migrations
                     b.Navigation("Monster");
                 });
 
+            modelBuilder.Entity("TWP.Api.Core.DbEntities.TraitDbEntity", b =>
+                {
+                    b.HasOne("TWP.Api.Core.DbEntities.Monster5eDbEntity", "Monster")
+                        .WithMany("Traits")
+                        .HasForeignKey("MonsterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Monster");
+                });
+
             modelBuilder.Entity("TWP.Api.Core.DbEntities.Monster5eDbEntity", b =>
                 {
                     b.Navigation("Actions");
 
-                    b.Navigation("Features");
-
-                    b.Navigation("MonsterTraits");
-
                     b.Navigation("Symbarum5e");
-                });
 
-            modelBuilder.Entity("TWP.Api.Core.DbEntities.TraitDbEntity", b =>
-                {
-                    b.Navigation("MonsterTraits");
+                    b.Navigation("Traits");
                 });
 #pragma warning restore 612, 618
         }

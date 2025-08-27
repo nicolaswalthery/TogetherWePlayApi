@@ -197,12 +197,7 @@ namespace TWP.Api.Infrastructure.Configurations
                 .HasForeignKey(a => a.MonsterId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasMany(e => e.Features)
-                .WithOne(f => f.Monster)
-                .HasForeignKey(f => f.MonsterId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            builder.HasMany(e => e.MonsterTraits)
+            builder.HasMany(e => e.Traits)
                 .WithOne(mt => mt.Monster)
                 .HasForeignKey(mt => mt.MonsterId)
                 .OnDelete(DeleteBehavior.Cascade);

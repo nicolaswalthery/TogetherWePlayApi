@@ -26,9 +26,11 @@ namespace TWP.Api.Infrastructure.Migrations
                     xp = table.Column<int>(type: "integer", nullable: false),
                     initiative_bonus = table.Column<int>(type: "integer", nullable: false),
                     role = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    creature_size = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
                     armor_class = table.Column<int>(type: "integer", nullable: false),
                     minion_armor_class = table.Column<int>(type: "integer", nullable: true),
                     hit_points = table.Column<int>(type: "integer", nullable: false),
+                    hit_dice = table.Column<string>(type: "text", nullable: false),
                     speed = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     climb = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     swim = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
@@ -65,20 +67,6 @@ namespace TWP.Api.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "traits",
-                schema: "public",
-                columns: table => new
-                {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
-                    description = table.Column<string>(type: "character varying(3500)", maxLength: 3500, nullable: false),
-                    title = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_traits", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "actions",
                 schema: "public",
                 columns: table => new
@@ -110,29 +98,6 @@ namespace TWP.Api.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "features",
-                schema: "public",
-                columns: table => new
-                {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
-                    monster_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
-                    title = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    is_optional = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_features", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_features_monsters_monster_id",
-                        column: x => x.monster_id,
-                        principalSchema: "public",
-                        principalTable: "monsters",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "symbarum5es",
                 schema: "public",
                 columns: table => new
@@ -154,29 +119,24 @@ namespace TWP.Api.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "monsters_traits",
+                name: "traits",
                 schema: "public",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     monster_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    trait_id = table.Column<Guid>(type: "uuid", nullable: false)
+                    description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
+                    title = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    is_optional = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_monsters_traits", x => x.id);
+                    table.PrimaryKey("PK_traits", x => x.id);
                     table.ForeignKey(
-                        name: "FK_monsters_traits_monsters_monster_id",
+                        name: "FK_traits_monsters_monster_id",
                         column: x => x.monster_id,
                         principalSchema: "public",
                         principalTable: "monsters",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_monsters_traits_traits_trait_id",
-                        column: x => x.trait_id,
-                        principalSchema: "public",
-                        principalTable: "traits",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -198,18 +158,6 @@ namespace TWP.Api.Infrastructure.Migrations
                 schema: "public",
                 table: "actions",
                 column: "type");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_feature_monster_id",
-                schema: "public",
-                table: "features",
-                column: "monster_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_feature_title",
-                schema: "public",
-                table: "features",
-                column: "title");
 
             migrationBuilder.CreateIndex(
                 name: "IX_monster_challenge_rating",
@@ -236,25 +184,6 @@ namespace TWP.Api.Infrastructure.Migrations
                 column: "name");
 
             migrationBuilder.CreateIndex(
-                name: "IX_monster_trait_monster_id",
-                schema: "public",
-                table: "monsters_traits",
-                column: "monster_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_monster_trait_monster_trait",
-                schema: "public",
-                table: "monsters_traits",
-                columns: new[] { "monster_id", "trait_id" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_monster_trait_trait_id",
-                schema: "public",
-                table: "monsters_traits",
-                column: "trait_id");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_symbarum5e_monster_id",
                 schema: "public",
                 table: "symbarum5es",
@@ -262,7 +191,13 @@ namespace TWP.Api.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_trait_title",
+                name: "IX_feature_monster_id",
+                schema: "public",
+                table: "traits",
+                column: "monster_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_feature_title",
                 schema: "public",
                 table: "traits",
                 column: "title");
@@ -273,14 +208,6 @@ namespace TWP.Api.Infrastructure.Migrations
         {
             migrationBuilder.DropTable(
                 name: "actions",
-                schema: "public");
-
-            migrationBuilder.DropTable(
-                name: "features",
-                schema: "public");
-
-            migrationBuilder.DropTable(
-                name: "monsters_traits",
                 schema: "public");
 
             migrationBuilder.DropTable(
