@@ -35,7 +35,12 @@ namespace TWP.Api.Infrastructure.Configurations
                 .IsRequired();
 
             builder.Property(e => e.Xp)
-                .HasColumnName("xp");
+                .HasColumnName("xp")
+                .IsRequired();
+
+            builder.Property(e => e.InitiativeBonus)
+                .HasColumnName("initiative_bonus")
+                .IsRequired();
 
             builder.Property(e => e.Role)
                 .HasColumnName("role")
@@ -46,6 +51,9 @@ namespace TWP.Api.Infrastructure.Configurations
             builder.Property(e => e.ArmorClass)
                 .HasColumnName("armor_class")
                 .IsRequired();
+
+            builder.Property(e => e.MinionArmorClass)
+                .HasColumnName("minion_armor_class");
 
             builder.Property(e => e.HitPoints)
                 .HasColumnName("hit_points")
@@ -150,7 +158,7 @@ namespace TWP.Api.Infrastructure.Configurations
 
             builder.Property(e => e.Lore)
                 .HasColumnName("lore")
-                .HasColumnType("text");
+                .HasColumnType("jsonb"); // PostgreSQL JSON type
 
             builder.Property(e => e.PageSource)
                 .HasColumnName("page_source")

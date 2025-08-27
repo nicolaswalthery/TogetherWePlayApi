@@ -9,10 +9,12 @@ namespace TWP.Api.Core.DbEntities
         public AlignmentEnum? Alignment { get; set; }
         public string ChallengeRating { get; set; } = String.Empty;
         public int Xp { get; set; }
+        public int InitiativeBonus { get; set; }
         public CombatRoleEnum? Role { get; set; }
 
         // Defense
         public int ArmorClass { get; set; }
+        public int? MinionArmorClass { get; set; }
         public int HitPoints { get; set; }
 
         // Movement
@@ -52,7 +54,7 @@ namespace TWP.Api.Core.DbEntities
 
         // Lore
         public string? Manner { get; set; }
-        public string? Lore { get; set; }
+        public string? Lore { get; set; } // JSON
         public int PageSource { get; set; }
         public string Source { get; set; } = String.Empty;
 

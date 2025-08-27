@@ -34,9 +34,18 @@ namespace TWP.Api.Infrastructure.Configurations
                 .HasMaxLength(50)
                 .IsRequired();
 
+            builder.Property(e => e.AttackType)
+                .HasColumnName("attack_type")
+                .HasConversion<string>() // Converts ActionTypeEnum to string in database
+                .HasMaxLength(50)
+                .IsRequired();
+
             builder.Property(e => e.Description)
                 .HasColumnName("description")
                 .HasColumnType("text");
+
+            builder.Property(e => e.DamageBonus)
+                .HasColumnName("damage_bonus");
 
             builder.Property(e => e.AttackBonus)
                 .HasColumnName("attack_bonus");
@@ -56,6 +65,11 @@ namespace TWP.Api.Infrastructure.Configurations
 
             builder.Property(e => e.LimitPerDay)
                 .HasColumnName("limit_per_day");
+
+            builder.Property(e => e.IsProhibitedForMinion)
+                .HasColumnName("is_prohibited_for_minion")
+                .HasDefaultValue(false)
+                .IsRequired();
 
             // Indexes
             builder.HasIndex(e => e.MonsterId)
