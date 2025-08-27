@@ -9,7 +9,7 @@ namespace TWP.Api.Infrastructure.Configurations
         public void Configure(EntityTypeBuilder<MonsterTraitDbEntity> builder)
         {
             // Table name
-            builder.ToTable("monster_trait");
+            builder.ToTable("monsters_traits");
 
             // Primary Key
             builder.HasKey(e => e.Id);

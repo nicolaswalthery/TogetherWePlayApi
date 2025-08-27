@@ -9,7 +9,7 @@ namespace TWP.Api.Infrastructure.Configurations
         public void Configure(EntityTypeBuilder<FeatureDbEntity> builder)
         {
             // Table name
-            builder.ToTable("feature");
+            builder.ToTable("features");
 
             // Primary Key
             builder.HasKey(e => e.Id);

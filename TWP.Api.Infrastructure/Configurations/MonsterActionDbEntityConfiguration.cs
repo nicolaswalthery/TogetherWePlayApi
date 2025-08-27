@@ -9,7 +9,7 @@ namespace TWP.Api.Infrastructure.Configurations
         public void Configure(EntityTypeBuilder<MonsterActionDbEntity> builder)
         {
             // Table name
-            builder.ToTable("monsters_action");
+            builder.ToTable("actions");
 
             // Primary Key
             builder.HasKey(e => e.Id);

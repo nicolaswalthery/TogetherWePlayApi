@@ -9,7 +9,7 @@ namespace TWP.Api.Infrastructure.Configurations
         public void Configure(EntityTypeBuilder<Symbarum5eDbEntity> builder)
         {
             // Table name
-            builder.ToTable("symbarum5e");
+            builder.ToTable("symbarum5es");
 
             // Primary Key
             builder.HasKey(e => e.Id);
