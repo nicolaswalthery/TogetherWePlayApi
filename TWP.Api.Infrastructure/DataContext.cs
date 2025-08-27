@@ -17,16 +17,14 @@ public class DataContext : DbContext
         IWebHostEnvironment? environment = null)
         : base(options)
     {
-        _logger = logger;
-        _environment = environment;
     }
-    // DbSets for all entities
-    public DbSet<Monster5eDbEntity> Monsters { get; set; }
-    public DbSet<ActionDbEntity> MonsterActions { get; set; }
-    public DbSet<FeatureDbEntity> Features { get; set; }
-    public DbSet<TraitDbEntity> Traits { get; set; }
-    public DbSet<MonsterTraitDbEntity> MonsterTraits { get; set; }
-    public DbSet<Symbarum5eDbEntity> Symbarum5es { get; set; }
+    
+    //public DbSet<Monster5eDbEntity> Monsters { get; set; }
+    //public DbSet<ActionDbEntity> MonsterActions { get; set; }
+    //public DbSet<FeatureDbEntity> Features { get; set; }
+    //public DbSet<TraitDbEntity> Traits { get; set; }
+    //public DbSet<MonsterTraitDbEntity> MonsterTraits { get; set; }
+    //public DbSet<Symbarum5eDbEntity> Symbarum5es { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -49,11 +47,11 @@ public class DataContext : DbContext
 
         modelBuilder.HasDefaultSchema(_defaultPostgresSchema);
         
-        modelBuilder.ApplyConfiguration(new Monster5eDbEntityConfiguration());
-        modelBuilder.ApplyConfiguration(new ActionDbEntityConfiguration());
-        modelBuilder.ApplyConfiguration(new FeatureDbEntityConfiguration());
-        modelBuilder.ApplyConfiguration(new TraitDbEntityConfiguration());
-        modelBuilder.ApplyConfiguration(new MonsterTraitDbEntityConfiguration());
-        modelBuilder.ApplyConfiguration(new Symbarum5eDbEntityConfiguration());
+        //modelBuilder.ApplyConfiguration(new Monster5eDbEntityConfiguration());
+        //modelBuilder.ApplyConfiguration(new ActionDbEntityConfiguration());
+        //modelBuilder.ApplyConfiguration(new FeatureDbEntityConfiguration());
+        //modelBuilder.ApplyConfiguration(new TraitDbEntityConfiguration());
+        //modelBuilder.ApplyConfiguration(new MonsterTraitDbEntityConfiguration());
+        //modelBuilder.ApplyConfiguration(new Symbarum5eDbEntityConfiguration());
     }
 }
