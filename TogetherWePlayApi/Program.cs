@@ -13,7 +13,6 @@ using TWP.Api.Infrastructure.Interops;
 using TWP.Api.Infrastructure.Interops.Interfaces;
 using TWP.Api.Infrastructure.JsonRepositories;
 using TWP.Api.Infrastructure.JsonRepositories.Interfaces;
-using TWP.Api.Infrastructure.Repository;
 using TWP.Api.Infrastructure.Repository.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
