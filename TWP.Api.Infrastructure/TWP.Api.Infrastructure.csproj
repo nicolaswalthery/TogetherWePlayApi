@@ -30,6 +30,7 @@
     <Folder Include="JsonFiles\Dnd5eData\FleeMortalsData\" />
     <Folder Include="JsonFiles\RandomTables\Dnd5e\" />
     <Folder Include="JsonFiles\RandomTables\Dnd4e\" />
+    <Folder Include="Sql\Import\" />
   </ItemGroup>
 
 </Project>
