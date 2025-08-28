@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using Newtonsoft.Json;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace TWP.Api.Core.DataTransferObjects
@@ -139,8 +140,8 @@ namespace TWP.Api.Core.DataTransferObjects
         /// The challenge rating which determines difficulty and experience value.
         /// May contain fractional values such as 0.25 or 13.0.
         /// </summary>
-        [JsonPropertyName("challenge_rating")]
-        public string ChallengeRating { get; set; }
+        [JsonProperty("challenge_rating")]
+        public decimal ChallengeRating { get; set; }
 
         /// <summary>
         /// The proficiency bonus used for attack rolls and saving throws【260544307443888†L16-L17】.

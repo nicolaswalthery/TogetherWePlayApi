@@ -166,7 +166,7 @@ namespace TWP.Api.Application.BusinessLayers
 
                 // Ensure that we include only one monster of the partyLevel + 1 CR in the encounter
                 if (IsCrPlusOneAlreadyIncludedInEncounter(encounter, partyLevel))
-                    selectedAvailableMonsters = selectedAvailableMonsters.Where(m => m.ChallengeRating.ConvertToDoubleChallengeRating() <= (double)partyLevel).ToList();
+                    selectedAvailableMonsters = selectedAvailableMonsters.Where(m => m.ChallengeRating <= (decimal)partyLevel).ToList();
             }
 
             return encounter;
@@ -180,7 +180,7 @@ namespace TWP.Api.Application.BusinessLayers
         /// <returns>True if a monster with CR + 1 is already in the encounter.</returns>
         private bool IsCrPlusOneAlreadyIncludedInEncounter(List<Dnd5eApiMonsterDTO> encounter, int partyLevel)
         {
-            return encounter.Any(m => m.ChallengeRating.ConvertToDoubleChallengeRating() == partyLevel + 1);
+            return encounter.Any(m => m.ChallengeRating == partyLevel + 1);
         }
 
     }

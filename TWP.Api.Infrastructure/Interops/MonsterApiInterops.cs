@@ -41,7 +41,7 @@ namespace TWP.Api.Infrastructure.Interops
 
         public async Task<MonsterApiResponseDto> GetMonstersByChallengeRatingAsync(int cr)
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, $"https://www.dnd5eapi.co/api/2014/monsters?challenge_rating={cr}");
+            var request = new HttpRequestMessage(HttpMethod.Get, $"https://www.dnd5eapi.co/api/2014/monsters?challenge_rating<={cr}");
             request.Headers.Add("Accept", "application/json");
 
             var response = await _httpClient.SendAsync(request);
