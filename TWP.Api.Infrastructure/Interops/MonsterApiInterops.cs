@@ -53,7 +53,7 @@ namespace TWP.Api.Infrastructure.Interops
         }
 
         // Méthode pour récupérer un monstre en fonction de son index
-        public async Task<MonsterApiResponseDto> GetMonsterByIndexAsync(string index)
+        public async Task<Dnd5eApiMonsterDTO> GetMonsterByIndexAsync(string index)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, $"https://www.dnd5eapi.co/api/2014/monsters/{index}");
             request.Headers.Add("Accept", "application/json");
@@ -64,7 +64,7 @@ namespace TWP.Api.Infrastructure.Interops
             var result = await response.Content.ReadAsStringAsync();
 
             // Désérialiser la réponse en un objet DTO spécifique au monstre
-            return JsonConvert.DeserializeObject<MonsterApiResponseDto>(result);
+            return JsonConvert.DeserializeObject<Dnd5eApiMonsterDTO>(result);
         }
     }
 }

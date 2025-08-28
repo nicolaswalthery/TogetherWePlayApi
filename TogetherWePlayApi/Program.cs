@@ -191,6 +191,8 @@ if (builder.Environment.IsDevelopment() ||
             }
         });
 
+        c.UseAllOfForInheritance();
+
         // Support de l'API Key dans Swagger
         c.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
         {

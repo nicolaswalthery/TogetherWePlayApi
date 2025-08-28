@@ -5,7 +5,7 @@ namespace TWP.Api.Application.DataTransferObjects
 {
     public class Dnd5eEncounterGeneratedDto
     {
-        public List<Dnd5eMonsterDto> Monsters { get; set; }
+        public List<Dnd5eApiMonsterDTO> Monsters { get; set; }
         public EncounterDifficultyEnum EncounterDifficulty { get; set; }
         public int Cr { get; set; }
         public string EncounterNarrativeContext { get; set; }
