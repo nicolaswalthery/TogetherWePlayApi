@@ -5,5 +5,6 @@ namespace TWP.Api.Infrastructure.Interops.Interfaces
     public interface IMonsterApiInterops
     {
         Task<MonsterApiResponseDto> GetMonsterDataAsync();
+        Task<SpellApiResponseDto> GetSpellDataAsync();
     }
 }

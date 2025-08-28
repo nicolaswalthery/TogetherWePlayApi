@@ -28,5 +28,18 @@ namespace TWP.Api.Infrastructure.Interops
 
             return JsonConvert.DeserializeObject<MonsterApiResponseDto>(result);
         }
+
+        public async Task<SpellApiResponseDto> GetSpellDataAsync()
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, "https://www.dnd5eapi.co/api/2014/spells");
+            request.Headers.Add("Accept", "application/json");
+
+            var response = await _httpClient.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+
+            var result = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<SpellApiResponseDto>(result);
+        }
     }
 }

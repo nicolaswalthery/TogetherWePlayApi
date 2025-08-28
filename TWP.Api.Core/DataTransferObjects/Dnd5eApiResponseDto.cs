@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TWP.Api.Core.DataTransferObjects
 {
-    public class Dnd5eApiResultDto
+    public class Dnd5eApiResponseDto
     {
         public string Index { get; set; }
         public string Name { get; set; }
@@ -16,6 +16,6 @@ namespace TWP.Api.Core.DataTransferObjects
     public class MonsterApiResponseDto
     {
         public int Count { get; set; }
-        public List<Dnd5eApiResultDto> Results { get; set; }
+        public List<Dnd5eApiResponseDto> Results { get; set; }
     }
 }
