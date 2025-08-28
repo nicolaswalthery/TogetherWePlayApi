@@ -2,6 +2,7 @@
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
+using TWP.Api.Infrastructure.Interops.Interfaces;
 
 namespace TWP.Api.Infrastructure.Interops
 {

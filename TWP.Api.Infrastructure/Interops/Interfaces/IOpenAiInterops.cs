@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace TWP.Api.Infrastructure.Interops
+namespace TWP.Api.Infrastructure.Interops.Interfaces
 {
     public interface IOpenAiInterops
     {
