@@ -5,7 +5,7 @@ namespace TWP.Api.Controllers.Interfaces
 {
     public interface IDnd5eMonsterController
     {
-        Task<IActionResult> GetAllMonsterStatsCsv();
+        Task<IActionResult> GetAll5eMonsters();
         Task<IActionResult> GetAllMonsterStatsByCr(int cr);
     }
 } 
