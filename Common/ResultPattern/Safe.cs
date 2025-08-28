@@ -26,7 +26,7 @@ namespace Common.ResultPattern
             }
             catch (Exception ex)
             {
-                throw new SafeExecuteException(ex.Message, action.Method.Name, _reason, e.InnerException);
+                throw new SafeExecuteException(ex.Message, action.Method.Name, _reason, ex.InnerException);
             }
         }
 
