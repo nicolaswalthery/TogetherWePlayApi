@@ -9,8 +9,8 @@ namespace TWP.Api.Core.DbEntities
         public ActionTypeEnum Type { get; set; }
         public AttackTypeEnum AttackType { get; set; }
         public string Description { get; set; } = string.Empty;
-        public int? ShortRange { get; set; }
-        public int? LongRange { get; set; }
+        public string? ShortRange { get; set; } = string.Empty;
+        public string? LongRange { get; set; } = string.Empty;
         public int? AttackBonus { get; set; }
         public int? DamageBonus { get; set; }
         public DiceTypeEnum? DamageDice { get; set; }
