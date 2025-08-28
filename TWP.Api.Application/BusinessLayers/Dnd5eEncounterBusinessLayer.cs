@@ -137,9 +137,8 @@ namespace TWP.Api.Application.BusinessLayers
             var maxDifferentMonster = 4;
 
             // Group monsters by Challenge Rating (CR), filtering monsters whose XP is within the budget.
-            var selectedAvailableMonsters = monsters.Where(m => m.Xp <= expEncounterBudget)
+            var selectedAvailableMonsters = monsters.Where(m => m.Xp.HasValue && m.Xp <= expEncounterBudget)
                                         .OrderBy(_ => Guid.NewGuid()) // Shuffle types
-                                        .Take(1)
                                         .ToList();
 
             for (var i = 0; i < selectedAvailableMonsters.Count && remainingBudget > 9 /* 10 is the minimum xp budget available for a dnd monster */ && encounter.Count < maxMonsters; i++)
@@ -150,7 +149,7 @@ namespace TWP.Api.Application.BusinessLayers
                 if (monster.Xp <= remainingBudget && encounter.Count < maxMonsters)
                 {
                     encounter.Add(monster);
-                    remainingBudget -= monster.Xp;
+                    remainingBudget -= monster.Xp.Value;
                 }
                 else
                 {
@@ -161,7 +160,7 @@ namespace TWP.Api.Application.BusinessLayers
                     if (lastMonster != null)
                     {
                         encounter.Add(lastMonster);
-                        remainingBudget -= lastMonster.Xp;
+                        remainingBudget -= lastMonster.Xp.Value;
                     }
                 }
 

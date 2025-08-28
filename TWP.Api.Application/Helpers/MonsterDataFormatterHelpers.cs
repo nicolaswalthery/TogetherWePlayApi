@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using TWP.Api.Core.DataTransferObjects;
 
 namespace TWP.Api.Application.Helpers
@@ -90,11 +87,12 @@ namespace TWP.Api.Application.Helpers
             {
                 var acInfo = monster.ArmorClass.First();
                 sb.AppendLine($"  Armor Class: {acInfo.Value}" +
-                    (!string.IsNullOrWhiteSpace(acInfo.Type) ? $" ({acInfo.Type})" : ""));
+                    (!string.IsNullOrWhiteSpace(acInfo.Type) ? $" ({acInfo.Type})" :
+                     !string.IsNullOrWhiteSpace(acInfo.ArmorDesc) ? $" ({acInfo.ArmorDesc})" : ""));
             }
 
             // Hit Points
-            sb.AppendLine($"  Hit Points: {monster.HitPoints} " +
+            sb.AppendLine($"  Hit Points: {monster.HitPoints ?? 0} " +
                 (!string.IsNullOrWhiteSpace(monster.HitPointsRoll) ? $"({monster.HitPointsRoll})" :
                  !string.IsNullOrWhiteSpace(monster.HitDice) ? $"({monster.HitDice})" : ""));
 
@@ -106,13 +104,19 @@ namespace TWP.Api.Application.Helpers
                     speeds.Add($"{monster.Speed.Walk}");
                 if (!string.IsNullOrWhiteSpace(monster.Speed.Swim))
                     speeds.Add($"swim {monster.Speed.Swim}");
+                if (!string.IsNullOrWhiteSpace(monster.Speed.Fly))
+                    speeds.Add($"fly {monster.Speed.Fly}");
+                if (!string.IsNullOrWhiteSpace(monster.Speed.Climb))
+                    speeds.Add($"climb {monster.Speed.Climb}");
+                if (!string.IsNullOrWhiteSpace(monster.Speed.Burrow))
+                    speeds.Add($"burrow {monster.Speed.Burrow}");
 
                 if (speeds.Any())
                     sb.AppendLine($"  Speed: {string.Join(", ", speeds)}");
             }
 
             // Challenge Rating and XP
-            sb.AppendLine($"  Challenge Rating: {monster.ChallengeRating} ({monster.Xp:N0} XP)");
+            sb.AppendLine($"  Challenge Rating: {monster.ChallengeRating} ({monster.Xp ?? 0:N0} XP)");
             sb.AppendLine();
 
             // Ability Scores
@@ -131,11 +135,11 @@ namespace TWP.Api.Application.Helpers
                 if (monster.Proficiencies?.Any() == true)
                 {
                     var savingThrows = monster.Proficiencies
-                        .Where(p => p.ProficiencyDetail?.Name?.Contains("Saving Throw") == true)
+                        .Where(p => p.ProficiencyInfo?.Name?.Contains("Saving Throw") == true)
                         .ToList();
 
                     var skills = monster.Proficiencies
-                        .Where(p => p.ProficiencyDetail?.Name?.Contains("Skill") == true)
+                        .Where(p => p.ProficiencyInfo?.Name?.Contains("Skill") == true)
                         .ToList();
 
                     if (savingThrows.Any())
@@ -143,7 +147,7 @@ namespace TWP.Api.Application.Helpers
                         sb.AppendLine("SAVING THROWS:");
                         foreach (var save in savingThrows)
                         {
-                            var name = save.ProficiencyDetail.Name.Replace("Saving Throw: ", "");
+                            var name = save.ProficiencyInfo.Name.Replace("Saving Throw: ", "");
                             sb.AppendLine($"  {name}: +{save.Value}");
                         }
                         sb.AppendLine();
@@ -154,7 +158,7 @@ namespace TWP.Api.Application.Helpers
                         sb.AppendLine("SKILLS:");
                         foreach (var skill in skills)
                         {
-                            var name = skill.ProficiencyDetail.Name.Replace("Skill: ", "");
+                            var name = skill.ProficiencyInfo.Name.Replace("Skill: ", "");
                             sb.AppendLine($"  {name}: +{skill.Value}");
                         }
                         sb.AppendLine();
@@ -176,7 +180,8 @@ namespace TWP.Api.Application.Helpers
                 }
                 if (monster.ConditionImmunities?.Any() == true)
                 {
-                    sb.AppendLine($"Condition Immunities: {string.Join(", ", monster.ConditionImmunities)}");
+                    var conditions = monster.ConditionImmunities.Select(c => c.Name ?? c.Index ?? "unknown");
+                    sb.AppendLine($"Condition Immunities: {string.Join(", ", conditions)}");
                 }
 
                 // Senses
@@ -185,9 +190,17 @@ namespace TWP.Api.Application.Helpers
                     var sensesList = new List<string>();
                     if (!string.IsNullOrWhiteSpace(monster.Senses.Darkvision))
                         sensesList.Add($"darkvision {monster.Senses.Darkvision}");
-                    sensesList.Add($"passive Perception {monster.Senses.PassivePerception}");
+                    if (!string.IsNullOrWhiteSpace(monster.Senses.Blindsight))
+                        sensesList.Add($"blindsight {monster.Senses.Blindsight}");
+                    if (!string.IsNullOrWhiteSpace(monster.Senses.Tremorsense))
+                        sensesList.Add($"tremorsense {monster.Senses.Tremorsense}");
+                    if (!string.IsNullOrWhiteSpace(monster.Senses.Truesight))
+                        sensesList.Add($"truesight {monster.Senses.Truesight}");
+                    if (monster.Senses.PassivePerception.HasValue)
+                        sensesList.Add($"passive Perception {monster.Senses.PassivePerception}");
 
-                    sb.AppendLine($"Senses: {string.Join(", ", sensesList)}");
+                    if (sensesList.Any())
+                        sb.AppendLine($"Senses: {string.Join(", ", sensesList)}");
                 }
 
                 // Languages
@@ -213,10 +226,18 @@ namespace TWP.Api.Application.Helpers
                     foreach (var ability in monster.SpecialAbilities)
                     {
                         sb.AppendLine($"  • {ability.Name}");
-                        if (!string.IsNullOrWhiteSpace(ability.Desc))
+                        if (!string.IsNullOrWhiteSpace(ability.Description))
                         {
-                            var wrapped = WrapAndIndent(ability.Desc, 76, 4);
+                            var wrapped = WrapAndIndent(ability.Description, 76, 4);
                             sb.AppendLine(wrapped);
+                        }
+
+                        // Add usage information if available
+                        if (ability.Usage != null)
+                        {
+                            var usageText = FormatUsage(ability.Usage);
+                            if (!string.IsNullOrWhiteSpace(usageText))
+                                sb.AppendLine($"    Usage: {usageText}");
                         }
                     }
                     sb.AppendLine();
@@ -235,15 +256,33 @@ namespace TWP.Api.Application.Helpers
                             sb.AppendLine($"    Attack Bonus: +{action.AttackBonus}");
                         }
 
-                        if (!string.IsNullOrWhiteSpace(action.Desc))
+                        if (!string.IsNullOrWhiteSpace(action.Description))
                         {
-                            var wrapped = WrapAndIndent(action.Desc, 76, 4);
+                            var wrapped = WrapAndIndent(action.Description, 76, 4);
                             sb.AppendLine(wrapped);
                         }
 
-                        if (action.DC != null)
+                        // Handle damage if present
+                        if (action.Damage?.Any() == true)
                         {
-                            sb.AppendLine($"    DC {action.DC.DCValue} {action.DC.DCType?.Name ?? "check"}");
+                            foreach (var damage in action.Damage)
+                            {
+                                var damageType = damage.DamageType?.Name ?? "unspecified";
+                                sb.AppendLine($"    Damage: {damage.DamageDice} {damageType}");
+                            }
+                        }
+
+                        if (action.Dc != null)
+                        {
+                            sb.AppendLine($"    DC {action.Dc.DcValue} {action.Dc.DcType?.Name ?? "check"}");
+                        }
+
+                        // Add usage information if available
+                        if (action.Usage != null)
+                        {
+                            var usageText = FormatUsage(action.Usage);
+                            if (!string.IsNullOrWhiteSpace(usageText))
+                                sb.AppendLine($"    Usage: {usageText}");
                         }
                     }
                     sb.AppendLine();
@@ -262,10 +301,20 @@ namespace TWP.Api.Application.Helpers
                     foreach (var legendary in monster.LegendaryActions)
                     {
                         sb.AppendLine($"  • {legendary.Name}");
-                        if (!string.IsNullOrWhiteSpace(legendary.Desc))
+                        if (!string.IsNullOrWhiteSpace(legendary.Description))
                         {
-                            var wrapped = WrapAndIndent(legendary.Desc, 76, 4);
+                            var wrapped = WrapAndIndent(legendary.Description, 76, 4);
                             sb.AppendLine(wrapped);
+                        }
+
+                        // Handle damage if present
+                        if (legendary.Damage?.Any() == true)
+                        {
+                            foreach (var damage in legendary.Damage)
+                            {
+                                var damageType = damage.DamageType?.Name ?? "unspecified";
+                                sb.AppendLine($"    Damage: {damage.DamageDice} {damageType}");
+                            }
                         }
                     }
                     sb.AppendLine();
@@ -277,11 +326,49 @@ namespace TWP.Api.Application.Helpers
                     sb.AppendLine("REACTIONS:");
                     foreach (var reaction in monster.Reactions)
                     {
-                        sb.AppendLine($"  • {reaction}");
+                        sb.AppendLine($"  • {reaction.Name}");
+                        if (!string.IsNullOrWhiteSpace(reaction.Description))
+                        {
+                            var wrapped = WrapAndIndent(reaction.Description, 76, 4);
+                            sb.AppendLine(wrapped);
+                        }
+
+                        // Handle damage if present
+                        if (reaction.Damage?.Any() == true)
+                        {
+                            foreach (var damage in reaction.Damage)
+                            {
+                                var damageType = damage.DamageType?.Name ?? "unspecified";
+                                sb.AppendLine($"    Damage: {damage.DamageDice} {damageType}");
+                            }
+                        }
                     }
                     sb.AppendLine();
                 }
             }
+        }
+
+        /// <summary>
+        /// Formats usage information into a readable string
+        /// </summary>
+        /// <param name="usage">Usage object to format</param>
+        /// <returns>Formatted usage string</returns>
+        private static string FormatUsage(Usage usage)
+        {
+            if (usage == null) return "";
+
+            var parts = new List<string>();
+
+            if (usage.Times.HasValue)
+                parts.Add($"{usage.Times} times");
+
+            if (!string.IsNullOrWhiteSpace(usage.Type))
+                parts.Add($"per {usage.Type}");
+
+            if (usage.RestTypes?.Any() == true)
+                parts.Add($"({string.Join(" or ", usage.RestTypes)} rest)");
+
+            return string.Join(" ", parts);
         }
 
         /// <summary>
