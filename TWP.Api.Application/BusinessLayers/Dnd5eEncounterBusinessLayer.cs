@@ -14,12 +14,14 @@ namespace TWP.Api.Application.BusinessLayers
 {
     public class Dnd5eEncounterBusinessLayer : IDndEncounterBusinessLayer
     {
+        private readonly IMonsterApiInterops _monsterApiInterops;
         private readonly IDnd2024AllMonsterStatsCsvRepository _dnd2024AllMonsterStatsCsvRepository;
         private readonly IDnd5eEncounterDataJsonRepository _dnd5ERelationBetweenXpAndCrJsonRepository;
         private readonly IOpenAiInterops _openAiInterops;
 
-        public Dnd5eEncounterBusinessLayer(IDnd2024AllMonsterStatsCsvRepository dnd2024AllMonsterStatsCsvRepository, IDnd5eEncounterDataJsonRepository dnd5ERelationBetweenXpAndCrJsonRepository, IOpenAiInterops openAiInterops)
+        public Dnd5eEncounterBusinessLayer(IMonsterApiInterops monsterApiInterops, IDnd2024AllMonsterStatsCsvRepository dnd2024AllMonsterStatsCsvRepository, IDnd5eEncounterDataJsonRepository dnd5ERelationBetweenXpAndCrJsonRepository, IOpenAiInterops openAiInterops)
         {
+            _monsterApiInterops = monsterApiInterops;
             _dnd2024AllMonsterStatsCsvRepository = dnd2024AllMonsterStatsCsvRepository;
             _dnd5ERelationBetweenXpAndCrJsonRepository = dnd5ERelationBetweenXpAndCrJsonRepository;
             _openAiInterops = openAiInterops;
