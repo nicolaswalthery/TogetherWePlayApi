@@ -1,8 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System.Net.Http;
-using System.Threading.Tasks;
 using TWP.Api.Core.DataTransferObjects;
-using TWP.Api.Infrastructure.Interops;
 using TWP.Api.Infrastructure.Interops.Interfaces;
 
 namespace TWP.Api.Infrastructure.Interops
@@ -40,6 +37,19 @@ namespace TWP.Api.Infrastructure.Interops
             var result = await response.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<SpellApiResponseDto>(result);
+        }
+
+        public async Task<MonsterApiResponseDto> GetMonstersByChallengeRatingAsync(int cr)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, $"https://www.dnd5eapi.co/api/2014/monsters?challenge_rating={cr}");
+            request.Headers.Add("Accept", "application/json");
+
+            var response = await _httpClient.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+
+            var result = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<MonsterApiResponseDto>(result);
         }
     }
 }
