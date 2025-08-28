@@ -146,8 +146,9 @@ builder.Services.AddTransient<CsvRepositoryBase>();
 builder.Services.AddTransient<IDnd2024AllMonsterStatsCsvRepository, Dnd2024AllMonsterStatsCsvRepository>();
 builder.Services.AddTransient<IDnd5eEncounterDataJsonRepository, Dnd5eEncounterDataJsonRepository>();
 
-// Add LLM Services
+// Add Interops Services
 builder.Services.AddTransient<IOpenAiInterops, OpenAiInterops>();
+builder.Services.AddHttpClient<IMonsterApiInterops, MonsterApiInterops>();
 
 // ===== BUSINESS LAYERS =====
 builder.Services.AddTransient<IDndEncounterBusinessLayer, Dnd5eEncounterBusinessLayer>();

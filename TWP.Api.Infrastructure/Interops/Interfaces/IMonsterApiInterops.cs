@@ -1,7 +1,9 @@
-﻿namespace TWP.Api.Infrastructure.Interops.Interfaces
+﻿using TWP.Api.Core.DataTransferObjects;
+
+namespace TWP.Api.Infrastructure.Interops.Interfaces
 {
     public interface IMonsterApiInterops
     {
-        Task<string> GetMonsterDataAsync();
+        Task<MonsterApiResponseDto> GetMonsterDataAsync();
     }
 }

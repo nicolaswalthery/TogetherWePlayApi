@@ -1,5 +1,7 @@
-﻿using System.Net.Http;
+﻿using Newtonsoft.Json;
+using System.Net.Http;
 using System.Threading.Tasks;
+using TWP.Api.Core.DataTransferObjects;
 using TWP.Api.Infrastructure.Interops;
 using TWP.Api.Infrastructure.Interops.Interfaces;
 
@@ -14,7 +16,7 @@ namespace TWP.Api.Infrastructure.Interops
             _httpClient = httpClient;
         }
 
-        public async Task<string> GetMonsterDataAsync()
+        public async Task<MonsterApiResponseDto> GetMonsterDataAsync()
         {
             var request = new HttpRequestMessage(HttpMethod.Get, "https://www.dnd5eapi.co/api/2014/monsters");
             request.Headers.Add("Accept", "application/json");
@@ -22,7 +24,9 @@ namespace TWP.Api.Infrastructure.Interops
             var response = await _httpClient.SendAsync(request);
             response.EnsureSuccessStatusCode();
 
-            return await response.Content.ReadAsStringAsync();
+            var result = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<MonsterApiResponseDto>(result);
         }
     }
 }
