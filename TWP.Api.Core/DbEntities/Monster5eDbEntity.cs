@@ -36,6 +36,7 @@ namespace TWP.Api.Core.DbEntities
         // Skills & Immunities (JSON stored as string)
         public string? Skills { get; set; } // JSON
         public string? DamageImmunities { get; set; }
+        public string? DamageResistances { get; set; }
         public string? Senses { get; set; }
         public string? Languages { get; set; }
 

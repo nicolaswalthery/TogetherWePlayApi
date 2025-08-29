@@ -113,6 +113,10 @@ namespace TWP.Api.Infrastructure.Configurations
                 .HasColumnName("damage_immunities")
                 .HasMaxLength(500);
 
+            builder.Property(e => e.DamageResistances)
+                .HasColumnName("damage_resistances")
+                .HasMaxLength(500);
+
             builder.Property(e => e.Senses)
                 .HasColumnName("senses")
                 .HasMaxLength(500);
