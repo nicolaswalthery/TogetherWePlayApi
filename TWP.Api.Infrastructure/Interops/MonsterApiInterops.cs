@@ -1,5 +1,6 @@
 ﻿using Common.Extensions;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using TWP.Api.Core.DataTransferObjects;
 using TWP.Api.Infrastructure.Interops.Interfaces;
 
@@ -63,7 +64,7 @@ namespace TWP.Api.Infrastructure.Interops
             var challenge_rating = "";
             foreach (var challengeRating in challengeRatings)
                 challenge_rating += $"{challengeRating}{and}";
-            var challenge_rating_truncated = challenge_rating.Substring(0, challenge_rating.Count() - and.Count());
+            var challenge_rating_truncated = challenge_rating.Substring(0, challenge_rating.Count() - and.Count()).Replace("0,", "0.");
 
             var request = new HttpRequestMessage(HttpMethod.Get, $"https://www.dnd5eapi.co/api/2014/monsters?challenge_rating={challenge_rating_truncated}");
             request.Headers.Add("Accept", "application/json");
