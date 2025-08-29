@@ -7,6 +7,7 @@ namespace TWP.Api.Infrastructure.Interops.Interfaces
         Task<MonsterApiResponseDto> GetMonsterDataAsync();
         Task<SpellApiResponseDto> GetSpellDataAsync();
         Task<MonsterApiResponseDto> GetMonstersByChallengeRatingAsync(int cr);
+        Task<MonsterApiResponseDto> GetMonstersByChallengeRatingOrlessAsync(int cr);
         Task<Dnd5eApiMonsterDTO> GetMonsterByIndexAsync(string index);
     }
 }

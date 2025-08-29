@@ -42,7 +42,7 @@ namespace TWP.Api.Application.BusinessLayers
                     var cr = playerLevels.Min();
                     var expEncounterBudget = ComputeExpBudget(encounterDifficulty, playerLevels);
 
-                    var monsterApiResponseDto = await _monsterApiInterops.GetMonstersByChallengeRatingAsync(cr + 1);
+                    var monsterApiResponseDto = await _monsterApiInterops.GetMonstersByChallengeRatingOrlessAsync(cr + 1);
                     if (monsterApiResponseDto == null || monsterApiResponseDto.Results.HasNoElement())
                         return Result<Dnd5eEncounterGeneratedDto>.Failure("No Monsters found for the given CR", ReasonType.NotFound);
                     
