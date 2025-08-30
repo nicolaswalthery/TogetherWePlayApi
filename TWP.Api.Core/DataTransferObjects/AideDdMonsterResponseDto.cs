@@ -20,6 +20,22 @@
         public bool HasImage { get; set; }
         public List<string> Translations { get; set; } = new();
 
+        // Characteristics (Strength, Dexterity, etc.)
+        public string Strength { get; set; } = "";            // Example: "30"
+        public string Dexterity { get; set; } = "";
+        public string Constitution { get; set; } = "";
+        public string Intelligence { get; set; } = "";
+        public string Wisdom { get; set; } = "";
+        public string Charisma { get; set; } = "";
+
+        // Saving Throws (StrengthSave, DexteritySave, etc.)
+        public string StrengthSave { get; set; } = "";         // Example: "+10"
+        public string DexteritySave { get; set; } = "";
+        public string ConstitutionSave { get; set; } = "";
+        public string IntelligenceSave { get; set; } = "";
+        public string WisdomSave { get; set; } = "";
+        public string CharismaSave { get; set; } = "";
+
         // Actions et Réactions ajoutées
         public List<string> Actions { get; set; }     // Extrait les actions du monstre
         public List<string> ReactionActions { get; set; }

@@ -1,5 +1,4 @@
 ﻿using HtmlAgilityPack;
-using System.Globalization;
 using TWP.Api.Core.DataTransferObjects;
 using TWP.Api.Infrastructure.Interops.Interfaces;
 
@@ -97,10 +96,56 @@ namespace TWP.Api.Infrastructure.Interops
                 // Extraction des Legendary Actions
                 LegendaryActions = Extract(doc, "Legendary actions"),
 
-                ReactionActions = Extract(doc, "Reactions")
+                ReactionActions = Extract(doc, "Reactions"),
             };
 
+            ExtractCharacteristicAndSaves(doc, monster);
+
             return monster;
+        }
+
+        private static void ExtractCharacteristicAndSaves(HtmlDocument doc, AideDdMonsterResponseDto monster)
+        {
+            //TODO : Extrairaire carac et saves https://www.aidedd.org/public/monster/tarrasque
+            var statRows = doc.DocumentNode.SelectNodes("//div[contains(@class, 'car1')]/following-sibling::div");
+
+            if (statRows != null)
+            {
+                for (int i = 0; i < statRows.Count; i++)
+                {
+                    var statRow = statRows[i];
+                    if (statRow.InnerText.Contains("Str") || statRow.InnerText.Contains("Dex") ||
+                        statRow.InnerText.Contains("Con") || statRow.InnerText.Contains("Int") ||
+                        statRow.InnerText.Contains("Wis") || statRow.InnerText.Contains("Cha"))
+                    {
+                        var statName = statRows[i - 1].InnerText.Trim();
+                        var statValue = statRows[i + 1].InnerText.Trim();
+
+                        // Assign to corresponding fields in the monster object
+                        switch (statName)
+                        {
+                            case "Str":
+                                monster.Strength = statValue;
+                                break;
+                            case "Dex":
+                                monster.Dexterity = statValue;
+                                break;
+                            case "Con":
+                                monster.Constitution = statValue;
+                                break;
+                            case "Int":
+                                monster.Intelligence = statValue;
+                                break;
+                            case "Wis":
+                                monster.Wisdom = statValue;
+                                break;
+                            case "Cha":
+                                monster.Charisma = statValue;
+                                break;
+                        }
+                    }
+                }
+            }
         }
 
         // Extraction de la taille (Size)
