@@ -1,0 +1,39 @@
+﻿namespace TWP.Api.Core.Enums
+{
+    public enum DndHabitatEnum
+    {
+        Mountain = 1,
+    PlanarElementalPlaneOfAir,
+    Any,
+    Underdark,
+    Underwater,
+    Arctic,
+    Swamp,
+    Coastal,
+    Desert,
+    Forest,
+    Grassland,
+    Hill,
+    Urban,
+    PlanarFeywild,
+    PlanarShadowfell,
+    PlanarNineHells,
+    PlanarLowerPlanes,
+    PlanarLimbo,
+    PlanarGehenna,
+    PlanarAbyss,
+    CoastalDesert,
+    ForestGrassland,
+    HillMountain,
+    CoastalSwamp,
+    ForestSwamp,
+    UnderdarkUrban,
+    UnderdarkUrban_2,
+    PlanarUpperPlanes,
+    PlanarElementalPlaneOfFire,
+    PlanarElementalPlaneOfEarth,
+    DesertUrban,
+    ArcticForestGrassland,
+    CoastalPlanarFeywild
+    }
+}
