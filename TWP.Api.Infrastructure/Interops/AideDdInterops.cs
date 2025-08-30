@@ -86,16 +86,16 @@ namespace TWP.Api.Infrastructure.Interops
                     .ToList() ?? new List<string>(),
 
                 // Extraction des Traits
-                Traits = ExtractTraits(doc),
+                Traits = Extract(doc, "Traits"),
 
                 // Extraction des Actions
-                Actions = ExtractActions(doc),
+                Actions = Extract(doc, "Actions"),
 
                 // Extraction des Bonus Actions
-                BonusActions = ExtractBonusActions(doc),
+                BonusActions = Extract(doc, "Bonus actions"),
 
                 // Extraction des Legendary Actions
-                LegendaryActions = ExtractLegendaryActions(doc)
+                LegendaryActions = Extract(doc, "Legendary actions")
             };
 
             return monster;
@@ -110,126 +110,36 @@ namespace TWP.Api.Infrastructure.Interops
             return sizeParts.Length > 0 ? sizeParts[0] : "";
         }
 
-        // Extraction des Traits
-        private static List<string> ExtractTraits(HtmlDocument doc)
+        private static List<string> Extract(HtmlDocument doc, string title)
         {
-            var traitsList = new List<string>();
-
-            // Trouver la section Traits
-            var traitsNode = doc.DocumentNode.SelectSingleNode("//div[@class='rub' and text()='Traits']");
-
-            if (traitsNode != null)
-            {
-                // Récupérer tous les paragraphes suivants jusqu'à la prochaine section
-                var nextSectionNode = traitsNode.SelectSingleNode("following-sibling::div[@class='rub']");
-
-                // Sélectionner les paragraphes entre Traits et la prochaine section
-                var traitNodes = traitsNode
-                    .SelectNodes("following-sibling::p[preceding-sibling::div[@class='rub'] != null or not(following-sibling::div[@class='rub'])]");
-
-                if (traitNodes != null)
-                {
-                    foreach (var traitNode in traitNodes)
-                    {
-                        var traitText = traitNode.InnerText.Trim();
-                        if (!string.IsNullOrWhiteSpace(traitText))
-                        {
-                            traitsList.Add(traitText);
-                        }
-                    }
-                }
-            }
-
-            return traitsList;
-        }
-
-        // Extraction des Actions
-        private static List<string> ExtractActions(HtmlDocument doc)
-        {
-            var actionsList = new List<string>();
+            var traits = new List<string>();
 
             // Trouver la section Actions
-            var actionsNode = doc.DocumentNode.SelectSingleNode("//div[@class='rub' and text()='Actions']");
+            var actionsNode = doc.DocumentNode.SelectSingleNode($"//div[@class='rub' and text()='{title}']");
 
             if (actionsNode != null)
             {
-                var actionNodes = actionsNode.SelectNodes("following-sibling::p");
+                var actionNodes = actionsNode.SelectNodes("following-sibling::p | following-sibling::div[@class='rub']");
 
+                
                 if (actionNodes != null)
                 {
-                    foreach (var actionNode in actionNodes)
+                    var nextSectionFound = false;
+                    for (int i = 0; i < actionNodes.Count && !nextSectionFound; i++)
                     {
+                        var actionNode = actionNodes[i];
                         var actionText = actionNode.InnerText.Trim();
-                        if (!string.IsNullOrWhiteSpace(actionText))
-                        {
-                            actionsList.Add(actionText);
-                        }
+                        if (!string.IsNullOrWhiteSpace(actionText) && !nextSectionFound)
+                            traits.Add(actionText);
+
+                        if (i+1 != actionNodes.Count && actionNodes[i+1].Name == "div" && actionNodes[i + 1].GetAttributeValue("class", "") == "rub")
+                            nextSectionFound = true;
                     }
                 }
             }
 
-            return actionsList;
+            return traits;
         }
-
-        // Extraction des Bonus Actions
-        private static List<string> ExtractBonusActions(HtmlDocument doc)
-        {
-            var bonusActionsList = new List<string>();
-
-            // Trouver la section Bonus actions
-            var bonusActionsNode = doc.DocumentNode.SelectSingleNode("//div[@class='rub' and text()='Bonus actions']");
-
-            if (bonusActionsNode != null)
-            {
-                var bonusActionNodes = bonusActionsNode.SelectNodes("following-sibling::p");
-
-                if (bonusActionNodes != null)
-                {
-                    foreach (var bonusActionNode in bonusActionNodes)
-                    {
-                        var bonusActionText = bonusActionNode.InnerText.Trim();
-                        if (!string.IsNullOrWhiteSpace(bonusActionText))
-                        {
-                            bonusActionsList.Add(bonusActionText);
-                        }
-                    }
-                }
-            }
-
-            return bonusActionsList;
-        }
-
-        // Extraction des Legendary Actions
-        private static List<string> ExtractLegendaryActions(HtmlDocument doc)
-        {
-            var legendaryActionsList = new List<string>();
-
-            // Trouver la section Legendary actions
-            var legendaryActionsNode = doc.DocumentNode.SelectSingleNode("//div[@class='rub' and text()='Legendary actions']");
-
-            if (legendaryActionsNode != null)
-            {
-                var legendaryActionNodes = legendaryActionsNode.SelectNodes("following-sibling::p");
-
-                if (legendaryActionNodes != null)
-                {
-                    foreach (var legendaryActionNode in legendaryActionNodes)
-                    {
-                        var legendaryActionText = legendaryActionNode.InnerText.Trim();
-                        if (!string.IsNullOrWhiteSpace(legendaryActionText))
-                        {
-                            legendaryActionsList.Add(legendaryActionText);
-                        }
-                    }
-                }
-            }
-
-            return legendaryActionsList;
-        }
-
-
-
-
 
     }
 }
