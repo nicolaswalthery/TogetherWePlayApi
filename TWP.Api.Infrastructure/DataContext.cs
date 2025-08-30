@@ -24,6 +24,8 @@ public class DataContext : DbContext
     public DbSet<TraitDbEntity> Traits { get; set; }
     public DbSet<Symbarum5eDbEntity> Symbarum5es { get; set; }
 
+    public DbSet<MonsterAideddDbEntity> AideddMonsters { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
@@ -50,5 +52,6 @@ public class DataContext : DbContext
         modelBuilder.ApplyConfiguration(new TraitDbEntityConfiguration());
         modelBuilder.ApplyConfiguration(new TraitDbEntityConfiguration());
         modelBuilder.ApplyConfiguration(new Symbarum5eDbEntityConfiguration());
+        modelBuilder.ApplyConfiguration(new Monster5eDbEntityConfiguration());
     }
 }
