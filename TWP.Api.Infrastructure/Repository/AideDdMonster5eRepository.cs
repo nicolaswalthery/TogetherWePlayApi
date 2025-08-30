@@ -21,8 +21,21 @@ namespace TWP.Api.Infrastructure.Repository.Interfaces
         public async Task<Result<List<MonsterAideddDbEntity>>> FindByCrOrLessAsync(double cr)
             => await Safe.ExecuteAsync(async () =>
             {
-                var result = await _context.AideddMonsters.Where(m => m.CR.ConvertToDoubleChallengeRating() <= cr).ToListAsync();
-                return Result<List<MonsterAideddDbEntity>>.Success(result);
+
+                var result = await _context.AideddMonsters.ToListAsync();
+                var filtered = result.Where(m =>
+                {
+                    try
+                    {
+                        var monsterCr = m.CR.ConvertToDoubleChallengeRating();
+                        return monsterCr <= cr;
+                    }
+                    catch
+                    {
+                        return false;
+                    }
+                }).ToList();
+                return Result<List<MonsterAideddDbEntity>>.Success(filtered);
             });
 
     }

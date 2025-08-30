@@ -149,6 +149,7 @@ builder.Services.AddTransient<IDnd5eEncounterDataJsonRepository, Dnd5eEncounterD
 // Add Interops Services
 builder.Services.AddTransient<IOpenAiInterops, OpenAiInterops>();
 builder.Services.AddHttpClient<IMonsterApiInterops, MonsterApiInterops>();
+builder.Services.AddHttpClient<IAideDdInterops, AideDdInterops>();
 
 // ===== BUSINESS LAYERS =====
 builder.Services.AddTransient<IDndEncounterBusinessLayer, Dnd5eEncounterBusinessLayer>();

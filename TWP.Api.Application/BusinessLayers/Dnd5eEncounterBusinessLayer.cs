@@ -12,12 +12,14 @@ namespace TWP.Api.Application.BusinessLayers
 {
     public class Dnd5eEncounterBusinessLayer : IDndEncounterBusinessLayer
     {
+        private readonly IAideDdInterops _aideDdInterops;
         private readonly IMonsterApiInterops _monsterApiInterops;
         private readonly IOpenAiInterops _openAiInterops;
         private readonly IAideDdMonster5eRepository _aideDdMonster5ERepository;
 
-        public Dnd5eEncounterBusinessLayer(IMonsterApiInterops monsterApiInterops, IOpenAiInterops openAiInterops, IAideDdMonster5eRepository aideDdMonster5ERepository)
+        public Dnd5eEncounterBusinessLayer(IAideDdInterops aideDdInterops, IMonsterApiInterops monsterApiInterops, IOpenAiInterops openAiInterops, IAideDdMonster5eRepository aideDdMonster5ERepository)
         {
+            _aideDdInterops = aideDdInterops;
             _monsterApiInterops = monsterApiInterops;
             _openAiInterops = openAiInterops;
             _aideDdMonster5ERepository = aideDdMonster5ERepository;
@@ -35,6 +37,8 @@ namespace TWP.Api.Application.BusinessLayers
                     var cr = playerLevels.Min();
                     var expEncounterBudget = ComputeExpBudget(encounterDifficulty, playerLevels);
 
+                    var res = await _aideDdMonster5ERepository.FindByCrOrLessAsync(cr + 1);
+                    var test = await _aideDdInterops.GetMonsterByName(res.Data.FirstOrDefault().Name);
                     var monsterApiResponseDto = await _monsterApiInterops.GetMonstersByChallengeRatingOrlessAsync(cr + 1);
                     if (monsterApiResponseDto == null || monsterApiResponseDto.Results.HasNoElement())
                         return Result<Dnd5eEncounterGeneratedDto>.Failure("No Monsters found for the given CR", ReasonType.NotFound);
@@ -47,17 +51,17 @@ namespace TWP.Api.Application.BusinessLayers
 
                     var formattedEncounterData = EncounterFormatter.GetFormattedEncounterSafe(encounterDifficulty: encounterDifficulty, playerLevels: playerLevels, encounterNarrativeContext, monsterHabitats: monsterHabitats, pickedMonsters: encounterGenerated, expEncounterBudget: expEncounterBudget);
 
-                    var openAiresult = await _openAiInterops.GetChatGptResponseAsync(
-                        message: $"Create an Dnd5e Encounter using these data : Encounter data for the Master Game Master to use : {formattedEncounterData.Data} which were picked according to Difficulty : {encounterDifficulty.ToString()}, Number of players : {playerLevels.Count}, Party Level : {playerLevels.Min()}, NarrativeContext : {encounterNarrativeContext}, Monster Habitats : {string.Join(",", monsterHabitats.Select(h => h.ToString()))}",
-                        systemPrompt: $"You are a Master Game Master (GM) tasked with creating a complete D&D 5e encounter. The encounter's difficulty, monster selection, habitat, and challenge rating ({cr}) have been given. Your role is to generate the following:\r\n\r\nEncounter Description:\r\nCreate an engaging narrative (narrative context : {encounterNarrativeContext}) that introduces the encounter. This should include:\r\n\r\nA description of the environment where the encounter takes place.\r\n\r\nEnsuring the monsters are integrated into the narrative which are those : Encounter data for the Master Game Master to use : {formattedEncounterData.Data}.\r\n\r\nAny immediate effects or environmental hazards the players should be aware of (e.g., traps, difficult terrain, weather conditions).\r\n\r\nMonster Stats & Tactics:\r\nProvide the stats for the Mud Mephit, including:\r\n\r\nHit Points (HP), Armor Class (AC), Damage output, and relevant abilities.\r\n\r\nSpecial abilities and spells the the monster that are given to you can use.\r\n\r\nTactical advice for the GM (you are writing for a \"noob GM,\" so make sure it is simple and clear). This should include:\r\n\r\nHow the the monster that are given to you behaves in combat.\r\n\r\nIdeal strategies or tactics the the monster that are given to you would employ.\r\n\r\nWeaknesses or vulnerabilities that the players can exploit.\r\n\r\nTreasure:\r\nBased on the CR and level of the encounter, generate treasure that fits with the encounter. This should include:\r\n\r\nGold or valuable items, ensuring the treasure is balanced for the party’s level.\r\n\r\nMagic items that are thematically appropriate for the the monster that are given to you and the habitat."
-                        );
+                    //var openAiresult = await _openAiInterops.GetChatGptResponseAsync(
+                    //    message: $"Create an Dnd5e Encounter using these data : Encounter data for the Master Game Master to use : {formattedEncounterData.Data} which were picked according to Difficulty : {encounterDifficulty.ToString()}, Number of players : {playerLevels.Count}, Party Level : {playerLevels.Min()}, NarrativeContext : {encounterNarrativeContext}, Monster Habitats : {string.Join(",", monsterHabitats.Select(h => h.ToString()))}",
+                    //    systemPrompt: $"You are a Master Game Master (GM) tasked with creating a complete D&D 5e encounter. The encounter's difficulty, monster selection, habitat, and challenge rating ({cr}) have been given. Your role is to generate the following:\r\n\r\nEncounter Description:\r\nCreate an engaging narrative (narrative context : {encounterNarrativeContext}) that introduces the encounter. This should include:\r\n\r\nA description of the environment where the encounter takes place.\r\n\r\nEnsuring the monsters are integrated into the narrative which are those : Encounter data for the Master Game Master to use : {formattedEncounterData.Data}.\r\n\r\nAny immediate effects or environmental hazards the players should be aware of (e.g., traps, difficult terrain, weather conditions).\r\n\r\nMonster Stats & Tactics:\r\nProvide the stats for the Mud Mephit, including:\r\n\r\nHit Points (HP), Armor Class (AC), Damage output, and relevant abilities.\r\n\r\nSpecial abilities and spells the the monster that are given to you can use.\r\n\r\nTactical advice for the GM (you are writing for a \"noob GM,\" so make sure it is simple and clear). This should include:\r\n\r\nHow the the monster that are given to you behaves in combat.\r\n\r\nIdeal strategies or tactics the the monster that are given to you would employ.\r\n\r\nWeaknesses or vulnerabilities that the players can exploit.\r\n\r\nTreasure:\r\nBased on the CR and level of the encounter, generate treasure that fits with the encounter. This should include:\r\n\r\nGold or valuable items, ensuring the treasure is balanced for the party’s level.\r\n\r\nMagic items that are thematically appropriate for the the monster that are given to you and the habitat."
+                    //    );
                     var finaleResult = new Dnd5eEncounterGeneratedDto() 
                                         { 
                                             Cr = cr, EncounterDifficulty = encounterDifficulty, 
                                             EncounterNarrativeContext = encounterNarrativeContext, 
                                             MonsterHabitats = monsterHabitats, 
                                             Monsters = encounterGenerated, 
-                                            OpenAiResponse = openAiresult,
+                                            //OpenAiResponse = openAiresult,
                                             FormattedEncounterData = formattedEncounterData.Data!
                     };
 
