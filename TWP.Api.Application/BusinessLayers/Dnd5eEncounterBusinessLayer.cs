@@ -1,31 +1,26 @@
 ﻿using Common.Extensions;
-using Common.Randomizer;
 using Common.ResultPattern;
 using TWP.Api.Application.BusinessLayers.Interfaces;
 using TWP.Api.Application.DataTransferObjects;
 using TWP.Api.Application.Helpers;
-using TWP.Api.Application.Helpers.Mappers;
 using TWP.Api.Core.DataTransferObjects;
 using TWP.Api.Core.Enums;
-using TWP.Api.Infrastructure.CsvRepositories.Interfaces;
 using TWP.Api.Infrastructure.Interops.Interfaces;
-using TWP.Api.Infrastructure.JsonRepositories.Interfaces;
+using TWP.Api.Infrastructure.Repository.Interfaces;
 
 namespace TWP.Api.Application.BusinessLayers
 {
     public class Dnd5eEncounterBusinessLayer : IDndEncounterBusinessLayer
     {
         private readonly IMonsterApiInterops _monsterApiInterops;
-        private readonly IDnd2024AllMonsterStatsCsvRepository _dnd2024AllMonsterStatsCsvRepository;
-        private readonly IDnd5eEncounterDataJsonRepository _dnd5ERelationBetweenXpAndCrJsonRepository;
         private readonly IOpenAiInterops _openAiInterops;
+        private readonly AideDdMonster5eRepository _aideDdMonster5ERepository;
 
-        public Dnd5eEncounterBusinessLayer(IMonsterApiInterops monsterApiInterops, IDnd2024AllMonsterStatsCsvRepository dnd2024AllMonsterStatsCsvRepository, IDnd5eEncounterDataJsonRepository dnd5ERelationBetweenXpAndCrJsonRepository, IOpenAiInterops openAiInterops)
+        public Dnd5eEncounterBusinessLayer(IMonsterApiInterops monsterApiInterops, IOpenAiInterops openAiInterops, AideDdMonster5eRepository aideDdMonster5ERepository)
         {
             _monsterApiInterops = monsterApiInterops;
-            _dnd2024AllMonsterStatsCsvRepository = dnd2024AllMonsterStatsCsvRepository;
-            _dnd5ERelationBetweenXpAndCrJsonRepository = dnd5ERelationBetweenXpAndCrJsonRepository;
             _openAiInterops = openAiInterops;
+            _aideDdMonster5ERepository = aideDdMonster5ERepository;
         }
 
 
