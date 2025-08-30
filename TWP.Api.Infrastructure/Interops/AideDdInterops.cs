@@ -16,7 +16,7 @@ namespace TWP.Api.Infrastructure.Interops
 
         public async Task<AideDdMonsterResponseDto> GetMonsterByName(string monsterName)
         {
-            monsterName = "tarrasque"; // Temporary hardcoded for testing
+            monsterName = "knight"; // Temporary hardcoded for testing
             var url = $"https://www.aidedd.org/monster/{Uri.EscapeDataString(monsterName.Replace(" ", "-"))}";
             var response = await _httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
@@ -95,7 +95,9 @@ namespace TWP.Api.Infrastructure.Interops
                 BonusActions = Extract(doc, "Bonus actions"),
 
                 // Extraction des Legendary Actions
-                LegendaryActions = Extract(doc, "Legendary actions")
+                LegendaryActions = Extract(doc, "Legendary actions"),
+
+                ReactionActions = Extract(doc, "Reactions")
             };
 
             return monster;
@@ -112,14 +114,14 @@ namespace TWP.Api.Infrastructure.Interops
 
         private static List<string> Extract(HtmlDocument doc, string title)
         {
-            var traits = new List<string>();
+            var abilities = new List<string>();
 
             // Trouver la section Actions
-            var actionsNode = doc.DocumentNode.SelectSingleNode($"//div[@class='rub' and text()='{title}']");
+            var rubNode = doc.DocumentNode.SelectSingleNode($"//div[@class='rub' and text()='{title}']");
 
-            if (actionsNode != null)
+            if (rubNode != null)
             {
-                var actionNodes = actionsNode.SelectNodes("following-sibling::p | following-sibling::div[@class='rub']");
+                var actionNodes = rubNode.SelectNodes("following-sibling::p | following-sibling::div[@class='rub']");
 
                 
                 if (actionNodes != null)
@@ -130,7 +132,7 @@ namespace TWP.Api.Infrastructure.Interops
                         var actionNode = actionNodes[i];
                         var actionText = actionNode.InnerText.Trim();
                         if (!string.IsNullOrWhiteSpace(actionText) && !nextSectionFound)
-                            traits.Add(actionText);
+                            abilities.Add(actionText);
 
                         if (i+1 != actionNodes.Count && actionNodes[i+1].Name == "div" && actionNodes[i + 1].GetAttributeValue("class", "") == "rub")
                             nextSectionFound = true;
@@ -138,7 +140,7 @@ namespace TWP.Api.Infrastructure.Interops
                 }
             }
 
-            return traits;
+            return abilities;
         }
 
     }

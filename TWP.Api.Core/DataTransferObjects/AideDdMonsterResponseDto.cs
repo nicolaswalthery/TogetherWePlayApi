@@ -22,6 +22,7 @@
 
         // Actions et Réactions ajoutées
         public List<string> Actions { get; set; }     // Extrait les actions du monstre
+        public List<string> ReactionActions { get; set; }
         public List<string> BonusActions { get; set; }      // Extrait les Bonus actions du monstre
         public List<string> LegendaryActions { get; set; } // Extrait les Legendary actions du monstre
 
