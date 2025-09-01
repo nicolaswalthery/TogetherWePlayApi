@@ -34,9 +34,6 @@ namespace TWP.Api.Infrastructure.Interops
                 // Extraction du nom du monstre
                 Name = doc.DocumentNode.SelectSingleNode("//h1")?.InnerText.Trim(),
 
-                // Extraction du type et alignement
-                Type = doc.DocumentNode.SelectSingleNode("//div[@class='type']")?.InnerText.Trim(),
-
                 // Extraction du Challenge Rating (CR)
                 ChallengeRating = Get(doc, "CR"),
 
@@ -54,7 +51,7 @@ namespace TWP.Api.Infrastructure.Interops
 
                 Initiative = Get(doc, "Initiative"),
 
-                typeAndSubtype = GetType(doc),
+                TypeAndSubtype = GetType(doc),
 
                 // Extraction de l'Armor Class (AC)
                 ArmorClass = doc.DocumentNode.SelectSingleNode("//strong[text()='AC']/following-sibling::text()")?.InnerText.Trim(),
@@ -64,9 +61,6 @@ namespace TWP.Api.Infrastructure.Interops
 
                 // Extraction de la vitesse
                 Speed = doc.DocumentNode.SelectSingleNode("//strong[text()='Speed']/following-sibling::text()")?.InnerText.Trim(),
-
-                // Extraction des mots-clés de vitesse
-                SpeedKeywords = doc.DocumentNode.SelectSingleNode("//strong[text()='Speed']/following-sibling::text()")?.InnerText.Trim(),
 
                 // Extraction de la taille (Size) depuis la div .type
                 Size = ExtractSize(doc.DocumentNode.SelectSingleNode("//div[@class='type']")?.InnerText),
@@ -83,8 +77,6 @@ namespace TWP.Api.Infrastructure.Interops
                 // Extraction de la source
                 Source = doc.DocumentNode.SelectSingleNode("//div[@class='source']")?.InnerText.Trim(),
 
-                // Extraction de l'image (si présente)
-                HasImage = doc.DocumentNode.SelectSingleNode("//div[@class='picture']/img") != null,
 
                 // Extraction des traductions (FR, ES, etc.)
                 Translations = doc.DocumentNode.SelectNodes("//div[@class='trad']")

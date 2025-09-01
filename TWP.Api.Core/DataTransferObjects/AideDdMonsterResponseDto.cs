@@ -13,22 +13,19 @@
         public string Resistances { get; set; } = "";
         public string Immunities { get; set; } = "";
         public string Initiative { get; set; } = "";
-        public string Type { get; set; } = "";
         public string Size { get; set; } = "";                // Gargantuan, Large, etc.
         public string? ArmorClass { get; set; }
         public string? HitPoints { get; set; }
         public string Speed { get; set; } = "";               // "20 ft., Fly 50 ft." (ou similaire)
-        public string SpeedKeywords { get; set; } = "";       // "fly", "fly, swim", etc.
         public string Alignment { get; set; } = "";
         public bool Legendary { get; set; }
         public string Habitat { get; set; } = "";
         public string Source { get; set; } = "";
-        public bool HasImage { get; set; }
-        public string typeAndSubtype { get; set; }
+        public string TypeAndSubtype { get; set; }
         public List<string> Translations { get; set; } = new();
 
         // Characteristics (Strength, Dexterity, etc.)
-        public string Strength { get; set; } = "";            // Example: "30"
+        public string Strength { get; set; } = "";            
         public string Dexterity { get; set; } = "";
         public string Constitution { get; set; } = "";
         public string Intelligence { get; set; } = "";
