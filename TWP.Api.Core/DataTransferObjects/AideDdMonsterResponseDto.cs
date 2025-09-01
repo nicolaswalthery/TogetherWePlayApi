@@ -24,6 +24,7 @@
         public string Habitat { get; set; } = "";
         public string Source { get; set; } = "";
         public bool HasImage { get; set; }
+        public string typeAndSubtype { get; set; }
         public List<string> Translations { get; set; } = new();
 
         // Characteristics (Strength, Dexterity, etc.)

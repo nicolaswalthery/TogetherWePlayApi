@@ -54,6 +54,8 @@ namespace TWP.Api.Infrastructure.Interops
 
                 Initiative = Get(doc, "Initiative"),
 
+                typeAndSubtype = GetType(doc),
+
                 // Extraction de l'Armor Class (AC)
                 ArmorClass = doc.DocumentNode.SelectSingleNode("//strong[text()='AC']/following-sibling::text()")?.InnerText.Trim(),
 
@@ -135,6 +137,17 @@ namespace TWP.Api.Infrastructure.Interops
             monster.CharismaSave = chaData.save;
 
             return monster;
+        }
+
+        private static string GetType(HtmlDocument doc)
+        {
+            var red = doc.DocumentNode
+                                .SelectSingleNode("//div[contains(concat(' ', normalize-space(@class), ' '), ' red ')]");
+
+            var typeNode = red?
+                                .SelectSingleNode("./div[contains(concat(' ', normalize-space(@class), ' '), ' type ')]");
+
+            return HtmlEntity.DeEntitize(typeNode?.InnerText ?? "").Trim();
         }
 
         private static string Get(HtmlDocument doc, string keyWord)
