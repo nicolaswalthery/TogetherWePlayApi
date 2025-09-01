@@ -20,5 +20,8 @@ namespace TWP.Api.Infrastructure.Repository.Interfaces
                 return Result<List<Monster5eDbEntity>>.Success(result);
             });
 
+        public async Task<Result> Insert(Monster5eDbEntity monster5EDbEntity)
+            => await Safe.ExecuteAsync(async () => await base.AddAsync(monster5EDbEntity));
+
     }
 }

@@ -6,7 +6,13 @@
         public string Url { get; set; } = "";                 // href du <a>
         public string Name { get; set; } = "";
         public string? ChallengeRating { get; set; }          // 0.25, 14, etc. (null si "None")
-        public string ChallengeRatingText { get; set; } = ""; // "1/4", "14", "None", etc.
+        public string Gear { get; set; } = "";
+        public string Senses { get; set; } = "";
+        public string Languages { get; set; } = "";
+        public string Skills { get; set; } = "";
+        public string Resistances { get; set; } = "";
+        public string Immunities { get; set; } = "";
+        public string Initiative { get; set; } = "";
         public string Type { get; set; } = "";
         public string Size { get; set; } = "";                // Gargantuan, Large, etc.
         public string? ArmorClass { get; set; }
@@ -27,6 +33,13 @@
         public string Intelligence { get; set; } = "";
         public string Wisdom { get; set; } = "";
         public string Charisma { get; set; } = "";
+
+        public string StrengthMod { get; set; } = "";            
+        public string DexterityMod { get; set; } = "";
+        public string ConstitutionMod { get; set; } = "";
+        public string IntelligenceMod { get; set; } = "";
+        public string WisdomMod { get; set; } = "";
+        public string CharismaMod { get; set; } = "";
 
         // Saving Throws (StrengthSave, DexteritySave, etc.)
         public string StrengthSave { get; set; } = "";         // Example: "+10"

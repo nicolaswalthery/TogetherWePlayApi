@@ -15,7 +15,7 @@ namespace TWP.Api.Infrastructure.Interops
 
         public async Task<AideDdMonsterResponseDto> GetMonsterByName(string monsterName)
         {
-            monsterName = "knight"; // Temporary hardcoded for testing
+            monsterName = "balor"; // Temporary hardcoded for testing
             var url = $"https://www.aidedd.org/monster/{Uri.EscapeDataString(monsterName.Replace(" ", "-"))}";
             var response = await _httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
@@ -38,14 +38,21 @@ namespace TWP.Api.Infrastructure.Interops
                 Type = doc.DocumentNode.SelectSingleNode("//div[@class='type']")?.InnerText.Trim(),
 
                 // Extraction du Challenge Rating (CR)
-                ChallengeRating = doc.DocumentNode
-                    .SelectSingleNode("//strong[contains(text(), 'CR')]/following-sibling::text()")
-                    ?.InnerText.Trim() ?? "None",
+                ChallengeRating = Get(doc, "CR"),
 
-                // Extraction du Challenge Rating Text
-                ChallengeRatingText = doc.DocumentNode
-                    .SelectSingleNode("//strong[contains(text(), 'CR')]/following-sibling::text()")
-                    ?.InnerText.Trim() ?? "None",
+                Gear = Get(doc, "Gear"),
+
+                Senses = Get(doc, "Senses"),
+
+                Languages = Get(doc, "Languages"),
+
+                Skills = Get(doc, "Skills"),
+
+                Resistances = Get(doc, "Resistances"),
+
+                Immunities = Get(doc, "Immunities"),
+
+                Initiative = Get(doc, "Initiative"),
 
                 // Extraction de l'Armor Class (AC)
                 ArmorClass = doc.DocumentNode.SelectSingleNode("//strong[text()='AC']/following-sibling::text()")?.InnerText.Trim(),
@@ -99,15 +106,75 @@ namespace TWP.Api.Infrastructure.Interops
                 ReactionActions = Extract(doc, "Reactions"),
             };
 
-            ExtractCharacteristicAndSaves(doc, monster);
+            var strData = GetPhysicalCaracteristicScoreModAnbdSave(doc, "Str");
+            var dexData = GetPhysicalCaracteristicScoreModAnbdSave(doc, "Dex");
+            var conData = GetPhysicalCaracteristicScoreModAnbdSave(doc, "Con");
+            var intData = GetMentalCaracteristicScoreModAnbdSave(doc, "Int");
+            var wisData = GetMentalCaracteristicScoreModAnbdSave(doc, "Wis");
+            var chaData = GetMentalCaracteristicScoreModAnbdSave(doc, "Cha");
+
+            monster.Strength = strData.score;
+            monster.Dexterity = dexData.score;
+            monster.Constitution = conData.score;
+            monster.Intelligence = intData.score;
+            monster.Wisdom = wisData.score;
+            monster.Charisma = chaData.score;
+
+            monster.StrengthMod = strData.mod;
+            monster.DexterityMod = dexData.mod;
+            monster.ConstitutionMod = conData.mod;
+            monster.IntelligenceMod = intData.mod;
+            monster.WisdomMod = wisData.mod;
+            monster.CharismaMod = chaData.mod;
+
+            monster.StrengthSave = strData.save;
+            monster.DexteritySave = dexData.save;
+            monster.ConstitutionSave = conData.save;
+            monster.IntelligenceSave = intData.save;
+            monster.WisdomSave = wisData.save;
+            monster.CharismaSave = chaData.save;
 
             return monster;
         }
+
+        private static string Get(HtmlDocument doc, string keyWord)
+        {
+            return doc.DocumentNode
+                    .SelectSingleNode($"//strong[contains(text(), '{keyWord}')]/following-sibling::text()")
+                    ?.InnerText.Trim() ?? "None";
+        }
+
+        private static CaracteristicData GetPhysicalCaracteristicScoreModAnbdSave(HtmlDocument doc, string carac)
+        {
+            var caracLabel = doc.DocumentNode.SelectSingleNode($"//div[@class='car1' and normalize-space(.)='{carac}']");
+            var score = caracLabel?.SelectSingleNode("following-sibling::div[@class='car2'][1]")?.InnerText.Trim();
+            var mod = caracLabel?.SelectSingleNode("following-sibling::div[@class='car3'][1]")?.InnerText.Trim();
+            var save = caracLabel?.SelectSingleNode("following-sibling::div[@class='car3'][2]")?.InnerText.Trim();
+
+            return new CaracteristicData(score, mod, save);
+        }
+
+        private static CaracteristicData GetMentalCaracteristicScoreModAnbdSave(HtmlDocument doc, string carac)
+        {
+            var caracLabel = doc.DocumentNode.SelectSingleNode($"//div[@class='car4' and normalize-space(.)='{carac}']");
+            var score = caracLabel?.SelectSingleNode("following-sibling::div[@class='car5'][1]")?.InnerText.Trim();
+            var mod = caracLabel?.SelectSingleNode("following-sibling::div[@class='car6'][1]")?.InnerText.Trim();
+            var save = caracLabel?.SelectSingleNode("following-sibling::div[@class='car6'][2]")?.InnerText.Trim();
+
+            return new CaracteristicData(score, mod, save);
+        }
+
+        private record CaracteristicData(string score, string mod, string save);
 
         private static void ExtractCharacteristicAndSaves(HtmlDocument doc, AideDdMonsterResponseDto monster)
         {
             //TODO : Extrairaire carac et saves https://www.aidedd.org/public/monster/tarrasque
             var statRows = doc.DocumentNode.SelectNodes("//div[contains(@class, 'car1')]/following-sibling::div");
+
+            var strLabel = doc.DocumentNode.SelectSingleNode("//div[@class='car1' and normalize-space(.)='Str']");
+            var strScore = strLabel?.SelectSingleNode("following-sibling::div[@class='car2'][1]")?.InnerText.Trim();
+            var strMod = strLabel?.SelectSingleNode("following-sibling::div[@class='car3'][1]")?.InnerText.Trim();
+            var strSave = strLabel?.SelectSingleNode("following-sibling::div[@class='car3'][2]")?.InnerText.Trim();
 
             if (statRows != null)
             {
