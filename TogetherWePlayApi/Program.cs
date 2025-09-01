@@ -6,6 +6,7 @@ using System.Text.Json;
 using TogetherWePlayApi.Controllers;
 using TWP.Api.Application.BusinessLayers;
 using TWP.Api.Application.BusinessLayers.Interfaces;
+using TWP.Api.Application.ETL;
 using TWP.Api.Controllers.Interfaces;
 using TWP.Api.Infrastructure.CsvRepositories;
 using TWP.Api.Infrastructure.CsvRepositories.Interfaces;
@@ -156,6 +157,9 @@ builder.Services.AddTransient<IDndEncounterBusinessLayer, Dnd5eEncounterBusiness
 builder.Services.AddTransient<IUltraModern5eBusinessLayer, UltraModern5eBusinessLayer>();
 builder.Services.AddTransient<IPathfinder2eBusinessLayer, Pathfinder2eBusinessLayer>();
 builder.Services.AddTransient<IDnd5eMonsterBusinessLayer, Dnd5eMonsterBusinessLayer>();
+
+// ===== ETL ======
+builder.Services.AddTransient<IExtractTransformLoad,  ExtractTransformLoad>();
 
 // ===== CONTROLLERS =====
 builder.Services.AddTransient<IDndController, DndController>();
