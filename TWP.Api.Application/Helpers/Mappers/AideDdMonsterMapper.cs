@@ -322,7 +322,7 @@ public static class AideDdMonsterMapper
             ["29"] = 135000,
             ["30"] = 155000
         };
-        var key = cr.Trim();
+        var key = cr.Trim().Substring(0, 2);
         return table.TryGetValue(key, out var xp) ? xp : (int.TryParse(key, out var n) && table.TryGetValue(n.ToString(), out var xp2) ? xp2 : 0);
     }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common.ResultPattern;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,6 @@ namespace TWP.Api.Application.ETL
 {
     public interface IExtractTransformLoad
     {
+        Task<Result> RunAideDdMonster5eEtl();
     }
 }
