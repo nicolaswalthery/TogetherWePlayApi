@@ -66,8 +66,6 @@ namespace TWP.Api.Application.ETL
                     await _monster5eRepository.Insert(monsterDbEntity);
                 }
 
-                await _monster5eRepository.Insert(monsterDbEntities.First());
-
                 return Result.Success();
             });
     }
