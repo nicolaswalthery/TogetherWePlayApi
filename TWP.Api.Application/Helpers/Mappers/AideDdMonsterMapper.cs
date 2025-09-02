@@ -105,13 +105,6 @@ public static class AideDdMonsterMapper
             Source = dto.Source?.Trim() ?? string.Empty,
         };
 
-        // ---- Traits ----
-        if (dto.Traits?.Count > 0)
-        {
-            foreach (var raw in dto.Traits.Where(s => !string.IsNullOrWhiteSpace(s)))
-                monster.Traits.Add(MapTrait(raw));
-        }
-
         // ---- Optional one-to-one Symbarum ----
         if (!string.IsNullOrWhiteSpace(defaultShadow))
         {
@@ -309,60 +302,6 @@ public static class AideDdMonsterMapper
         return table.TryGetValue(key, out var xp) ? xp : (int.TryParse(key, out var n) && table.TryGetValue(n.ToString(), out var xp2) ? xp2 : 0);
     }
 
-    // ---------- Action/Trait mapping ----------
-
-    private static TraitDbEntity MapTrait(string raw)
-    {
-        var title = ExtractTitle(raw);
-        return new TraitDbEntity
-        {
-            Title = title,
-            Description = raw.Trim(),
-            // Optionals default to null/false
-            DamageBonus = null,
-            AttackBonus = null,
-            DamageDice = null,
-            NumberDamageDice = null,
-            DamageType = null,
-            IsOptional = false,
-            traitTrigger = ExtractLabeled(raw, "Trigger"),
-            advantageCondition = ExtractLabeled(raw, "Advantage"),
-            disadvantageCondition = ExtractLabeled(raw, "Disadvantage"),
-        };
-    }
-
-    private static ActionDbEntity MapAction(string raw, ActionTypeEnum actionType)
-    {
-        var name = ExtractTitle(raw);
-        var attackType = InferAttackType(raw);
-
-        // Try parse bonuses, dice, type, ranges
-        var attackBonus = ParseAttackBonus(raw);
-        var (numDice, diceType, dmgBonus) = ParseDamageDice(raw);
-        var dmgType = ParseDamageType(raw);
-        var (shortRange, longRange) = ParseRanges(raw);
-
-        return new ActionDbEntity
-        {
-            Name = name,
-            Type = actionType,                            // REQUIRED by mapping :contentReference[oaicite:4]{index=4}
-            AttackType = attackType,                      // REQUIRED by mapping :contentReference[oaicite:5]{index=5}
-            Description = raw.Trim(),
-            AttackBonus = attackBonus,
-            NumberDamageDice = numDice,
-            DamageDice = diceType,
-            DamageBonus = dmgBonus,
-            DamageType = dmgType,
-            ShortRange = shortRange?.ToString(),
-            LongRange = longRange?.ToString(),
-            LimitPerDay = null,
-            IsProhibitedForMinion = false,
-            actionTrigger = ExtractLabeled(raw, "Trigger"),
-            advantageCondition = ExtractLabeled(raw, "Advantage"),
-            disadvantageCondition = ExtractLabeled(raw, "Disadvantage"),
-        };
-    }
-
     private static string ExtractTitle(string raw)
     {
         if (string.IsNullOrWhiteSpace(raw)) return "Unnamed";
@@ -378,7 +317,7 @@ public static class AideDdMonsterMapper
         if (t.Contains("melee")) return AttackTypeEnum.Melee;
         if (t.Contains("ranged")) return AttackTypeEnum.Ranged;
         if (t.Contains("lair") || t.Contains("legendary") || t.Contains("recharge")) return AttackTypeEnum.Special;
-        return AttackTypeEnum.NotSpecified;
+        return AttackTypeEnum.None;
     }
 
     private static int? ParseAttackBonus(string s)

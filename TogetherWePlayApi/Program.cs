@@ -154,6 +154,7 @@ builder.Services.AddHttpClient<IMonsterApiInterops, MonsterApiInterops>();
 builder.Services.AddHttpClient<IAideDdInterops, AideDdInterops>();
 // Mapper Services
 builder.Services.AddTransient<IActionMapperService, ActionMapperService>();
+builder.Services.AddTransient<ITraitMapperService, TraitMapperService>();
 
 // ===== BUSINESS LAYERS =====
 builder.Services.AddTransient<IDndEncounterBusinessLayer, Dnd5eEncounterBusinessLayer>();
