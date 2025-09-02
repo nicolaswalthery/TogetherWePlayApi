@@ -10,9 +10,9 @@ namespace TWP.Api.Application.BusinessLayers
     public class Dnd5eMonsterBusinessLayer : IDnd5eMonsterBusinessLayer
     {
         private readonly IDnd2024AllMonsterStatsCsvRepository _csvRepository;
-        private readonly Monster5eRepository _monster5ERepository;
+        private readonly IMonster5eRepository _monster5ERepository;
 
-        public Dnd5eMonsterBusinessLayer(IDnd2024AllMonsterStatsCsvRepository csvRepository, Monster5eRepository monster5ERepository)
+        public Dnd5eMonsterBusinessLayer(IDnd2024AllMonsterStatsCsvRepository csvRepository, IMonster5eRepository monster5ERepository)
         {
             _csvRepository = csvRepository;
             _monster5ERepository = monster5ERepository;
