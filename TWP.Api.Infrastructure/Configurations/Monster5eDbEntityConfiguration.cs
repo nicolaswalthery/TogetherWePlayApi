@@ -31,7 +31,7 @@ namespace TWP.Api.Infrastructure.Configurations
 
             builder.Property(e => e.ChallengeRating)
                 .HasColumnName("challenge_rating")
-                .HasMaxLength(10)
+                .HasMaxLength(100)
                 .IsRequired();
 
             builder.Property(e => e.Xp)

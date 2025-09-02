@@ -61,8 +61,6 @@ namespace TWP.Api.Application.ETL
                         aideDdMonster,
                         monsterDbEntity.Id);
 
-                    //monsterDbEntities.Add(monsterDbEntity);
-
                     await _monster5eRepository.Insert(monsterDbEntity);
                 }
 

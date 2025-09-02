@@ -15,7 +15,6 @@ namespace TWP.Api.Infrastructure.Interops
 
         public async Task<AideDdMonsterResponseDto> GetMonsterByName(string monsterName)
         {
-            monsterName = "balor"; // Temporary hardcoded for testing
             var url = $"https://www.aidedd.org/monster/{Uri.EscapeDataString(monsterName.Replace(" ", "-"))}";
             var response = await _httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
