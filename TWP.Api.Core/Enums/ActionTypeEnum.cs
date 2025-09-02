@@ -2,11 +2,11 @@
 {
     public enum ActionTypeEnum
     {
-        movement,
-        action,
-        bonus,
-        reaction,
-        legendary,
-        lair
+        Movement,
+        Action,
+        Bonus,
+        Reaction,
+        Legendary,
+        Lair
     }
 }

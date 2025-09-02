@@ -112,23 +112,6 @@ public static class AideDdMonsterMapper
                 monster.Traits.Add(MapTrait(raw));
         }
 
-        // ---- Actions / Reactions / Bonus / Legendary ----
-        if (dto.Actions?.Count > 0)
-            foreach (var raw in dto.Actions.Where(s => !string.IsNullOrWhiteSpace(s)))
-                monster.Actions.Add(MapAction(raw, ActionTypeEnum.action));
-
-        if (dto.ReactionActions?.Count > 0)
-            foreach (var raw in dto.ReactionActions.Where(s => !string.IsNullOrWhiteSpace(s)))
-                monster.Actions.Add(MapAction(raw, ActionTypeEnum.reaction));
-
-        if (dto.BonusActions?.Count > 0)
-            foreach (var raw in dto.BonusActions.Where(s => !string.IsNullOrWhiteSpace(s)))
-                monster.Actions.Add(MapAction(raw, ActionTypeEnum.bonus));
-
-        if (dto.LegendaryActions?.Count > 0)
-            foreach (var raw in dto.LegendaryActions.Where(s => !string.IsNullOrWhiteSpace(s)))
-                monster.Actions.Add(MapAction(raw, ActionTypeEnum.legendary));
-
         // ---- Optional one-to-one Symbarum ----
         if (!string.IsNullOrWhiteSpace(defaultShadow))
         {

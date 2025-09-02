@@ -2,7 +2,7 @@
 {
     public enum AttackTypeEnum
     {
-        NotSpecified = 1,
+        None = 1,
         Melee,
         Ranged,
         MeleeOrRanged,

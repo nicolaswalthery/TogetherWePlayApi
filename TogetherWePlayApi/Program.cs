@@ -7,6 +7,7 @@ using TogetherWePlayApi.Controllers;
 using TWP.Api.Application.BusinessLayers;
 using TWP.Api.Application.BusinessLayers.Interfaces;
 using TWP.Api.Application.ETL;
+using TWP.Api.Application.ETL.Services;
 using TWP.Api.Controllers.Interfaces;
 using TWP.Api.Infrastructure.CsvRepositories;
 using TWP.Api.Infrastructure.CsvRepositories.Interfaces;
@@ -151,6 +152,8 @@ builder.Services.AddTransient<IDnd5eEncounterDataJsonRepository, Dnd5eEncounterD
 builder.Services.AddTransient<IOpenAiInterops, OpenAiInterops>();
 builder.Services.AddHttpClient<IMonsterApiInterops, MonsterApiInterops>();
 builder.Services.AddHttpClient<IAideDdInterops, AideDdInterops>();
+// Mapper Services
+builder.Services.AddTransient<IActionMapperService, ActionMapperService>();
 
 // ===== BUSINESS LAYERS =====
 builder.Services.AddTransient<IDndEncounterBusinessLayer, Dnd5eEncounterBusinessLayer>();
