@@ -107,7 +107,8 @@ namespace TWP.Api.Infrastructure.Configurations
             // Skills and Immunities
             builder.Property(e => e.Skills)
                 .HasColumnName("skills")
-                .HasColumnType("jsonb"); // PostgreSQL JSON type
+                .HasColumnType("jsonb")
+                .HasDefaultValueSql("'{}'::jsonb");
 
             builder.Property(e => e.DamageImmunities)
                 .HasColumnName("damage_immunities")
@@ -150,7 +151,8 @@ namespace TWP.Api.Infrastructure.Configurations
             // Equipment and Habitat
             builder.Property(e => e.Equipments)
                 .HasColumnName("equipments")
-                .HasColumnType("jsonb"); // PostgreSQL JSON type
+                .HasColumnType("jsonb")
+                .HasDefaultValueSql("'[]'::jsonb");
 
             builder.Property(e => e.Habitats)
                 .HasColumnName("habitats")
@@ -175,7 +177,8 @@ namespace TWP.Api.Infrastructure.Configurations
 
             builder.Property(e => e.Lore)
                 .HasColumnName("lore")
-                .HasColumnType("jsonb"); // PostgreSQL JSON type
+                .HasColumnType("jsonb")
+                .HasDefaultValueSql("'{}'::jsonb");
 
             builder.Property(e => e.PageSource)
                 .HasColumnName("page_source")

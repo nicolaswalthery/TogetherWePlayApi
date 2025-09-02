@@ -1,6 +1,7 @@
 ﻿using Common.ResultPattern;
 using TWP.Api.Application.ETL.Services;
 using TWP.Api.Application.Helpers.Mappers;
+using TWP.Api.Core.DataTransferObjects;
 using TWP.Api.Core.DbEntities;
 using TWP.Api.Core.Enums;
 using TWP.Api.Infrastructure.Interops.Interfaces;
@@ -45,8 +46,23 @@ namespace TWP.Api.Application.ETL
                     if (monsterAlreadyLoaded.Data.Select(m => m.Name).Contains(aideDdMonsterMetadata.Name))
                         continue;
 
+                    AideDdMonsterResponseDto aideDdMonster = new();
+
+                    //Quick Fix : Related to AideDD data issues :/
+                    //if (aideDdMonsterMetadata.Name == "will-o--wisp")
+                    //    continue;//aideDdMonster = await _aideDdInterops.GetMonsterByName("will-o--wisp");
+
+                    //if (aideDdMonsterMetadata.Name == "Yuan-ti Malison (Type 1)")
+                    //    aideDdMonster = await _aideDdInterops.GetMonsterByName("yuan-ti-malison-type-1");
+
+                    //if (aideDdMonsterMetadata.Name == "Yuan-ti Malison (Type 2)")
+                    //    aideDdMonster = await _aideDdInterops.GetMonsterByName("yuan-ti-malison-type-2");
+
+                    //if (aideDdMonsterMetadata.Name == "Yuan-ti Malison (Type 3)")
+                    //    aideDdMonster = await _aideDdInterops.GetMonsterByName("yuan-ti-malison-type-3");
+
                     // Extract: Get monster data from AideDD
-                    var aideDdMonster = await _aideDdInterops.GetMonsterByName(aideDdMonsterMetadata.Name);
+                    aideDdMonster = aideDdMonster is null ? await _aideDdInterops.GetMonsterByName(aideDdMonsterMetadata.Name) : aideDdMonster;
 
                     // Transform: Convert to DB entity
                     var monsterDbEntity = aideDdMonster.ToDbEntity();
