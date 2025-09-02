@@ -14,7 +14,7 @@ namespace TWP.Api.Application.ETL
         private readonly IAideDdInterops _aideDdInterops;
         private readonly IActionMapperService _actionMapperService;
 
-        public ExtractTransformLoad(IAideDdMonster5eRepository aideDdMonster5ERepository, IAideDdInterops aideDdInterops, IActionMapperService actionMapperService)
+        public ExtractTransformLoad(IAideDdMonster5eRepository aideDdMonster5ERepository, IAideDdInterops aideDdInterops, IActionMapperService actionMapperService, IMonster)
         {
             _aideDdMonster5ERepository = aideDdMonster5ERepository;
             _aideDdInterops = aideDdInterops;

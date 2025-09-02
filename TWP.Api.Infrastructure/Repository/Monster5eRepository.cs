@@ -4,7 +4,7 @@ using TWP.Api.Core.DbEntities;
 
 namespace TWP.Api.Infrastructure.Repository.Interfaces
 {
-    public class Monster5eRepository : RepositoryBase<Monster5eDbEntity>
+    public class Monster5eRepository : RepositoryBase<Monster5eDbEntity>, IMonster5eRepository
     {
         public Monster5eRepository(DataContext context) : base(context)
         {
@@ -18,6 +18,14 @@ namespace TWP.Api.Infrastructure.Repository.Interfaces
                                                     .Include(e => e.Symbarum5e)
                                                     .ToListAsync();
                 return Result<List<Monster5eDbEntity>>.Success(result);
+            });
+
+        public async Task<Result> Insert(Monster5eDbEntity monster5EDbEntity)
+            => await Safe.ExecuteAsync(async () =>
+            {
+                base._context.AddRange(monster5EDbEntity);
+                await base._context.SaveChangesAsync();
+                return Result.Success();
             });
 
         public async Task<Result> InsertMany(List<Monster5eDbEntity> monster5EDbEntities)

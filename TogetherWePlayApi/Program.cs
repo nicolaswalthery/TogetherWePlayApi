@@ -135,7 +135,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 // ===== REPOSITORIES =====
 // JSON Repositories
 builder.Services.AddTransient<JsonRepositoryBase>();
-builder.Services.AddTransient<Monster5eRepository>();
+builder.Services.AddTransient<IMonster5eRepository, Monster5eRepository>();
 builder.Services.AddTransient<IAideDdMonster5eRepository, AideDdMonster5eRepository>();
 builder.Services.AddTransient<IMonsterActivitiesJsonRepository, MonsterActivitiesJsonRepository>();
 builder.Services.AddTransient<ISomethingHappenJsonRepository, SomethingHappenJsonRepository>();
