@@ -6,6 +6,8 @@
         public string Name { get; set; } = string.Empty;
         public string? Alignment { get; set; }
         public string ChallengeRating { get; set; } = string.Empty;
+        public int Cr { get; set; }
+        public int? CrInLair { get; set; }
         public int Xp { get; set; }
         public int InitiativeBonus { get; set; }
         public string? Role { get; set; }
@@ -34,6 +36,7 @@
         // Skills & Immunities
         public Dictionary<string, object>? Skills { get; set; }
         public string? DamageImmunities { get; set; }
+        public string? DamageResistances { get; set; }
         public string? Senses { get; set; }
         public string? Languages { get; set; }
 
@@ -59,22 +62,27 @@
         public int PageSource { get; set; }
         public string Source { get; set; } = string.Empty;
 
-        // Actions and Traits (sub-entities)
+        // Related entities
         public List<ActionDto> Actions { get; set; } = new List<ActionDto>();
         public List<TraitDto> Traits { get; set; } = new List<TraitDto>();
+        public Symbarum5eDto? Symbarum5e { get; set; }
     }
 
     public class ActionDto
     {
+        public Guid Id { get; set; }
+        public Guid MonsterId { get; set; }
         public string Name { get; set; } = string.Empty;
+        public string Type { get; set; } = string.Empty; // ActionTypeEnum as string
+        public string AttackType { get; set; } = string.Empty; // AttackTypeEnum as string
         public string Description { get; set; } = string.Empty;
         public string? ShortRange { get; set; }
         public string? LongRange { get; set; }
         public int? AttackBonus { get; set; }
         public int? DamageBonus { get; set; }
-        public string? DamageDice { get; set; }
+        public string? DamageDice { get; set; } // DiceTypeEnum as string
         public int? NumberDamageDice { get; set; }
-        public string? DamageType { get; set; }
+        public string? DamageType { get; set; } // DamageTypeEnum as string
         public int? LimitPerDay { get; set; }
         public bool IsProhibitedForMinion { get; set; }
         public string? ActionTrigger { get; set; }
@@ -84,17 +92,25 @@
 
     public class TraitDto
     {
+        public Guid Id { get; set; }
+        public Guid MonsterId { get; set; }
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public int? AttackBonus { get; set; }
         public int? DamageBonus { get; set; }
-        public string? DamageDice { get; set; }
+        public string? DamageDice { get; set; } // DiceTypeEnum as string
         public int? NumberDamageDice { get; set; }
-        public string? DamageType { get; set; }
+        public string? DamageType { get; set; } // DamageTypeEnum as string
         public string? TraitTrigger { get; set; }
         public string? AdvantageCondition { get; set; }
         public string? DisadvantageCondition { get; set; }
         public bool IsOptional { get; set; }
     }
 
+    public class Symbarum5eDto
+    {
+        public Guid Id { get; set; }
+        public Guid MonsterId { get; set; }
+        public string Shadow { get; set; } = string.Empty;
+    }
 }

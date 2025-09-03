@@ -3,6 +3,7 @@ using Common.ResultPattern;
 using TWP.Api.Application.BusinessLayers.Interfaces;
 using TWP.Api.Application.DataTransferObjects;
 using TWP.Api.Application.Helpers;
+using TWP.Api.Application.Helpers.Mappers;
 using TWP.Api.Core.DataTransferObjects;
 using TWP.Api.Core.Enums;
 using TWP.Api.Infrastructure.Interops.Interfaces;
@@ -12,7 +13,7 @@ namespace TWP.Api.Application.BusinessLayers
 {
     public class Dnd5eEncounterBusinessLayer : IDndEncounterBusinessLayer
     {
-        private readonly IMonster5eRepository _monster5ERepository;
+        private readonly IMonster5eRepository _monster5eRepository;
         private readonly IAideDdInterops _aideDdInterops;
         private readonly IMonsterApiInterops _monsterApiInterops;
         private readonly IOpenAiInterops _openAiInterops;
@@ -20,7 +21,7 @@ namespace TWP.Api.Application.BusinessLayers
 
         public Dnd5eEncounterBusinessLayer(IMonster5eRepository monster5eRepository, IAideDdInterops aideDdInterops, IMonsterApiInterops monsterApiInterops, IOpenAiInterops openAiInterops, IAideDdMonster5eRepository aideDdMonster5ERepository)
         {
-            _monster5ERepository = monster5eRepository;
+            _monster5eRepository = monster5eRepository;
             _aideDdInterops = aideDdInterops;
             _monsterApiInterops = monsterApiInterops;
             _openAiInterops = openAiInterops;
@@ -39,16 +40,12 @@ namespace TWP.Api.Application.BusinessLayers
                     var cr = playerLevels.Min();
                     var expEncounterBudget = ComputeExpBudget(encounterDifficulty, playerLevels);
 
-                    var res = await _aideDdMonster5ERepository.FindByCrOrLessAsync(cr + 1);
-                    var test = await _aideDdInterops.GetMonsterByName(res.Data.FirstOrDefault().Name);
-                    var monsterApiResponseDto = await _monsterApiInterops.GetMonstersByChallengeRatingOrlessAsync(cr + 1);
-                    if (monsterApiResponseDto == null || monsterApiResponseDto.Results.HasNoElement())
-                        return Result<Dnd5eEncounterGeneratedDto>.Failure("No Monsters found for the given CR", ReasonType.NotFound);
-                    
-                    var monsters = new List<Dnd5eApiMonsterDTO>();
-                    foreach (var monsterIndex in monsterApiResponseDto.Results.Select(r => r.Index))
-                        monsters.Add(await _monsterApiInterops.GetMonsterByIndexAsync(monsterIndex));
+                    var monsterDbEntities = await _monster5eRepository.FindByCrOrLessAsync(cr + 1);
+                    if (monsterDbEntities.Data.HasNoElement())
+                        return Result<Dnd5eEncounterGeneratedDto>.Failure("No Monsters found for the given CR or less", ReasonType.NotFound);
 
+                    var monsters = monsterDbEntities.Data.Select(m => m.ToDto()).ToList();
+                    
                     var encounterGenerated = GenerateEncounter(monsters!, expEncounterBudget, playerLevels.Count, playerLevels.Min());
 
                     var formattedEncounterData = EncounterFormatter.GetFormattedEncounterSafe(encounterDifficulty: encounterDifficulty, playerLevels: playerLevels, encounterNarrativeContext, monsterHabitats: monsterHabitats, pickedMonsters: encounterGenerated, expEncounterBudget: expEncounterBudget);
@@ -128,15 +125,15 @@ namespace TWP.Api.Application.BusinessLayers
         /// <param name="playerNumber">Number of players in the party.</param>
         /// <param name="partyLevel">Level of the party.</param>
         /// <returns>List of monsters for the encounter.</returns>
-        private List<Dnd5eApiMonsterDTO> GenerateEncounter(List<Dnd5eApiMonsterDTO> monsters, int expEncounterBudget, int playerNumber, int partyLevel)
+        private List<Monster5eDto> GenerateEncounter(List<Monster5eDto> monsters, int expEncounterBudget, int playerNumber, int partyLevel)
         {
-            var encounter = new List<Dnd5eApiMonsterDTO>();
+            var encounter = new List<Monster5eDto>();
             var remainingBudget = expEncounterBudget;
             var maxMonsters = playerNumber * 2;
             var maxDifferentMonster = 4;
 
             // Group monsters by Challenge Rating (CR), filtering monsters whose XP is within the budget.
-            var selectedAvailableMonsters = monsters.Where(m => m.Xp.HasValue && m.Xp <= expEncounterBudget)
+            var selectedAvailableMonsters = monsters.Where(m => m.Xp <= expEncounterBudget)
                                         .OrderBy(_ => Guid.NewGuid()) // Shuffle types
                                         .ToList();
 
@@ -148,7 +145,7 @@ namespace TWP.Api.Application.BusinessLayers
                 if (monster.Xp <= remainingBudget && encounter.Count < maxMonsters)
                 {
                     encounter.Add(monster);
-                    remainingBudget -= monster.Xp.Value;
+                    remainingBudget -= monster.Xp;
                 }
                 else
                 {
@@ -159,13 +156,13 @@ namespace TWP.Api.Application.BusinessLayers
                     if (lastMonster != null)
                     {
                         encounter.Add(lastMonster);
-                        remainingBudget -= lastMonster.Xp.Value;
+                        remainingBudget -= lastMonster.Xp;
                     }
                 }
 
                 // Ensure that we include only one monster of the partyLevel + 1 CR in the encounter
                 if (IsCrPlusOneAlreadyIncludedInEncounter(encounter, partyLevel))
-                    selectedAvailableMonsters = selectedAvailableMonsters.Where(m => m.ChallengeRating <= (decimal)partyLevel).ToList();
+                    selectedAvailableMonsters = selectedAvailableMonsters.Where(m => m.Cr <= (decimal)partyLevel).ToList();
             }
 
             return encounter;
@@ -177,9 +174,9 @@ namespace TWP.Api.Application.BusinessLayers
         /// <param name="encounter">List of monsters in the current encounter.</param>
         /// <param name="partyLevel">The level of the party.</param>
         /// <returns>True if a monster with CR + 1 is already in the encounter.</returns>
-        private bool IsCrPlusOneAlreadyIncludedInEncounter(List<Dnd5eApiMonsterDTO> encounter, int partyLevel)
+        private bool IsCrPlusOneAlreadyIncludedInEncounter(List<Monster5eDto> encounter, int partyLevel)
         {
-            return encounter.Any(m => m.ChallengeRating == partyLevel + 1);
+            return encounter.Any(m => m.Cr == partyLevel + 1);
         }
 
     }

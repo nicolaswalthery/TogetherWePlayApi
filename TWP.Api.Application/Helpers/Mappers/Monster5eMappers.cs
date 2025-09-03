@@ -1,36 +1,42 @@
-﻿using TWP.Api.Core.DataTransferObjects;
+﻿using System.Text.Json;
+using TWP.Api.Core.DataTransferObjects;
 using TWP.Api.Core.DbEntities;
 
 namespace TWP.Api.Application.Helpers.Mappers
 {
     public static class Monster5eMappers
     {
-        // Mapper pour Monster5eDbEntity vers Monster5eDto
         public static Monster5eDto ToDto(this Monster5eDbEntity entity)
         {
-            if (entity == null) return null;
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
 
             return new Monster5eDto
             {
                 Id = entity.Id,
                 Name = entity.Name,
-                Alignment = entity.Alignment?.ToString(), // Enum en string
+                Alignment = entity.Alignment?.ToString(),
                 ChallengeRating = entity.ChallengeRating,
+                Cr = entity.Cr,
+                CrInLair = entity.CrInLair,
                 Xp = entity.Xp,
                 InitiativeBonus = entity.InitiativeBonus,
-                Role = entity.Role?.ToString(), // Enum en string
+                Role = entity.Role?.ToString(),
                 CreatureSize = entity.CreatureSize.ToString(),
 
+                // Defense
                 ArmorClass = entity.ArmorClass,
                 MinionArmorClass = entity.MinionArmorClass,
                 HitPoints = entity.HitPoints,
                 HitDice = entity.HitDice,
 
+                // Movement
                 Speed = entity.Speed,
                 Climb = entity.Climb,
                 Swim = entity.Swim,
                 Fly = entity.Fly,
 
+                // Abilities
                 Strength = entity.Strength,
                 Dexterity = entity.Dexterity,
                 Constitution = entity.Constitution,
@@ -38,11 +44,14 @@ namespace TWP.Api.Application.Helpers.Mappers
                 Wisdom = entity.Wisdom,
                 Charisma = entity.Charisma,
 
-                Skills = entity.GetSkills(), // JSON parsing
+                // Skills & Immunities
+                Skills = ParseJsonToDictionary(entity.Skills),
                 DamageImmunities = entity.DamageImmunities,
+                DamageResistances = entity.DamageResistances,
                 Senses = entity.Senses,
                 Languages = entity.Languages,
 
+                // Saving Throws
                 ConSavingThrow = entity.ConSavingThrow,
                 DexSavingThrow = entity.DexSavingThrow,
                 StrSavingThrow = entity.StrSavingThrow,
@@ -51,30 +60,38 @@ namespace TWP.Api.Application.Helpers.Mappers
                 IntSavingThrow = entity.IntSavingThrow,
                 ProficiencyBonus = entity.ProficiencyBonus,
 
-                Equipments = entity.GetEquipments(), // JSON parsing
+                // Equipment & Habitat
+                Equipments = ParseJsonToList(entity.Equipments),
                 Habitats = entity.Habitats,
                 CreatureType = entity.CreatureType,
                 CreatureSubType = entity.CreatureSubType,
                 MonsterGroup = entity.MonsterGroup,
 
+                // Lore
                 Manner = entity.Manner,
                 Lore = entity.Lore,
                 PageSource = entity.PageSource,
                 Source = entity.Source,
 
-                Actions = entity.Actions.Select(a => a.ToDto()).ToList(),
-                Traits = entity.Traits.Select(t => t.ToDto()).ToList()
+                // Related entities
+                Actions = entity.Actions?.Select(a => a.ToDto()).ToList() ?? new List<ActionDto>(),
+                Traits = entity.Traits?.Select(t => t.ToDto()).ToList() ?? new List<TraitDto>(),
+                Symbarum5e = entity.Symbarum5e?.ToDto()
             };
         }
 
-        // Mapper pour ActionDbEntity vers ActionDto
         public static ActionDto ToDto(this ActionDbEntity entity)
         {
-            if (entity == null) return null;
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
 
             return new ActionDto
             {
+                Id = entity.Id,
+                MonsterId = entity.MonsterId,
                 Name = entity.Name,
+                Type = entity.Type.ToString(),
+                AttackType = entity.AttackType.ToString(),
                 Description = entity.Description,
                 ShortRange = entity.ShortRange,
                 LongRange = entity.LongRange,
@@ -91,13 +108,15 @@ namespace TWP.Api.Application.Helpers.Mappers
             };
         }
 
-        // Mapper pour TraitDbEntity vers TraitDto
         public static TraitDto ToDto(this TraitDbEntity entity)
         {
-            if (entity == null) return null;
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
 
             return new TraitDto
             {
+                Id = entity.Id,
+                MonsterId = entity.MonsterId,
                 Title = entity.Title,
                 Description = entity.Description,
                 AttackBonus = entity.AttackBonus,
@@ -111,6 +130,55 @@ namespace TWP.Api.Application.Helpers.Mappers
                 IsOptional = entity.IsOptional
             };
         }
-    }
 
+        public static Symbarum5eDto ToDto(this Symbarum5eDbEntity entity)
+        {
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+
+            return new Symbarum5eDto
+            {
+                Id = entity.Id,
+                MonsterId = entity.MonsterId,
+                Shadow = entity.Shadow
+            };
+        }
+
+        // Helper method for batch conversion
+        public static List<Monster5eDto> ToDto(this IEnumerable<Monster5eDbEntity> entities)
+        {
+            return entities?.Select(e => e.ToDto()).ToList() ?? new List<Monster5eDto>();
+        }
+
+        // Private helper methods for JSON parsing
+        private static Dictionary<string, object>? ParseJsonToDictionary(string? json)
+        {
+            if (string.IsNullOrWhiteSpace(json))
+                return null;
+
+            try
+            {
+                return JsonSerializer.Deserialize<Dictionary<string, object>>(json);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private static List<string>? ParseJsonToList(string? json)
+        {
+            if (string.IsNullOrWhiteSpace(json))
+                return null;
+
+            try
+            {
+                return JsonSerializer.Deserialize<List<string>>(json);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+    }
 }
