@@ -26,7 +26,7 @@ namespace TWP.Api.Application.Helpers
             IList<int> playerLevels,
             string encounterNarrativeContext,
             IList<MonsterHabitatEnum> monsterHabitats,
-            IList<Dnd5eApiMonsterDTO> pickedMonsters,
+            IList<Monster5eDto> pickedMonsters,
             int? expEncounterBudget,
             string formatType = "full")
         {
@@ -166,10 +166,10 @@ namespace TWP.Api.Application.Helpers
                     // Add detailed monster data based on format type
                     var monsterData = (formatType?.ToLower() ?? "summary") switch
                     {
-                        "full" => MonsterDataFormatterHelpers.FormatMonstersList(validMonsters),
-                        "list" => MonsterDataFormatterHelpers.FormatMonstersList(validMonsters),
-                        "summary" => MonsterDataFormatterHelpers.FormatMonstersSummary(validMonsters),
-                        _ => MonsterDataFormatterHelpers.FormatMonstersSummary(validMonsters)
+                        "full" => MonsterFormatterHelper.FormatMonstersList(validMonsters),
+                        "list" => MonsterFormatterHelper.FormatMonstersList(validMonsters),
+                        "summary" => MonsterFormatterHelper.FormatMonstersSummary(validMonsters),
+                        _ => MonsterFormatterHelper.FormatMonstersSummary(validMonsters)
                     };
 
                     if (!string.IsNullOrWhiteSpace(monsterData))
@@ -215,7 +215,7 @@ namespace TWP.Api.Application.Helpers
             IList<int> playerLevels,
             string encounterNarrativeContext,
             IList<MonsterHabitatEnum> monsterHabitats,
-            IList<Dnd5eApiMonsterDTO> pickedMonsters,
+            IList<Monster5eDto> pickedMonsters,
             int expEncounterBudget,
             string formatType = "full")
         {

@@ -8,8 +8,8 @@ namespace TWP.Api.Core.DbEntities
         public string Name { get; set; } = string.Empty;
         public AlignmentEnum? Alignment { get; set; }
         public string ChallengeRating { get; set; } = String.Empty;
-        public int Cr { get; set; }
-        public int? CrInLair { get; set; }
+        public float Cr { get; set; }
+        public float? CrInLair { get; set; }
         public int Xp { get; set; }
         public int InitiativeBonus { get; set; }
         public CombatRoleEnum? Role { get; set; }
