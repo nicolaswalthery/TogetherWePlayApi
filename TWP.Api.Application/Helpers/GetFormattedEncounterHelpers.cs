@@ -16,7 +16,7 @@ namespace TWP.Api.Application.Helpers
         /// <param name="encounterDifficulty">Difficulty of the encounter</param>
         /// <param name="playerLevels">Player levels</param>
         /// <param name="encounterNarrativeContext">Narrative context</param>
-        /// <param name="monsterHabitats">Monster habitats</param>
+        /// <param name="monsterHabitat">Monster habitat</param>
         /// <param name="pickedMonsters">Selected monsters for the encounter</param>
         /// <param name="expEncounterBudget">XP budget for the encounter</param>
         /// <param name="formatType">Type of formatting (Full, Summary, or List)</param>
@@ -25,7 +25,7 @@ namespace TWP.Api.Application.Helpers
             EncounterDifficultyEnum? encounterDifficulty,
             IList<int> playerLevels,
             string encounterNarrativeContext,
-            IList<MonsterHabitatEnum> monsterHabitats,
+            MonsterHabitatEnum? monsterHabitat,
             IList<Monster5eDto> pickedMonsters,
             int? expEncounterBudget,
             string formatType = "full")
@@ -89,17 +89,12 @@ namespace TWP.Api.Application.Helpers
                     sb.AppendLine();
                 }
 
-                // Monster Habitats
-                if (monsterHabitats?.Any() == true)
+                // Monster Habitat
+                if (monsterHabitat.HasValue)
                 {
-                    sb.AppendLine("MONSTER HABITATS:");
+                    sb.AppendLine("MONSTER HABITAT:");
                     sb.AppendLine("------------------");
-                    var habitatList = monsterHabitats
-                        .Where(h => h != null)
-                        .Select(h => h.ToString())
-                        .Distinct()
-                        .OrderBy(h => h);
-                    sb.AppendLine(string.Join(", ", habitatList));
+                    sb.AppendLine(monsterHabitat.Value.ToString());
                     sb.AppendLine();
                 }
 
@@ -205,7 +200,7 @@ namespace TWP.Api.Application.Helpers
         /// <param name="encounterDifficulty">Difficulty of the encounter</param>
         /// <param name="playerLevels">Player levels</param>
         /// <param name="encounterNarrativeContext">Narrative context</param>
-        /// <param name="monsterHabitats">Monster habitats</param>
+        /// <param name="monsterHabitat">Monster habitat</param>
         /// <param name="pickedMonsters">Selected monsters for the encounter</param>
         /// <param name="expEncounterBudget">XP budget for the encounter</param>
         /// <param name="formatType">Type of formatting (Full, Summary, or List)</param>
@@ -214,7 +209,7 @@ namespace TWP.Api.Application.Helpers
             EncounterDifficultyEnum encounterDifficulty,
             IList<int> playerLevels,
             string encounterNarrativeContext,
-            IList<MonsterHabitatEnum> monsterHabitats,
+            MonsterHabitatEnum monsterHabitat,
             IList<Monster5eDto> pickedMonsters,
             int expEncounterBudget,
             string formatType = "full")
@@ -224,7 +219,7 @@ namespace TWP.Api.Application.Helpers
                 encounterDifficulty,
                 playerLevels,
                 encounterNarrativeContext,
-                monsterHabitats,
+                monsterHabitat,
                 pickedMonsters,
                 expEncounterBudget,
                 formatType
@@ -279,7 +274,7 @@ namespace TWP.Api.Application.Helpers
         public static string GetEncounterSummary(
             EncounterDifficultyEnum encounterDifficulty,
             IList<int> playerLevels,
-            IList<Dnd5eApiMonsterDTO> pickedMonsters,
+            IList<Monster5eDto> pickedMonsters,
             int expEncounterBudget)
         {
             var sb = new StringBuilder();

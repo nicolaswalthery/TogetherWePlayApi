@@ -32,7 +32,7 @@ namespace TWP.Api.Application.BusinessLayers
             EncounterDifficultyEnum encounterDifficulty,
             IList<int> playerLevels,
             string encounterNarrativeContext,
-            IList<MonsterHabitatEnum> monsterHabitats)
+            MonsterHabitatEnum monsterHabitat)
                 => await Safe.ExecuteAsync(async () =>
                 {
                     if (playerLevels.HasNoElement())
@@ -45,10 +45,11 @@ namespace TWP.Api.Application.BusinessLayers
                         return Result<Dnd5eEncounterGeneratedDto>.Failure("No Monsters found for the given CR or less", ReasonType.NotFound);
 
                     var monsters = monsterDbEntities.Data.Select(m => m.ToDto()).ToList();
-                    
+                    var filtered = monsters.Where(m => m.Habitats != null && m.Habitats.Contains(monsterHabitat.ToString())).ToList();
+
                     var encounterGenerated = GenerateEncounter(monsters!, expEncounterBudget, playerLevels.Count, playerLevels.Min());
 
-                    var formattedEncounterData = EncounterFormatter.GetFormattedEncounterSafe(encounterDifficulty: encounterDifficulty, playerLevels: playerLevels, encounterNarrativeContext, monsterHabitats: monsterHabitats, pickedMonsters: encounterGenerated, expEncounterBudget: expEncounterBudget);
+                    var formattedEncounterData = EncounterFormatter.GetFormattedEncounterSafe(encounterDifficulty: encounterDifficulty, playerLevels: playerLevels, encounterNarrativeContext, monsterHabitat: monsterHabitat, pickedMonsters: encounterGenerated, expEncounterBudget: expEncounterBudget);
 
                     //var openAiresult = await _openAiInterops.GetChatGptResponseAsync(
                     //    message: $"Create an Dnd5e Encounter using these data : Encounter data for the Master Game Master to use : {formattedEncounterData.Data} which were picked according to Difficulty : {encounterDifficulty.ToString()}, Number of players : {playerLevels.Count}, Party Level : {playerLevels.Min()}, NarrativeContext : {encounterNarrativeContext}, Monster Habitats : {string.Join(",", monsterHabitats.Select(h => h.ToString()))}",
@@ -58,7 +59,7 @@ namespace TWP.Api.Application.BusinessLayers
                                         { 
                                             Cr = cr, EncounterDifficulty = encounterDifficulty, 
                                             EncounterNarrativeContext = encounterNarrativeContext, 
-                                            MonsterHabitats = monsterHabitats, 
+                                            MonsterHabitat = monsterHabitat, 
                                             Monsters = encounterGenerated, 
                                             //OpenAiResponse = openAiresult,
                                             FormattedEncounterData = formattedEncounterData.Data!
