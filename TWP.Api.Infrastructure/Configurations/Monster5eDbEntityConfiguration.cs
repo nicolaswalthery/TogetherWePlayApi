@@ -34,6 +34,13 @@ namespace TWP.Api.Infrastructure.Configurations
                 .HasMaxLength(100)
                 .IsRequired();
 
+            builder.Property(e => e.Cr)
+                .HasColumnName("cr")
+                .IsRequired();
+
+            builder.Property(e => e.CrInLair)
+                .HasColumnName("cr_in_lair");
+
             builder.Property(e => e.Xp)
                 .HasColumnName("xp")
                 .IsRequired();
