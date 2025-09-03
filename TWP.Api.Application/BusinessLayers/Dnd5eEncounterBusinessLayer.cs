@@ -12,13 +12,15 @@ namespace TWP.Api.Application.BusinessLayers
 {
     public class Dnd5eEncounterBusinessLayer : IDndEncounterBusinessLayer
     {
+        private readonly IMonster5eRepository _monster5ERepository;
         private readonly IAideDdInterops _aideDdInterops;
         private readonly IMonsterApiInterops _monsterApiInterops;
         private readonly IOpenAiInterops _openAiInterops;
         private readonly IAideDdMonster5eRepository _aideDdMonster5ERepository;
 
-        public Dnd5eEncounterBusinessLayer(IAideDdInterops aideDdInterops, IMonsterApiInterops monsterApiInterops, IOpenAiInterops openAiInterops, IAideDdMonster5eRepository aideDdMonster5ERepository)
+        public Dnd5eEncounterBusinessLayer(IMonster5eRepository monster5eRepository, IAideDdInterops aideDdInterops, IMonsterApiInterops monsterApiInterops, IOpenAiInterops openAiInterops, IAideDdMonster5eRepository aideDdMonster5ERepository)
         {
+            _monster5ERepository = monster5eRepository;
             _aideDdInterops = aideDdInterops;
             _monsterApiInterops = monsterApiInterops;
             _openAiInterops = openAiInterops;
@@ -32,7 +34,7 @@ namespace TWP.Api.Application.BusinessLayers
             IList<MonsterHabitatEnum> monsterHabitats)
                 => await Safe.ExecuteAsync(async () =>
                 {
-                    if(playerLevels.HasNoElement())
+                    if (playerLevels.HasNoElement())
                         return Result<Dnd5eEncounterGeneratedDto>.Failure("No Elements", ReasonType.BadParameter);
                     var cr = playerLevels.Min();
                     var expEncounterBudget = ComputeExpBudget(encounterDifficulty, playerLevels);

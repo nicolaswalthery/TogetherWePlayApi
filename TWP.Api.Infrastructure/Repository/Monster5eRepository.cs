@@ -10,10 +10,10 @@ namespace TWP.Api.Infrastructure.Repository.Interfaces
         {
         }
 
-        public async Task<List<Monster5eDbEntity>> FindByCrOrLessAsync(int challengeRating)
+        public async Task<Result<List<Monster5eDbEntity>>> FindByCrOrLessAsync(int challengeRating)
             => await Safe.ExecuteAsync(async () =>
             {
-                var result = await _context.Monsters.Where(m => m.ChallengeRating <= challengeRating).Include(e => e.Traits)
+                var result = await _context.Monsters.Include(e => e.Traits)
                                                     .Include(e => e.Actions)
                                                     .Include(e => e.Symbarum5e)
                                                     .ToListAsync();
@@ -46,5 +46,11 @@ namespace TWP.Api.Infrastructure.Repository.Interfaces
                 return Result.Success();
             });
 
+        public async Task<Result> UpdateMany(List<Monster5eDbEntity> monster5EDbEntities)
+            => await Safe.ExecuteAsync(async () =>
+            {
+                await base.UpdateRangeAsync(monster5EDbEntities);
+                return Result.Success();
+            });
     }
 }
