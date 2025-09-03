@@ -14,18 +14,12 @@ namespace TWP.Api.Application.BusinessLayers
     public class Dnd5eEncounterBusinessLayer : IDndEncounterBusinessLayer
     {
         private readonly IMonster5eRepository _monster5eRepository;
-        private readonly IAideDdInterops _aideDdInterops;
-        private readonly IMonsterApiInterops _monsterApiInterops;
         private readonly IOpenAiInterops _openAiInterops;
-        private readonly IAideDdMonster5eRepository _aideDdMonster5ERepository;
 
-        public Dnd5eEncounterBusinessLayer(IMonster5eRepository monster5eRepository, IAideDdInterops aideDdInterops, IMonsterApiInterops monsterApiInterops, IOpenAiInterops openAiInterops, IAideDdMonster5eRepository aideDdMonster5ERepository)
+        public Dnd5eEncounterBusinessLayer(IMonster5eRepository monster5eRepository, IOpenAiInterops openAiInterops)
         {
             _monster5eRepository = monster5eRepository;
-            _aideDdInterops = aideDdInterops;
-            _monsterApiInterops = monsterApiInterops;
             _openAiInterops = openAiInterops;
-            _aideDdMonster5ERepository = aideDdMonster5ERepository;
         }
 
         public async Task<Result<Dnd5eEncounterGeneratedDto>> EncounterRandomGenerator(
