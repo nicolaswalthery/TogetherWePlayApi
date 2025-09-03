@@ -10,6 +10,16 @@ namespace TWP.Api.Infrastructure.Repository.Interfaces
         {
         }
 
+        public async Task<List<Monster5eDbEntity>> FindByCrOrLessAsync(int challengeRating)
+            => await Safe.ExecuteAsync(async () =>
+            {
+                var result = await _context.Monsters.Where(m => m.ChallengeRating <= challengeRating).Include(e => e.Traits)
+                                                    .Include(e => e.Actions)
+                                                    .Include(e => e.Symbarum5e)
+                                                    .ToListAsync();
+                return Result<List<Monster5eDbEntity>>.Success(result);
+            });
+
         public async Task<Result<List<Monster5eDbEntity>>> GetAllAsync()
             => await Safe.ExecuteAsync(async () =>
             {
