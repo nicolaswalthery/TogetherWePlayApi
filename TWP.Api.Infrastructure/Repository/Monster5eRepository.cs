@@ -52,5 +52,21 @@ namespace TWP.Api.Infrastructure.Repository.Interfaces
                 await base.UpdateRangeAsync(monster5EDbEntities);
                 return Result.Success();
             });
+
+        public async Task<Result<List<TraitDbEntity>>> GetAllTraits(List<TraitDbEntity> monster5EDbEntities)
+            => await Safe.ExecuteAsync(async () =>
+            {
+                var result = await _context.Monsters.Include(e => e.Traits).ToListAsync();
+                var traits = result.SelectMany(m => m.Traits).ToList();
+                return Result<List<TraitDbEntity>>.Success(traits);
+            });
+
+        public async Task<Result<List<ActionDbEntity>>> GetAllActions(List<TraitDbEntity> monster5EDbEntities)
+            => await Safe.ExecuteAsync(async () =>
+            {
+                var result = await _context.Monsters.Include(e => e.Actions).ToListAsync();
+                var actions = result.SelectMany(m => m.Actions).ToList();
+                return Result<List<ActionDbEntity>>.Success(actions);
+            });
     }
 }
