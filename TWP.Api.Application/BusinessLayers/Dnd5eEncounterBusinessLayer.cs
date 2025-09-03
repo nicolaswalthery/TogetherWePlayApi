@@ -162,7 +162,7 @@ namespace TWP.Api.Application.BusinessLayers
 
                 // Ensure that we include only one monster of the partyLevel + 1 CR in the encounter
                 if (IsCrPlusOneAlreadyIncludedInEncounter(encounter, partyLevel))
-                    selectedAvailableMonsters = selectedAvailableMonsters.Where(m => m.Cr <= (decimal)partyLevel).ToList();
+                    selectedAvailableMonsters = selectedAvailableMonsters.Where(m => m.Cr <= (float)partyLevel).ToList();
             }
 
             return encounter;
