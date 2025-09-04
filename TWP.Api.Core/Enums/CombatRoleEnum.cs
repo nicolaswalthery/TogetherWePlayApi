@@ -3,13 +3,14 @@
     public enum CombatRoleEnum
     {
         Brute = 1,
+        Soldier,
         Controller,
-      Skirmisher,
-      Lurker,
-      Artillery,
-      Solo,
-      Elite,
-      Minion,
-      Leader
+          Skirmisher,
+          Ambusher,
+          Artillery,
+          Minion,
+          Solo,
+          Support,
+          Leader
     }
 }
