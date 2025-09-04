@@ -9,6 +9,7 @@ namespace TWP.Api.Infrastructure.Repository.Interfaces
         Task<Result> Insert(Monster5eDbEntity monster5EDbEntity);
         Task<Result> InsertMany(List<Monster5eDbEntity> monster5EDbEntities);
         Task<Result<List<Monster5eDbEntity>>> FindByCrOrLessAsync(int challengeRating);
+        Task<Result<List<Monster5eDbEntity>>> FindByCrAsync(float challengeRating);
         Task<Result> UpdateMany(List<Monster5eDbEntity> monster5EDbEntities);
         Task<Result<List<TraitDbEntity>>> GetAllTraits(List<TraitDbEntity> monster5EDbEntities);
         Task<Result<List<ActionDbEntity>>> GetAllActions(List<TraitDbEntity> monster5EDbEntities);
