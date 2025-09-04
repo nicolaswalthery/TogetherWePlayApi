@@ -53,7 +53,7 @@ namespace TWP.Api.Application.BusinessLayers
                 //Generate monster lore from base monster
                 var originalLore = await _openAiInterops.GetChatGptResponseAsync($"Take the base lore of {baseMonster.Name} and use it to create a original lore for {baseMonster.Name} that has the role {role} : {roleDescription}. Create what this {role} variation has more, what set it appart !");
                 var originalName = await _openAiInterops.GetChatGptResponseAsync($"Take the base name of {baseMonster.Name} and use it to create a original name for a monster that has the role {role} : {roleDescription} and this lore {originalLore}");
-                
+
                 var originalManner = await _openAiInterops.GetChatGptResponseAsync($"Take the base lore of {baseMonster.Name} and use it to create a very short (10 to 15 words) manner description for {baseMonster.Name} that has the role {role} : {roleDescription}.");
 
                 //Create Action related to the role of the monster
@@ -133,67 +133,12 @@ namespace TWP.Api.Application.BusinessLayers
             => await Safe.ExecuteAsync(async () =>
             {
                 var results = _csvRepository.GetAllDnd5e2024MonsterStatsByCr(cr).Verify(r => r.IsNull());
-                if(results.IsFailure)
+                if (results.IsFailure)
                     return Result<List<Dnd5eMonsterDto>>.Failure(results.Error!, results.ReasonType);
                 return results;
             });
 
         private static string CreateRoleActionPrompt(Monster5eDbEntity baseMonster, CombatRoleEnum role, string originalLore, string roleDescription)
-            => $@"
-You are a D&D 5e game designer. Create ONE special action for a monster based on the following context:
-
-CONTEXT:
-- Monster Name: {baseMonster.Name}
-- Combat Role: {role} ({roleDescription})
-- Original Lore: {originalLore}
-- Reference Actions: {string.Join("; ", baseMonster.Actions.Select(a => a.Description).ToList())}
-
-REQUIREMENTS:
-1. The action should perfectly represent and iconify the monster's role
-2. Use D&D 5e mechanics (damage dice, save DCs, conditions, etc.)
-3. Balance it according to the monster's CR: {baseMonster.ChallengeRating}
-
-IMPORTANT: Return ONLY a valid JSON object (no markdown, no explanation) with this EXACT structure:
-
-{{
-  ""name"": ""string"",
-  ""actionType"": ""string"",
-  ""description"": ""string"",
-  ""attackBonus"": null,
-  ""damage"": null,
-  ""damageDice"": null,
-  ""damageType"": null,
-  ""saveDC"": null,
-  ""saveType"": null,
-  ""recharge"": null,
-  ""range"": null,
-  ""numberOfTargets"": null,
-  ""limitedUse"": null,
-  ""condition"": null,
-  ""duration"": null,
-  ""isLegendaryAction"": false,
-  ""legendaryCost"": null
-}}
-
-FIELD SPECIFICATIONS:
-- name: Action name (e.g., ""Devastating Charge"")
-- actionType: One of [""Action"", ""BonusAction"", ""Reaction"", ""LegendaryAction"", ""LairAction""]
-- description: Full mechanical description with all rules
-- attackBonus: Number or null (e.g., 8)
-- damage: Average damage number or null (e.g., 14)
-- damageDice: Dice notation or null (e.g., ""2d8+5"")
-- damageType: One of [""acid"", ""bludgeoning"", ""cold"", ""fire"", ""force"", ""lightning"", ""necrotic"", ""piercing"", ""poison"", ""psychic"", ""radiant"", ""slashing"", ""thunder""] or null
-- saveDC: Number or null (e.g., 15)
-- saveType: One of [""STR"", ""DEX"", ""CON"", ""INT"", ""WIS"", ""CHA""] or null
-- recharge: One of [""Recharge 5-6"", ""Recharge 6"", ""1/Day"", ""3/Day""] or null
-- range: String or null (e.g., ""30 feet"", ""Touch"", ""Self"")
-- numberOfTargets: Number or null
-- limitedUse: String or null (e.g., ""3/Day"", ""1/Short Rest"")
-- condition: String or null (e.g., ""stunned"", ""frightened"", ""paralyzed"")
-- duration: String or null (e.g., ""1 minute"", ""until the end of your next turn"")
-- isLegendaryAction: Boolean
-- legendaryCost: Number or null (1, 2, or 3)
-
-Return ONLY the JSON object, no other text.";
+            => "$@\"\r\nYou are a D&D 5e game designer. Create ONE special action for a monster based on the following context:\r\n\r\nCONTEXT:\r\n- Monster Name: {baseMonster.Name}\r\n- Combat Role: {role} ({roleDescription})\r\n- Original Lore: {originalLore}\r\n- Reference Actions: {string.Join(\"; \", baseMonster.Actions.Select(a => a.Description).ToList())}\r\n\r\nREQUIREMENTS:\r\n1. The action should perfectly represent and iconify the monster's role\r\n2. Use D&D 5e mechanics (damage dice, save DCs, conditions, etc.)\r\n3. Balance it according to the monster's CR: {baseMonster.ChallengeRating}\r\n\r\nIMPORTANT: Return ONLY a valid JSON object (no markdown, no explanation) with this EXACT structure:\r\n\r\n{{\r\n  \"\"name\"\": \"\"string\"\",\r\n  \"\"type\"\": 0,\r\n  \"\"attackType\"\": 0,\r\n  \"\"description\"\": \"\"string\"\",\r\n  \"\"shortRange\"\": null,\r\n  \"\"longRange\"\": null,\r\n  \"\"attackBonus\"\": null,\r\n  \"\"damageBonus\"\": null,\r\n  \"\"damageDice\"\": null,\r\n  \"\"numberDamageDice\"\": null,\r\n  \"\"damageType\"\": null,\r\n  \"\"limitPerDay\"\": null,\r\n  \"\"isProhibitedForMinion\"\": false,\r\n  \"\"actionTrigger\"\": null,\r\n  \"\"advantageCondition\"\": null,\r\n  \"\"disadvantageCondition\"\": null\r\n}}\r\n\r\nFIELD SPECIFICATIONS:\r\n- name: Action name (e.g., \"\"Devastating Charge\"\")\r\n- type: Integer enum - 0=Action, 1=BonusAction, 2=Reaction, 3=LegendaryAction, 4=LairAction, 5=MythicAction\r\n- attackType: Integer enum - 0=None, 1=MeleeWeaponAttack, 2=RangedWeaponAttack, 3=MeleeSpellAttack, 4=RangedSpellAttack, 5=SavingThrow\r\n- description: Full mechanical description with all rules and effects\r\n- shortRange: String or null (e.g., \"\"5\"\", \"\"30\"\", \"\"Touch\"\")\r\n- longRange: String or null (e.g., \"\"120\"\", \"\"600\"\") - only for ranged attacks\r\n- attackBonus: Integer or null (e.g., 8, 12)\r\n- damageBonus: Integer or null (e.g., 5, 8) - the flat damage bonus added to dice\r\n- damageDice: Integer enum or null - 0=d4, 1=d6, 2=d8, 3=d10, 4=d12, 5=d20, 6=d100\r\n- numberDamageDice: Integer or null (e.g., 2, 3, 4) - number of damage dice to roll\r\n- damageType: Integer enum or null - 0=Acid, 1=Bludgeoning, 2=Cold, 3=Fire, 4=Force, 5=Lightning, 6=Necrotic, 7=Piercing, 8=Poison, 9=Psychic, 10=Radiant, 11=Slashing, 12=Thunder\r\n- limitPerDay: Integer or null (e.g., 1, 3) - number of uses per day, null if unlimited\r\n- isProhibitedForMinion: Boolean - true if minions cannot use this action\r\n- actionTrigger: String or null - for reactions, what triggers it (e.g., \"\"when hit by an attack\"\", \"\"when an enemy ends its turn within 5 feet\"\")\r\n- advantageCondition: String or null - condition that grants advantage (e.g., \"\"against prone targets\"\", \"\"if the target is frightened\"\")\r\n- disadvantageCondition: String or null - condition that imposes disadvantage (e.g., \"\"in sunlight\"\", \"\"against targets wearing heavy armor\"\")\r\n\r\nReturn ONLY the JSON object, no other text.\"";
     }
 } 
