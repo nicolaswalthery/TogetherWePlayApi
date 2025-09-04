@@ -63,6 +63,13 @@ namespace TWP.Api.Infrastructure.Repository.Interfaces
                 return Result.Success();
             });
 
+        public async Task<Result> Update(Monster5eDbEntity monster5e)
+            => await Safe.ExecuteAsync(async () =>
+            {
+                await base.UpdateAsync(monster5e);
+                return Result.Success();
+            });
+
         public async Task<Result<List<TraitDbEntity>>> GetAllTraits(List<TraitDbEntity> monster5EDbEntities)
             => await Safe.ExecuteAsync(async () =>
             {
