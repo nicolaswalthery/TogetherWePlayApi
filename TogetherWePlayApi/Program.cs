@@ -142,6 +142,7 @@ builder.Services.AddTransient<ISomethingHappenJsonRepository, SomethingHappenJso
 builder.Services.AddTransient<IUltraModern5eJsonRepository, UltraModern5eJsonRepository>();
 builder.Services.AddTransient<IPathfinder2eMonsterCoreJsonRepository, Pathfinder2eMonsterCoreJsonRepository>();
 builder.Services.AddTransient<IPathfinder2eConditionsJsonRepository, Pathfinder2eConditionsJsonRepository>();
+builder.Services.AddTransient<IMonsterBuildingGuidelineRepository, MonsterBuildingGuidelineRepository>();
 
 // CSV Repositories
 builder.Services.AddTransient<CsvRepositoryBase>();
