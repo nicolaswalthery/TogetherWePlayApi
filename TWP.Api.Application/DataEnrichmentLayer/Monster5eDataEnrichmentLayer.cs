@@ -1,6 +1,7 @@
 ﻿using Common.Extensions;
 using Common.ResultPattern;
 using TWP.Api.Application.DataEnrichmentLayer.Interfaces;
+using TWP.Api.Core.Helpers;
 using TWP.Api.Infrastructure.Helpers;
 using TWP.Api.Infrastructure.Interops.Interfaces;
 using TWP.Api.Infrastructure.Repository.Interfaces;
@@ -28,9 +29,9 @@ namespace TWP.Api.Application.DataEnrichmentLayer
                //TODO
                var roleDescriptions = RoleDescriptionsHelper.GetAllRoleDescriptions();
                var result = await _monster5ERepository.GetAllAsync();
-               foreach (var monster in result.Data.Where(m => m.Role is null))
+               foreach (var monster in result.Data.Where(m => m.Role is null && m.Manner is null))
                {
-                   monster.Lore = await _openAiInterops.ChatGptResponseAsync($"Role description : {roleDescriptions} -> Monster Stats {} -> {_promptRole} ");
+                   monster.Lore = await _openAiInterops.ChatGptResponseAsync($"Role description : {roleDescriptions} -> Monster Stats {monster.ToFullString()} -> {_promptRole}", maxTokens: 3000);
                    monster.Manner = await _openAiInterops.ChatGptResponseAsync($"{_promptManner} {monster.Name}");
 
                    await _monster5ERepository.Update(monster);
