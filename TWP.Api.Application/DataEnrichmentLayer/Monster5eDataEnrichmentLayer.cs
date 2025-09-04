@@ -45,16 +45,16 @@ namespace TWP.Api.Application.DataEnrichmentLayer
            => await Safe.ExecuteAsync(async () =>
            {
                var result = await _monster5ERepository.GetAllAsync();
-               foreach (var monster in result.Data)
-               {
-                   var lore = await _openAiInterops.ChatGptResponseAsync($"{ _promptLore} {monster.Name}");
-                   var manner = await _openAiInterops.ChatGptResponseAsync($"{_promptManner} {monster.Name}");
+               //foreach (var monster in result.Data)
+               //{
+               //    var lore = await _openAiInterops.ChatGptResponseAsync($"{ _promptLore} {monster.Name}");
+               //    var manner = await _openAiInterops.ChatGptResponseAsync($"{_promptManner} {monster.Name}");
 
-                   monster.Lore = JsonSerializer.Serialize(new { value = lore });
-                   monster.Manner = JsonSerializer.Serialize(new { value = manner });
+               //    monster.Lore = JsonSerializer.Serialize(new { value = lore });
+               //    monster.Manner = JsonSerializer.Serialize(new { value = manner });
 
-                   await _monster5ERepository.Update(monster);
-               }
+               //    await _monster5ERepository.Update(monster);
+               //}
 
                return Result.Success();
            });

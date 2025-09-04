@@ -15,6 +15,10 @@ namespace TogetherWePlayApi.Controllers
             _monsterBusinessLayer = monsterBusinessLayer;
         }
 
+        [HttpPost("CreateOriginalDndMonster")]
+        public async Task<IActionResult> CreateOriginalDndMonster([FromQuery] float challengeRating)
+            => HandleResult(await _monsterBusinessLayer.CreateOriginalDndMonster(challengeRating));
+
         [HttpGet("GetAll5eMonsters")]
         public async Task<IActionResult> GetAll5eMonsters()
             => HandleResult(await _monsterBusinessLayer.GetAll5eMonsters());

@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace TWP.Api.Controllers.Interfaces
 {
@@ -7,5 +6,6 @@ namespace TWP.Api.Controllers.Interfaces
     {
         Task<IActionResult> GetAll5eMonsters();
         Task<IActionResult> GetAllMonsterStatsByCr(int cr);
+        Task<IActionResult> CreateOriginalDndMonster(float challengeRating);
     }
 } 
