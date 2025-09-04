@@ -6,6 +6,8 @@ using System.Text.Json;
 using TogetherWePlayApi.Controllers;
 using TWP.Api.Application.BusinessLayers;
 using TWP.Api.Application.BusinessLayers.Interfaces;
+using TWP.Api.Application.DataEnrichmentLayer;
+using TWP.Api.Application.DataEnrichmentLayer.Interfaces;
 using TWP.Api.Application.ETL;
 using TWP.Api.Application.ETL.Services;
 using TWP.Api.Controllers.Interfaces;
@@ -163,6 +165,9 @@ builder.Services.AddTransient<IUltraModern5eBusinessLayer, UltraModern5eBusiness
 builder.Services.AddTransient<IPathfinder2eBusinessLayer, Pathfinder2eBusinessLayer>();
 builder.Services.AddTransient<IDnd5eMonsterBusinessLayer, Dnd5eMonsterBusinessLayer>();
 
+//Data Enrichment Layer
+builder.Services.AddTransient<IMonster5eDataEnrichmentLayer, Monster5eDataEnrichmentLayer>();
+
 // ===== ETL ======
 builder.Services.AddTransient<IExtractTransformLoad,  ExtractTransformLoad>();
 
@@ -171,6 +176,7 @@ builder.Services.AddTransient<IDndController, DndController>();
 builder.Services.AddTransient<IUltraModern5eController, UltraModern5eController>();
 builder.Services.AddTransient<IPathfinder2eController, Pathfinder2eController>();
 builder.Services.AddTransient<IDnd5eMonsterController, Dnd5eMonsterController>();
+builder.Services.AddTransient<IEnrichmentDataController, EnrichmentDataController>();
 
 builder.Services.AddControllers()
                 .AddJsonOptions(options =>

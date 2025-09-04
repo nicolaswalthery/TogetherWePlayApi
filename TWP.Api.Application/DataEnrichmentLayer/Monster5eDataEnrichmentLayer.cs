@@ -1,6 +1,8 @@
 ﻿using Common.Extensions;
 using Common.ResultPattern;
+using System.Text.Json;
 using TWP.Api.Application.DataEnrichmentLayer.Interfaces;
+using TWP.Api.Application.Helpers.Mappers;
 using TWP.Api.Core.Helpers;
 using TWP.Api.Infrastructure.Helpers;
 using TWP.Api.Infrastructure.Interops.Interfaces;
@@ -26,17 +28,15 @@ namespace TWP.Api.Application.DataEnrichmentLayer
         public async Task<Result> AiRoleDetermination()
            => await Safe.ExecuteAsync(async () =>
            {
-               //TODO
                var roleDescriptions = RoleDescriptionsHelper.GetAllRoleDescriptions();
                var result = await _monster5ERepository.GetAllAsync();
-               foreach (var monster in result.Data.Where(m => m.Role is null && m.Manner is null))
-               {
-                   monster.Lore = await _openAiInterops.ChatGptResponseAsync($"Role description : {roleDescriptions} -> Monster Stats {monster.ToFullString()} -> {_promptRole}", maxTokens: 3000);
-                   monster.Manner = await _openAiInterops.ChatGptResponseAsync($"{_promptManner} {monster.Name}");
+               //foreach (var monster in result.Data.Where(m => m.Role is null))
+               //{
+               //    var role = await _openAiInterops.ChatGptResponseAsync($"Role description : {roleDescriptions} -> Monster Stats {monster.ToFullString()} -> {_promptRole}");
+               //    monster.Role = role.GetCombatRoleFromString();
 
-                   await _monster5ERepository.Update(monster);
-               }
-
+               //    await _monster5ERepository.Update(monster);
+               //}
 
                return Result.Success();
            });
@@ -45,10 +45,13 @@ namespace TWP.Api.Application.DataEnrichmentLayer
            => await Safe.ExecuteAsync(async () =>
            {
                var result = await _monster5ERepository.GetAllAsync();
-               foreach (var monster in result.Data.Where(m => m.Lore.IsNotNullOrEmptyOrWhiteSpace() && m.Manner.IsNotNullOrEmptyOrWhiteSpace()))
+               foreach (var monster in result.Data)
                {
-                   monster.Lore = await _openAiInterops.ChatGptResponseAsync($"{ _promptLore} {monster.Name}");
-                   monster.Manner = await _openAiInterops.ChatGptResponseAsync($"{_promptManner} {monster.Name}");
+                   var lore = await _openAiInterops.ChatGptResponseAsync($"{ _promptLore} {monster.Name}");
+                   var manner = await _openAiInterops.ChatGptResponseAsync($"{_promptManner} {monster.Name}");
+
+                   monster.Lore = JsonSerializer.Serialize(new { value = lore });
+                   monster.Manner = JsonSerializer.Serialize(new { value = manner });
 
                    await _monster5ERepository.Update(monster);
                }
