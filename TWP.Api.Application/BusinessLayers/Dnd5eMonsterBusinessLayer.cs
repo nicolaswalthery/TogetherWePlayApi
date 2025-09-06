@@ -56,6 +56,7 @@ namespace TWP.Api.Application.BusinessLayers
 
                 var originalManner = await _openAiInterops.GetChatGptResponseAsync($"Take the base lore of {baseMonster.Name} and use it to create a very short (10 to 15 words) manner description for {baseMonster.Name} that has the role {role} : {roleDescription}.");
 
+                //TODO : Fix ChatGPT response sometimes not being a valid JSON  
                 //Create Action related to the role of the monster
                 var roleBasedActions = await _openAiInterops.GetChatGptResponseAsync(CreateRoleActionPrompt(baseMonster, role, originalLore, roleDescription));
 
