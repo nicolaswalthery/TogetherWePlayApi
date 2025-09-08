@@ -5,7 +5,6 @@
         None = 1,
         Melee,
         Ranged,
-        MeleeOrRanged,
-        Special
+        MeleeOrRanged
     }
 }

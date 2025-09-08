@@ -1,4 +1,5 @@
-﻿using TWP.Api.Core.DbEntities;
+﻿using Common.Randomizer;
+using TWP.Api.Core.DbEntities;
 using TWP.Api.Core.Enums;
 
 namespace TWP.Api.Application.Helpers
@@ -45,6 +46,49 @@ namespace TWP.Api.Application.Helpers
             [29] = new(9, 24, 600, 13, 240, 22),
             [30] = new(9, 25, 697, 14, 252, 23)
         };
+
+        //Minion Stat from Flee Mortals page 15
+        private static List<(float Cr, int ProficiencyBonus, int HitPoints, int Damage)> GetMinionStatistics()
+        {
+            return new List<(float, int, int, int)>
+            {
+                (0, 2, 4, 1),
+                (0.125f, 2, 5, 1),
+                (0.25f, 2, 6, 1),
+                (0.5f, 2, 7, 1),
+                (1, 2, 8, 1),
+                (2, 2, 9, 2),
+                (3, 2, 10, 3),
+                (4, 2, 11, 4),
+                (5, 3, 12, 4),
+                (6, 3, 13, 4),
+                (7, 3, 14, 4),
+                (8, 3, 15, 5),
+                (9, 4, 16, 5),
+                (10, 4, 17, 5),
+                (11, 4, 18, 6),
+                (12, 4, 19, 6),
+                (13, 5, 20, 7),
+                (14, 5, 21, 7),
+                (15, 5, 22, 8),
+                (16, 5, 23, 8),
+                (17, 6, 24, 9),
+                (18, 6, 25, 9),
+                (19, 6, 26, 10),
+                (20, 6, 27, 10),
+                (21, 7, 28, 11),
+                (22, 7, 29, 11),
+                (23, 7, 30, 12),
+                (24, 7, 31, 12),
+                (25, 8, 33, 13),
+                (26, 8, 34, 13),
+                (27, 8, 34, 14),
+                (28, 8, 35, 14),
+                (29, 9, 36, 15),
+                (30, 9, 37, 15)
+            };
+        }
+
 
         private class MonsterStatsByChallenge
         {
@@ -124,21 +168,21 @@ namespace TWP.Api.Application.Helpers
             }
         }
 
-        public RoleAdaptationResult AdaptMonsterToRole(Monster5eDbEntity monster)
+        public (RoleAdaptationResult result, Monster5eDbEntity modifiedMonster) AdaptMonsterToRole(Monster5eDbEntity monster)
         {
             var result = new RoleAdaptationResult();
 
             if (monster.Role == null)
             {
                 result.Modifications.Add("Aucun rôle défini pour ce monstre");
-                return result;
+                return (result, monster);
             }
 
             // Vérifier si le monstre correspond déjà à son rôle
             if (MonsterAlreadyFitsRole(monster))
             {
                 result.AlreadyFitsRole = true;
-                return result;
+                return (result, monster);
             }
 
             // Adapter selon le rôle
@@ -176,7 +220,7 @@ namespace TWP.Api.Application.Helpers
                     break;
             }
 
-            return result;
+            return (result, monster);
         }
 
         private bool MonsterAlreadyFitsRole(Monster5eDbEntity monster)
@@ -274,7 +318,8 @@ namespace TWP.Api.Application.Helpers
 
         private bool CheckMinionFit(Monster5eDbEntity monster, float cr)
         {
-            return monster.HitPoints <= 1; // Les minions ont toujours 1 HP
+            var minionStats = GetMinionStatistics().FirstOrDefault(ms => ms.Cr == cr);
+            return monster.HitPoints <= minionStats.HitPoints; 
         }
 
         private bool CheckSoloFit(Monster5eDbEntity monster, float cr)
@@ -591,25 +636,27 @@ namespace TWP.Api.Application.Helpers
 
         private void AdaptToMinion(Monster5eDbEntity monster, RoleAdaptationResult result)
         {
+            var minionStats = GetMinionStatistics().First(ms => ms.Cr == monster.Cr);
             // Les minions ont toujours 1 HP
             if (monster.HitPoints != 1)
             {
                 result.OriginalValues["HitPoints"] = monster.HitPoints;
-                monster.HitPoints = 1;
+                monster.HitPoints = minionStats.HitPoints;
                 result.NewValues["HitPoints"] = monster.HitPoints;
                 result.Modifications.Add($"HP fixés à 1 (Minion)");
             }
 
-            // AC spéciale pour les minions (AC de base + 2)
+            // AC spéciale pour les minions (AC de base - 2)
             var baseStats = GetStatsForCR(monster.Cr);
             if (monster.MinionArmorClass == null)
             {
-                monster.MinionArmorClass = baseStats.AC + 2;
-                result.Modifications.Add($"CA de Minion définie: {monster.MinionArmorClass}");
+                var minionCrMalus = new Dice(1, 4).Roll -1;
+                monster.MinionArmorClass = baseStats.AC - minionCrMalus;
+                result.Modifications.Add($"CA de Minion définie: {monster.MinionArmorClass} (base AC {baseStats.AC}-{minionCrMalus})");
             }
 
-            // Dégâts réduits (25% du CR normal)
-            var expectedDamage = baseStats.DmgPerRound / 4;
+            //Damages par round
+            var expectedDamage = minionStats.Damage;
             result.Modifications.Add($"Dégâts par round recommandés: {expectedDamage}");
 
             // Réduire toutes les stats
