@@ -5,12 +5,12 @@
         Brute = 1,
         Soldier,
         Controller,
-          Skirmisher,
-          Ambusher,
-          Artillery,
-          Minion,
-          Solo,
-          Support,
-          Leader
+        Skirmisher,
+        Ambusher,
+        Artillery,
+        Minion,
+        Solo,
+        Support,
+        Leader
     }
 }
