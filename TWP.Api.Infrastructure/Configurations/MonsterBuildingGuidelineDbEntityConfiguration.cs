@@ -133,6 +133,10 @@ namespace TWP.Api.Infrastructure.Configurations
                 .IsRequired()
                 .HasDefaultValue(true);
 
+            builder.Property(e => e.Exp)
+                .HasColumnName("exp")
+                .IsRequired();
+
             // Indexes
             builder.HasIndex(e => e.CR)
                 .HasDatabaseName("IX_guideline_cr")

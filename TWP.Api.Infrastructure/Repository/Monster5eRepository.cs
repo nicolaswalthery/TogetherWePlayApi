@@ -85,5 +85,15 @@ namespace TWP.Api.Infrastructure.Repository.Interfaces
                 var actions = result.SelectMany(m => m.Actions).ToList();
                 return Result<List<ActionDbEntity>>.Success(actions);
             });
+
+        public async Task<Result<Monster5eDbEntity>> GetByNameAsync(string monsterName)
+            => await Safe.ExecuteAsync(async () =>
+            {
+                var result = await _context.Monsters.Include(e => e.Traits)
+                                                    .Include(e => e.Actions)
+                                                    .Include(e => e.Symbarum5e)
+                                                    .FirstOrDefaultAsync(m => m.Name.ToLower() == monsterName.ToLower());
+                return Result<Monster5eDbEntity>.Success(result);
+            });
     }
 }

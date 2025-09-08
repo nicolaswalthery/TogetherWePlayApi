@@ -48,14 +48,13 @@ namespace TWP.Api.Application.BusinessLayers
                     randomRole = RoleDescriptionsHelper.GetOneRandomRole();
                 } while (baseMonster.Role.Value == randomRole);
 
-                var role = RoleDescriptionsHelper.GetOneRandomRole();
-                var roleDescription = RoleDescriptionsHelper.GetRoleDescription(role);
+                var roleDescription = RoleDescriptionsHelper.GetRoleDescription(randomRole);
 
                 //Generate monster lore from base monster
-                var originalLore = await _openAiInterops.GetChatGptResponseAsync($"Take the base lore of {baseMonster.Name} and use it to create a original lore for {baseMonster.Name} that has the role {role} : {roleDescription}. Create what this {role} variation has more, what set it appart !");
-                var originalName = await _openAiInterops.GetChatGptResponseAsync($"Take the base name of {baseMonster.Name} and use it to create a original name for a monster that has the role {role} : {roleDescription} and this lore {originalLore}");
+                var originalLore = await _openAiInterops.GetChatGptResponseAsync($"Take the base lore of {baseMonster.Name} and use it to create a original lore for {baseMonster.Name} that has the role {randomRole} : {roleDescription}. Create what this {randomRole} variation has more, what set it appart !");
+                var originalName = await _openAiInterops.GetChatGptResponseAsync($"Take the base name of {baseMonster.Name} and use it to create a original name for a monster that has the role {randomRole} : {roleDescription} and this lore {originalLore}");
 
-                var originalManner = await _openAiInterops.GetChatGptResponseAsync($"Take the base lore of {baseMonster.Name} and use it to create a very short (10 to 15 words) manner description for {baseMonster.Name} that has the role {role} : {roleDescription}.");
+                var originalManner = await _openAiInterops.GetChatGptResponseAsync($"Take the base lore of {baseMonster.Name} and use it to create a very short (10 to 15 words) manner description for {baseMonster.Name} that has the role {randomRole} : {roleDescription}.");
 
                 var newMonster = new Monster5eDbEntity
                 {
@@ -82,7 +81,7 @@ namespace TWP.Api.Application.BusinessLayers
                     Name = originalName,
                     PageSource = baseMonster.PageSource,
                     ProficiencyBonus = baseMonster.ProficiencyBonus,
-                    Role = role,
+                    Role = randomRole,
                     Skills = baseMonster.Skills,
                     Source = "AI Generated",
                     Speed = baseMonster.Speed,
@@ -111,22 +110,21 @@ namespace TWP.Api.Application.BusinessLayers
                 var monster5eRoleAdapterHelpers = new Monster5eRoleAdapterHelpers();
                 var roleApplied = monster5eRoleAdapterHelpers.AdaptMonsterToRole(newMonster);
 
-                if (role != CombatRoleEnum.Minion)
+                if (randomRole != CombatRoleEnum.Minion)
                 {
                     //Create Action related to the role of the monster
                     var actionType = EnumExtensions.GetRandomElementOfEnum<ActionTypeEnum>();
                     var attackType = EnumExtensions.GetRandomElementOfEnum<AttackTypeEnum>();
 
                     string roleBasedActions = String.Empty;
-                    if (role != CombatRoleEnum.Minion)
-                        roleBasedActions = await _openAiInterops.ChatGptResponseAsync(CreateRoleActionPrompt(baseMonster, role, originalLore, roleDescription, actionType, attackType));
-
+                    if (randomRole != CombatRoleEnum.Minion)
+                        roleBasedActions = await _openAiInterops.ChatGptResponseAsync(CreateRoleActionPrompt(baseMonster, randomRole, originalLore, roleDescription, actionType, attackType));
 
                     var newAction = new ActionDto
                     {
                         Id = Guid.NewGuid(),
                         MonsterId = roleApplied.modifiedMonster.Id,
-                        Name = $"{role} Special Attack",
+                        Name = $"{randomRole} Special Attack",
                         Type = actionType.ToString(),
                         AttackType = attackType.ToString(),
                         Description = roleBasedActions,

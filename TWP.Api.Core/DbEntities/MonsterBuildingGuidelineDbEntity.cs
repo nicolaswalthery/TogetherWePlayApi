@@ -121,6 +121,8 @@
         /// </summary>
         public string? Notes { get; set; }
 
+        public int Exp { get; set; }
+
         /// <summary>
         /// When this guideline was created
         /// </summary>

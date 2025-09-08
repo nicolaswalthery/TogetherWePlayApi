@@ -13,7 +13,18 @@ namespace TWP.Api.Infrastructure.Repository.Interfaces
         {
         }
 
-        public async Task<Result<MonsterBuildingGuidelineDbEntity>> GetByCRAsync(float cr)
+        public async Task<Result<MonsterBuildingGuidelineDbEntity>> GetByExpAsync(int exp)
+            => await Safe.ExecuteAsync(async () =>
+            {
+                var guidelines = await _context.MonsterBuildingGuidelines.Where(g => g.Exp <= exp && g.IsActive).ToListAsync();
+
+                if (guidelines == null)
+                    return Result<MonsterBuildingGuidelineDbEntity>.Failure($"No guideline found for Exp {exp}", ReasonType.NotFound);
+                var result = guidelines.OrderByDescending(gl => gl.Exp).First();
+                return Result<MonsterBuildingGuidelineDbEntity>.Success(result);
+            });
+
+        public async Task<Result<MonsterBuildingGuidelineDbEntity>> GetByExpAsync(float cr)
         => await Safe.ExecuteAsync(async () =>
             {
                 var guideline = await _context.Set<MonsterBuildingGuidelineDbEntity>().FirstOrDefaultAsync(g => g.CRNumeric == cr && g.IsActive);
