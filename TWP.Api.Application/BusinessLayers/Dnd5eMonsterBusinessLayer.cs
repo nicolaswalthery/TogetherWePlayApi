@@ -58,7 +58,7 @@ namespace TWP.Api.Application.BusinessLayers
 
                 //TODO : Fix ChatGPT response sometimes not being a valid JSON  
                 //Create Action related to the role of the monster
-                var roleBasedActions = await _openAiInterops.GetChatGptResponseAsync(CreateRoleActionPrompt(baseMonster, role, originalLore, roleDescription));
+                var roleBasedActions = await _openAiInterops.ChatGptResponseAsync(CreateRoleActionPrompt(baseMonster, role, originalLore, roleDescription), responseFormat: OpenAIResponseFormatEnum.Json);
 
                 var newMonster = new Monster5eDbEntity
                 {
@@ -111,10 +111,10 @@ namespace TWP.Api.Application.BusinessLayers
                     Symbarum5e = baseMonster.Symbarum5e
                 };
 
-                var newAction = JsonSerializer.Deserialize<ActionDbEntity>(roleBasedActions);
-                newMonster.Actions.Add(newAction);
+                var newAction = JsonSerializer.Deserialize<ActionDto>(roleBasedActions, options: new JsonSerializerOptions() { PropertyNameCaseInsensitive = true});
+                newMonster.Actions.Add(newAction.ToDbEntity());
 
-                await _monster5ERepository.Insert(newMonster);
+                //await _monster5ERepository.Insert(newMonster);
 
                 return Result<Monster5eDto>.Success(newMonster.ToDto());
             });
@@ -140,6 +140,91 @@ namespace TWP.Api.Application.BusinessLayers
             });
 
         private static string CreateRoleActionPrompt(Monster5eDbEntity baseMonster, CombatRoleEnum role, string originalLore, string roleDescription)
-            => $"You are a D&D 5e game designer. Create ONE special action for a monster based on the following context: CONTEXT:- Monster Name: {baseMonster.Name}- Combat Role: {role} ({roleDescription})- Original Lore: {originalLore}- Reference Actions: {string.Join(";", baseMonster.Actions.Select(a => a.Description).ToList())} REQUIREMENTS:1. The action should perfectly represent and iconify the monster's role2. Use D&D 5e mechanics (damage dice, save DCs, conditions, etc.)\r\n3. Balance it according to the monster's CR: {baseMonster.ChallengeRating} IMPORTANT: Return ONLY a valid JSON object (no markdown, no explanation) with this EXACT structure:\r\n\r\n{{\r\n  \"\"name\"\": \"\"string\"\",\r\n  \"\"type\"\": 0,\r\n  \"\"attackType\"\": 0,\r\n  \"\"description\"\": \"\"string\"\",\r\n  \"\"shortRange\"\": null,\r\n  \"\"longRange\"\": null,\r\n  \"\"attackBonus\"\": null,\r\n  \"\"damageBonus\"\": null,\r\n  \"\"damageDice\"\": null,\r\n  \"\"numberDamageDice\"\": null,\r\n  \"\"damageType\"\": null,\r\n  \"\"limitPerDay\"\": null,\r\n  \"\"isProhibitedForMinion\"\": false,\r\n  \"\"actionTrigger\"\": null,\r\n  \"\"advantageCondition\"\": null,\r\n  \"\"disadvantageCondition\"\": null\r\n}}\r\n\r\nFIELD SPECIFICATIONS:\r\n- name: Action name (e.g., \"\"Devastating Charge\"\")\r\n- type: Integer enum - 0=Action, 1=BonusAction, 2=Reaction, 3=LegendaryAction, 4=LairAction, 5=MythicAction\r\n- attackType: Integer enum - 0=None, 1=MeleeWeaponAttack, 2=RangedWeaponAttack, 3=MeleeSpellAttack, 4=RangedSpellAttack, 5=SavingThrow\r\n- description: Full mechanical description with all rules and effects\r\n- shortRange: String or null (e.g., \"\"5\"\", \"\"30\"\", \"\"Touch\"\")\r\n- longRange: String or null (e.g., \"\"120\"\", \"\"600\"\") - only for ranged attacks\r\n- attackBonus: Integer or null (e.g., 8, 12)\r\n- damageBonus: Integer or null (e.g., 5, 8) - the flat damage bonus added to dice\r\n- damageDice: Integer enum or null - 0=d4, 1=d6, 2=d8, 3=d10, 4=d12, 5=d20, 6=d100\r\n- numberDamageDice: Integer or null (e.g., 2, 3, 4) - number of damage dice to roll\r\n- damageType: Integer enum or null - 0=Acid, 1=Bludgeoning, 2=Cold, 3=Fire, 4=Force, 5=Lightning, 6=Necrotic, 7=Piercing, 8=Poison, 9=Psychic, 10=Radiant, 11=Slashing, 12=Thunder\r\n- limitPerDay: Integer or null (e.g., 1, 3) - number of uses per day, null if unlimited\r\n- isProhibitedForMinion: Boolean - true if minions cannot use this action\r\n- actionTrigger: String or null - for reactions, what triggers it (e.g., \"\"when hit by an attack\"\", \"\"when an enemy ends its turn within 5 feet\"\")\r\n- advantageCondition: String or null - condition that grants advantage (e.g., \"\"against prone targets\"\", \"\"if the target is frightened\"\")\r\n- disadvantageCondition: String or null - condition that imposes disadvantage (e.g., \"\"in sunlight\"\", \"\"against targets wearing heavy armor\"\")\r\n\r\nReturn ONLY the JSON object, no other text.\"";
+            => $@"You are a D&D 5e game designer. You MUST respond with ONLY valid JSON, no other text.
+
+                MONSTER CONTEXT:
+                - Name: {baseMonster.Name}
+                - Challenge Rating: {baseMonster.ChallengeRating}
+                - Combat Role: {role} ({roleDescription})
+                - Lore: {originalLore}
+                - Existing Actions: {string.Join("; ", baseMonster.Actions.Select(a => a.Description))}
+
+                TASK: Create ONE special action that perfectly represents this monster's combat role.
+
+                CRITICAL RULES:
+                1. Output ONLY valid JSON - no markdown, no backticks, no explanations
+                2. All fields MUST be present - use null for unused optional fields
+                3. Use exact field names (case-sensitive)
+                4. Use integers for all enum values, never strings
+
+                REQUIRED JSON STRUCTURE:
+                {{
+                  ""id"":""00000000-0000-0000-0000-000000000000"",
+                  ""MonsterId"":""00000000-0000-0000-0000-000000000000"",
+                  ""name"": ""Action Name Here"",
+                  ""type"": 0,
+                  ""attackType"": 0,
+                  ""description"": ""Full mechanical description"",
+                  ""shortRange"": null,
+                  ""longRange"": null,
+                  ""attackBonus"": null,
+                  ""damageBonus"": null,
+                  ""damageDice"": null,
+                  ""numberDamageDice"": null,
+                  ""damageType"": null,
+                  ""limitPerDay"": null,
+                  ""isProhibitedForMinion"": false,
+                  ""actionTrigger"": null,
+                  ""advantageCondition"": null,
+                  ""disadvantageCondition"": null
+                }}
+
+                ENUM MAPPINGS (USE NUMBERS ONLY):
+                Type: 0=Action, 1=BonusAction, 2=Reaction, 3=LegendaryAction, 4=LairAction, 5=MythicAction
+                AttackType: 0=None, 1=MeleeWeaponAttack, 2=RangedWeaponAttack, 3=MeleeSpellAttack, 4=RangedSpellAttack, 5=SavingThrow
+                DamageDice: 0=d4, 1=d6, 2=d8, 3=d10, 4=d12, 5=d20, 6=d100
+                DamageType: 0=Acid, 1=Bludgeoning, 2=Cold, 3=Fire, 4=Force, 5=Lightning, 6=Necrotic, 7=Piercing, 8=Poison, 9=Psychic, 10=Radiant, 11=Slashing, 12=Thunder
+
+                FIELD DETAILS:
+                - id: Use ""00000000-0000-0000-0000-000000000000"" for new actions
+                - MonsterId: Use ""00000000-0000-0000-0000-000000000000"" for new actions   
+                - name: The action's name
+                - type: Action type as integer (usually 0 for normal action)
+                - attackType: How the action works mechanically (integer)
+                - description: Complete D&D 5e mechanical description including all effects, saves, conditions
+                - shortRange: Range in feet as string (""5"", ""30"", ""Touch"") or null
+                - longRange: Long range for ranged attacks (""120"", ""600"") or null
+                - attackBonus: To-hit bonus as integer (+8, +12) or null
+                - damageBonus: Flat damage modifier as integer or null
+                - damageDice: Die type as integer enum or null
+                - numberDamageDice: Number of dice to roll as integer or null
+                - damageType: Damage type as integer enum or null
+                - limitPerDay: Uses per day as integer (1, 3) or null for unlimited
+                - isProhibitedForMinion: true if minions can't use this, otherwise false
+                - actionTrigger: For reactions only - trigger condition as string or null
+                - advantageCondition: When attacks have advantage as string or null
+                - disadvantageCondition: When attacks have disadvantage as string or null
+
+                EXAMPLE VALID OUTPUT:
+                {{
+                  ""name"": ""Thunderous Smite"",
+                  ""type"": 0,
+                  ""attackType"": 1,
+                  ""description"": ""Melee Weapon Attack: +8 to hit, reach 10 ft., one target. Hit: 14 (2d8 + 5) bludgeoning damage plus 9 (2d8) thunder damage, and the target must succeed on a DC 15 Strength saving throw or be pushed 10 feet away and knocked prone."",
+                  ""shortRange"": ""10"",
+                  ""longRange"": null,
+                  ""attackBonus"": 8,
+                  ""damageBonus"": 5,
+                  ""damageDice"": 2,
+                  ""numberDamageDice"": 2,
+                  ""damageType"": 1,
+                  ""limitPerDay"": null,
+                  ""isProhibitedForMinion"": false,
+                  ""actionTrigger"": null,
+                  ""advantageCondition"": null,
+                  ""disadvantageCondition"": null
+                }}
+
+                Now create the action JSON:";
     }
 } 

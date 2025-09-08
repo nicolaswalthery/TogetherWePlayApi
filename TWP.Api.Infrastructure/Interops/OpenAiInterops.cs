@@ -2,6 +2,7 @@
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
+using TWP.Api.Core.Enums;
 using TWP.Api.Infrastructure.Interops.Interfaces;
 
 namespace TWP.Api.Infrastructure.Interops
@@ -26,10 +27,10 @@ namespace TWP.Api.Infrastructure.Interops
             _chatCompletionService = _kernel.GetRequiredService<IChatCompletionService>();
         }
 
-        public async Task<string> GetChatGptResponseAsync(string message, double temperature = 0.1, int maxTokens = 1000, string? systemPrompt = null)
-            => await ChatGptResponseAsync(message, systemPrompt, temperature, maxTokens);
+        public async Task<string> GetChatGptResponseAsync(string message, double temperature = 0.1, int maxTokens = 1000, string? systemPrompt = null, OpenAIResponseFormatEnum responseFormat = OpenAIResponseFormatEnum.Text)
+            => await ChatGptResponseAsync(message, systemPrompt, temperature, maxTokens, responseFormat);
 
-        public async Task<string> ChatGptResponseAsync(string message, string? systemPrompt = null, double temperature = 0.1, int maxTokens = 1000)
+        public async Task<string> ChatGptResponseAsync(string message, string? systemPrompt = null, double temperature = 0.1, int maxTokens = 1000, OpenAIResponseFormatEnum responseFormat = OpenAIResponseFormatEnum.Text)
         {
             try
             {
@@ -48,7 +49,8 @@ namespace TWP.Api.Infrastructure.Interops
                 var executionSettings = new OpenAIPromptExecutionSettings
                 {
                     Temperature = temperature,
-                    MaxTokens = maxTokens
+                    MaxTokens = maxTokens,
+                    ResponseFormat = OpenAIResponseFormatEnum.Text == responseFormat ? "text" : "json_object"
                 };
 
                 // Get response from ChatGPT
