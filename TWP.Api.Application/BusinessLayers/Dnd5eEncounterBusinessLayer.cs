@@ -32,7 +32,8 @@ namespace TWP.Api.Application.BusinessLayers
             EncounterDifficultyEnum encounterDifficulty,
             IList<int> playerLevels,
             string encounterNarrativeContext,
-            MonsterHabitatEnum monsterHabitat)
+            MonsterHabitatEnum monsterHabitat,
+            bool generateWithEncounterTemplate = false)
                 => await Safe.ExecuteAsync(async () =>
                 {
                     if (playerLevels.HasNoElement())
@@ -50,11 +51,17 @@ namespace TWP.Api.Application.BusinessLayers
                     var creatureType = new RandomSelector<Monster5eDto>().SelectOneRandomly(filtered.ToArray()).CreatureType;
                     var pickedMonsters = filtered.Where(m => m.CreatureType == creatureType).ToList();
 
-                    var encounterGenerated = GenerateEncounter(pickedMonsters!, expEncounterBudget, playerLevels.Count, playerLevels.Min());
-                    if(encounterGenerated.expRemainingBudget != 0)
+                    (List<Monster5eDto> encounterMonsters, int expRemainingBudget, string templateUsed) encounterGenerated;
+                    if (generateWithEncounterTemplate)
+                        encounterGenerated = GenerateEncounterWithTemplate(pickedMonsters!, expEncounterBudget, playerLevels.Count, playerLevels.Min(), encounterDifficulty);
+                    else
                     {
-                        var originalMonsterBasedOnOneOfTheGeneratedencounter = await ReskinDndMonster(encounterGenerated.expRemainingBudget, encounterGenerated.encounterMonsters.FirstOrDefault().Name);
-                        encounterGenerated.encounterMonsters.Add(originalMonsterBasedOnOneOfTheGeneratedencounter.Data);
+                        encounterGenerated = GenerateEncounter(pickedMonsters!, expEncounterBudget, playerLevels.Count, playerLevels.Min());
+                        if (encounterGenerated.expRemainingBudget != 0)
+                        {
+                            var originalMonsterBasedOnOneOfTheGeneratedencounter = await ReskinDndMonster(encounterGenerated.expRemainingBudget, encounterGenerated.encounterMonsters.FirstOrDefault().Name);
+                            encounterGenerated.encounterMonsters.Add(originalMonsterBasedOnOneOfTheGeneratedencounter.Data);
+                        }
                     }
 
                     var formattedEncounterData = EncounterFormatter.GetFormattedEncounterSafe(encounterDifficulty: encounterDifficulty, playerLevels: playerLevels, encounterNarrativeContext, monsterHabitat: monsterHabitat, pickedMonsters: encounterGenerated.encounterMonsters, expEncounterBudget: expEncounterBudget);
@@ -71,7 +78,7 @@ namespace TWP.Api.Application.BusinessLayers
                                             Monsters = encounterGenerated.encounterMonsters, 
                                             OpenAiResponse = openAiresult,
                                             FormattedEncounterData = formattedEncounterData.Data!
-                    };
+                                        };
 
                     return Result<Dnd5eEncounterGeneratedDto>.Success(finaleResult);
                 });
@@ -200,6 +207,305 @@ namespace TWP.Api.Application.BusinessLayers
                 return Result<Monster5eDto>.Success(newMonster.ToDto());
             });
 
+        /// <summary>
+        /// Generates an encounter using a template-based approach with predefined role compositions
+        /// </summary>
+        /// <param name="monsters">List of available monsters with roles assigned</param>
+        /// <param name="expEncounterBudget">Total XP budget for the encounter</param>
+        /// <param name="playerCount">Number of players in the party</param>
+        /// <param name="partyLevel">Average level of the party</param>
+        /// <param name="difficulty">Encounter difficulty</param>
+        /// <param name="template">Optional specific template to use. If null, selects randomly based on difficulty</param>
+        /// <returns>List of monsters for the encounter and remaining XP budget</returns>
+        private (List<Monster5eDto> encounterMonsters, int expRemainingBudget, string templateUsed) GenerateEncounterWithTemplate(
+            List<Monster5eDto> monsters,
+            int expEncounterBudget,
+            int playerCount,
+            int partyLevel,
+            EncounterDifficultyEnum difficulty,
+            EncounterTemplateHelpers.EncounterTemplate template = null)
+        {
+            // Select template if not provided
+            template ??= EncounterTemplateHelpers.GetRandomTemplate(difficulty);
+
+            var encounter = new List<Monster5eDto>();
+            var remainingBudget = expEncounterBudget;
+
+            // Apply template multiplier to budget (templates with synergies are harder)
+            var templateMultiplier = EncounterTemplateHelpers.GetCRBudgetMultiplier(template);
+            var adjustedBudget = (int)(expEncounterBudget / templateMultiplier);
+            remainingBudget = adjustedBudget;
+
+            // Group monsters by role
+            var monstersByRole = monsters
+                .Where(m => m.Xp <= adjustedBudget && m.Role != null)
+                .GroupBy(m => Enum.Parse<CombatRoleEnum>(m.Role))
+                .ToDictionary(g => g.Key, g => g.ToList());
+
+            // Process each role in the template
+            foreach (var roleComposition in template.Composition.OrderBy(c => c.IsRequired ? 0 : 1))
+            {
+                var targetCount = roleComposition.GetCountForPartySize(playerCount);
+
+                // Skip if we don't have monsters for this role
+                if (!monstersByRole.ContainsKey(roleComposition.Role) || !monstersByRole[roleComposition.Role].Any())
+                {
+                    if (roleComposition.IsRequired)
+                    {
+                        // Try to find substitutes or adapt existing monsters
+                        var substitute = FindSubstituteForRole(roleComposition.Role, monsters, remainingBudget);
+                        if (substitute != null)
+                        {
+                            monstersByRole[roleComposition.Role] = new List<Monster5eDto> { substitute };
+                        }
+                        else
+                        {
+                            continue; // Skip this role if no substitute found
+                        }
+                    }
+                    else
+                    {
+                        continue; // Skip optional roles if not available
+                    }
+                }
+
+                var availableMonstersForRole = monstersByRole[roleComposition.Role]
+                    .Where(m => m.Xp <= remainingBudget)
+                    .OrderBy(m => GetRoleAppropriatenessScore(m, roleComposition.Role, partyLevel))
+                    .ToList();
+
+                // Add monsters for this role
+                var addedCount = 0;
+                while (addedCount < targetCount && availableMonstersForRole.Any() && remainingBudget > 0)
+                {
+                    Monster5eDto selectedMonster = null;
+
+                    if (roleComposition.Role == CombatRoleEnum.Solo)
+                    {
+                        // For solo monsters, pick the strongest that fits
+                        selectedMonster = availableMonstersForRole
+                            .Where(m => m.Xp <= remainingBudget * 0.7) // Solo should take most of the budget
+                            .OrderByDescending(m => m.Xp)
+                            .FirstOrDefault();
+                    }
+                    else if (roleComposition.Role == CombatRoleEnum.Minion)
+                    {
+                        // For minions, pick the weakest
+                        selectedMonster = availableMonstersForRole
+                            .Where(m => m.Xp <= remainingBudget / (targetCount - addedCount))
+                            .OrderBy(m => m.Xp)
+                            .FirstOrDefault();
+                    }
+                    else
+                    {
+                        // For other roles, pick based on appropriate CR for party level
+                        var idealCr = CalculateIdealCrForRole(roleComposition.Role, partyLevel, difficulty);
+                        selectedMonster = availableMonstersForRole
+                            .Where(m => m.Xp <= remainingBudget / Math.Max(1, targetCount - addedCount))
+                            .OrderBy(m => Math.Abs(m.Cr - idealCr))
+                            .FirstOrDefault();
+                    }
+
+                    if (selectedMonster != null && selectedMonster.Xp <= remainingBudget)
+                    {
+                        encounter.Add(selectedMonster);
+                        remainingBudget -= selectedMonster.Xp;
+                        addedCount++;
+
+                        // For variety, remove the selected monster from available pool if we need more
+                        if (addedCount < targetCount && roleComposition.Role != CombatRoleEnum.Minion)
+                        {
+                            availableMonstersForRole.Remove(selectedMonster);
+                        }
+                    }
+                    else
+                    {
+                        break; // Can't add more monsters of this role
+                    }
+                }
+            }
+
+            // If we have significant budget left and the encounter is too small, add appropriate monsters
+            if (remainingBudget > expEncounterBudget * 0.3 && encounter.Count < playerCount * 2)
+            {
+                FillRemainingBudget(ref encounter, ref remainingBudget, monsters, template, playerCount, partyLevel);
+            }
+
+            return (encounter, remainingBudget, template.Name);
+        }
+
+        /// <summary>
+        /// Calculate the ideal CR for a given role based on party level and difficulty
+        /// </summary>
+        private float CalculateIdealCrForRole(CombatRoleEnum role, int partyLevel, EncounterDifficultyEnum difficulty)
+        {
+            var baseCr = (float)partyLevel;
+
+            // Adjust based on difficulty
+            var difficultyModifier = difficulty switch
+            {
+                EncounterDifficultyEnum.Low => -1f,
+                EncounterDifficultyEnum.Moderate => 0f,
+                EncounterDifficultyEnum.High => 1f,
+                _ => 0f
+            };
+
+            // Adjust based on role
+            var roleModifier = role switch
+            {
+                CombatRoleEnum.Solo => difficultyModifier + 2f,
+                CombatRoleEnum.Brute => difficultyModifier + 0.5f,
+                CombatRoleEnum.Leader => difficultyModifier + 0.5f,
+                CombatRoleEnum.Artillery => difficultyModifier - 0.5f,
+                CombatRoleEnum.Controller => difficultyModifier,
+                CombatRoleEnum.Soldier => difficultyModifier,
+                CombatRoleEnum.Support => difficultyModifier - 1f,
+                CombatRoleEnum.Skirmisher => difficultyModifier - 0.5f,
+                CombatRoleEnum.Ambusher => difficultyModifier,
+                CombatRoleEnum.Minion => -2f,
+                _ => difficultyModifier
+            };
+
+            return Math.Max(0.125f, baseCr + roleModifier);
+        }
+
+        /// <summary>
+        /// Find a substitute monster for a missing role by adapting an existing monster
+        /// </summary>
+        private Monster5eDto FindSubstituteForRole(CombatRoleEnum neededRole, List<Monster5eDto> monsters, int maxXpBudget)
+        {
+            // Define which roles can substitute for others
+            var substitutionMap = new Dictionary<CombatRoleEnum, List<CombatRoleEnum>>
+            {
+                [CombatRoleEnum.Brute] = new() { CombatRoleEnum.Soldier, CombatRoleEnum.Solo },
+                [CombatRoleEnum.Soldier] = new() { CombatRoleEnum.Brute, CombatRoleEnum.Leader },
+                [CombatRoleEnum.Controller] = new() { CombatRoleEnum.Support, CombatRoleEnum.Artillery },
+                [CombatRoleEnum.Skirmisher] = new() { CombatRoleEnum.Ambusher, CombatRoleEnum.Minion },
+                [CombatRoleEnum.Ambusher] = new() { CombatRoleEnum.Skirmisher, CombatRoleEnum.Artillery },
+                [CombatRoleEnum.Artillery] = new() { CombatRoleEnum.Controller, CombatRoleEnum.Ambusher },
+                [CombatRoleEnum.Support] = new() { CombatRoleEnum.Controller, CombatRoleEnum.Leader },
+                [CombatRoleEnum.Leader] = new() { CombatRoleEnum.Soldier, CombatRoleEnum.Support },
+                [CombatRoleEnum.Solo] = new() { CombatRoleEnum.Brute },
+                [CombatRoleEnum.Minion] = new() { CombatRoleEnum.Skirmisher }
+            };
+
+            if (!substitutionMap.ContainsKey(neededRole))
+                return null;
+
+            // Try to find a monster with a substitute role
+            foreach (var substituteRole in substitutionMap[neededRole])
+            {
+                var substitute = monsters
+                    .Where(m => m.Role == substituteRole.ToString() && m.Xp <= maxXpBudget)
+                    .OrderBy(m => m.Xp)
+                    .FirstOrDefault();
+
+                if (substitute != null)
+                {
+                    // Clone and adjust the role (in practice, you might want to actually modify the monster)
+                    var adapted = new Monster5eDto
+                    {
+                        Id = substitute.Id,
+                        Name = substitute.Name + $" ({neededRole})",
+                        Role = neededRole.ToString(),
+                        Xp = substitute.Xp,
+                        Cr = substitute.Cr,
+                        // Copy other essential properties
+                        ArmorClass = substitute.ArmorClass,
+                        HitPoints = substitute.HitPoints,
+                        CreatureType = substitute.CreatureType,
+                        CreatureSize = substitute.CreatureSize,
+                        Alignment = substitute.Alignment,
+                        ChallengeRating = substitute.ChallengeRating,
+                        // ... copy other needed properties
+                    };
+                    return adapted;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Score how appropriate a monster is for a given role
+        /// </summary>
+        private int GetRoleAppropriatenessScore(Monster5eDto monster, CombatRoleEnum role, int partyLevel)
+        {
+            var score = 0;
+
+            // Base score on CR difference from party level
+            var crDifference = Math.Abs(monster.Cr - partyLevel);
+            score += (int)(crDifference * 10);
+
+            // Adjust based on role expectations
+            switch (role)
+            {
+                case CombatRoleEnum.Solo:
+                    // Solo monsters should be higher CR
+                    if (monster.Cr > partyLevel + 1) score -= 20;
+                    break;
+                case CombatRoleEnum.Minion:
+                    // Minions should be lower CR
+                    if (monster.Cr < partyLevel - 2) score -= 20;
+                    break;
+                case CombatRoleEnum.Leader:
+                case CombatRoleEnum.Brute:
+                    // These should be at or slightly above party level
+                    if (monster.Cr >= partyLevel && monster.Cr <= partyLevel + 1) score -= 15;
+                    break;
+                case CombatRoleEnum.Support:
+                case CombatRoleEnum.Artillery:
+                    // These should be slightly below party level
+                    if (monster.Cr >= partyLevel - 1 && monster.Cr <= partyLevel) score -= 15;
+                    break;
+            }
+
+            return score;
+        }
+
+        /// <summary>
+        /// Fill remaining budget with appropriate monsters based on template theme
+        /// </summary>
+        private void FillRemainingBudget(
+            ref List<Monster5eDto> encounter,
+            ref int remainingBudget,
+            List<Monster5eDto> availableMonsters,
+            EncounterTemplateHelpers.EncounterTemplate template,
+            int playerCount,
+            int partyLevel)
+        {
+            // Prioritize adding more of existing roles in the template
+            var existingRoles = template.Composition.Where(c => c.IsRequired)
+                                                    .OrderBy(c => c.Role == CombatRoleEnum.Minion ? 0 : 1) // Prefer minions for filling
+                                                    .ToList();
+
+            // Use for loop with condition to stop when budget is too low
+            for (int roleIndex = 0; roleIndex < existingRoles.Count && remainingBudget > 10; roleIndex++)
+            {
+                var currentBudget = remainingBudget;
+                var roleComp = existingRoles[roleIndex];
+
+                var candidates = availableMonsters.Where(m => m.Role == roleComp.Role.ToString() && m.Xp <= currentBudget)
+                                                  .OrderBy(m => m.Xp).ToList();
+
+                // Use for loop with multiple conditions to control iteration
+                for (int candidateIndex = 0;
+                     candidateIndex < candidates.Count
+                        && remainingBudget > 10
+                        && encounter.Count < playerCount * 3;
+                     candidateIndex++)
+                {
+                    var candidate = candidates[candidateIndex];
+
+                    if (candidate.Xp <= remainingBudget && encounter.Count < playerCount * 3)
+                    {
+                        encounter.Add(candidate);
+                        remainingBudget -= candidate.Xp;
+                    }
+                }
+            }
+        }
+
         private static string CreateRoleActionPrompt(Monster5eDbEntity baseMonster, CombatRoleEnum role, string originalLore, string roleDescription, ActionTypeEnum actionType, AttackTypeEnum attackTypeEnum)
             => $@"You are a D&D 5e game designer. You MUST respond with ONLY the action description text, no other formatting or explanation.
 
@@ -285,7 +591,7 @@ namespace TWP.Api.Application.BusinessLayers
         /// <param name="playerNumber">Number of players in the party.</param>
         /// <param name="partyLevel">Level of the party.</param>
         /// <returns>List of monsters for the encounter.</returns>
-        private (List<Monster5eDto> encounterMonsters, int expRemainingBudget) GenerateEncounter(List<Monster5eDto> monsters, int expEncounterBudget, int playerNumber, int partyLevel)
+        private (List<Monster5eDto> encounterMonsters, int expRemainingBudget, string templateUsed) GenerateEncounter(List<Monster5eDto> monsters, int expEncounterBudget, int playerNumber, int partyLevel)
         {
             var encounter = new List<Monster5eDto>();
             var remainingBudget = expEncounterBudget;
@@ -327,7 +633,7 @@ namespace TWP.Api.Application.BusinessLayers
                     selectedAvailableMonsters = selectedAvailableMonsters.Where(m => m.Cr <= (float)partyLevel).ToList();
             }
 
-            return (encounter, remainingBudget);
+            return (encounter, remainingBudget, "None");
         }
 
         /// <summary>
