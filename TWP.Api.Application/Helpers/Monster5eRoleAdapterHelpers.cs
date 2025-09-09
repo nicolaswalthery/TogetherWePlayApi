@@ -8,7 +8,7 @@ namespace TWP.Api.Application.Helpers
     public class Monster5eRoleAdapterHelpers
     {
         // Table de référence basée sur le DMG 5e pour les statistiques par CR
-        private readonly Dictionary<float, MonsterStatsByChallenge> ChallengeRatingTable = new()
+        public readonly Dictionary<float, MonsterStatsByChallenge> ChallengeRatingTable = new()
         {
             // CR: (ProfBonus, AC, AvgHP, AttackBonus, DmgPerRound, SaveDC)
             [0] = new(2, 13, 4, 3, 1, 13),
@@ -48,7 +48,7 @@ namespace TWP.Api.Application.Helpers
         };
 
         //Minion Stat from Flee Mortals page 15
-        private static List<(float Cr, int ProficiencyBonus, int HitPoints, int Damage)> GetMinionStatistics()
+        public List<(float Cr, int ProficiencyBonus, int HitPoints, int Damage)> GetMinionStatistics()
         {
             return new List<(float, int, int, int)>
             {
@@ -90,7 +90,7 @@ namespace TWP.Api.Application.Helpers
         }
 
 
-        private class MonsterStatsByChallenge
+        public class MonsterStatsByChallenge
         {
             public int ProfBonus { get; set; }
             public int AC { get; set; }
@@ -119,7 +119,7 @@ namespace TWP.Api.Application.Helpers
         }
 
         // Méthode pour obtenir les statistiques de référence selon le CR
-        private MonsterStatsByChallenge GetStatsForCR(float cr)
+        public MonsterStatsByChallenge GetStatsForCR(float cr)
         {
             // Si le CR exact existe, le retourner
             if (ChallengeRatingTable.ContainsKey(cr))
