@@ -1,9 +1,7 @@
 using Common.ResultPattern;
 using Microsoft.AspNetCore.Mvc;
-using TWP.Api.Application.BusinessLayers.Interfaces;
 using TWP.Api.Application.ETL;
 using TWP.Api.Controllers.Interfaces;
-using TWP.Api.Core.Enums;
 
 namespace TogetherWePlayApi.Controllers
 {
@@ -21,5 +19,9 @@ namespace TogetherWePlayApi.Controllers
         [HttpGet(Name = "AideDdMonstersEtl")]
         public async Task<IActionResult> AideDdMonstersEtl()
             => HandleResult(await Safe.ExecuteAsync(() => _extractTransformLoad.RunAideDdMonster5eEtl()));
+
+        [HttpPost("DndMonsterImageEtl")]
+        public async Task<IActionResult> DndMonsterImageEtl()
+            => HandleResult(await Safe.ExecuteAsync(() => _extractTransformLoad.ImportMonstersFromImagesAsync()));
     }
 }

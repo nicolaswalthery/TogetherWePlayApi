@@ -1,14 +1,10 @@
 ﻿using Common.ResultPattern;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TWP.Api.Application.ETL
 {
     public interface IExtractTransformLoad
     {
         Task<Result> RunAideDdMonster5eEtl();
+        Task<Result> ImportMonstersFromImagesAsync();
     }
 }
