@@ -199,7 +199,7 @@ namespace TWP.Api.Application.BusinessLayers
                         IsProhibitedForMinion = false
                     };
 
-                    newMonster.Actions.Add(newAction.ToDbEntity());
+                    roleApplied.modifiedMonster.Actions.Add(newAction.ToDbEntity());
                 }
                 else //Minion cannot have actions
                     newMonster.Actions = null;
