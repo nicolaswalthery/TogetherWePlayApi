@@ -19,6 +19,7 @@ namespace TWP.Api.Core.DbEntities
         public int ArmorClass { get; set; }
         public int? MinionArmorClass { get; set; }
         public int HitPoints { get; set; }
+        public int MinionHitPoints { get; set; }
         public string HitDice { get; set; } = String.Empty;
 
         // Movement

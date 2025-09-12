@@ -66,6 +66,9 @@ namespace TWP.Api.Infrastructure.Configurations
                 .HasColumnName("hit_points")
                 .IsRequired();
 
+            builder.Property(e => e.MinionHitPoints)
+                .HasColumnName("minion_hit_points");
+
             builder.Property(e => e.HitDice)
                 .HasColumnName("hit_dice");
 
