@@ -926,9 +926,9 @@ Now create the action description:";
             Tech level: {analysis?.TechLevel ?? "standard"}
             
             Examples of good sci-fi names:
-            - Plasma Trooper (Soldier)
+            - Shock Trooper (Soldier)
             - Stealth Drone MK-7 (Ambusher)
-            - Psionic Controller (Controller)
+            - Commander (Controller)
             - Heavy Mech Unit (Brute)
             - Sniper Bot X-99 (Artillery)
             
@@ -1094,6 +1094,10 @@ Now create the action description:";
             return actions;
         }
 
+
+
+        ///TODO : Refine traits based on role and tech level
+
         /// <summary>
         /// Generate sci-fi themed traits
         /// </summary>
@@ -1139,6 +1143,10 @@ Now create the action description:";
             return traits;
         }
 
+
+
+        ///TODO : Refine traits based on role and tech level
+
         /// <summary>
         /// Helper method to determine creature type based on analysis
         /// </summary>
@@ -1153,6 +1161,10 @@ Now create the action description:";
                 _ => "Construct" // Default for robots/drones/mechs
             };
         }
+
+
+
+        ///TODO : Refine traits based on role and tech level
 
         /// <summary>
         /// Helper method to determine damage resistances based on tech level
