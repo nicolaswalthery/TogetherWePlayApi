@@ -784,5 +784,392 @@ Now create the action description:";
             return encounter.Any(m => m.Cr == partyLevel + 1);
         }
 
+
+        /// <summary>
+        /// Creates a sci-fi themed adversary from a narrative description
+        /// </summary>
+        /// <param name="narrativeDescription">The narrative/descriptive text about the sci-fi adversary</param>
+        /// <param name="forcedCombatRole">Optional: Force a specific combat role, otherwise it will be selected based on narrative</param>
+        /// <returns>A list of sci-fi adversaries, one for each combat role</returns>
+        public async Task<Result<List<Monster5eDto>>> CreateScifiAdversary(
+            string narrativeDescription,
+            CombatRoleEnum? forcedCombatRole = null)
+                => await Safe.ExecuteAsync(async () =>
+                {
+                    if (string.IsNullOrWhiteSpace(narrativeDescription))
+                        return Result<List<Monster5eDto>>.Failure("Narrative description cannot be empty", ReasonType.BadParameter);
+
+                    // Step 1: Analyze narrative to determine appropriate CR and suggested roles
+                    var analysisPrompt = $@"Analyze this sci-fi adversary description and provide a JSON response with the following structure:
+            {{
+                ""suggestedCR"": <number between 0.125 and 30>,
+                ""threatLevel"": ""<low/medium/high/extreme>"",
+                ""suggestedRoles"": [""<role1>"", ""<role2>""],
+                ""keyTraits"": [""<trait1>"", ""<trait2>""],
+                ""weaponType"": ""<energy/projectile/melee/mixed>"",
+                ""techLevel"": ""<primitive/standard/advanced/transcendent>""
+            }}
+
+            Description: {narrativeDescription}
+
+            Base your CR suggestion on:
+            - Low (CR 0.125-4): Basic troops, drones, minor threats
+            - Medium (CR 5-10): Elite units, specialists, significant threats
+            - High (CR 11-16): Commanders, heavy units, major threats
+            - Extreme (CR 17+): Legendary units, boss-level threats
+
+            Valid roles: Brute, Soldier, Controller, Skirmisher, Ambusher, Artillery, Minion, Solo, Support, Leader";
+
+                    var analysisJson = await _openAiInterops.GetChatGptResponseAsync(
+                        analysisPrompt,
+                        temperature: 0.3,
+                        maxTokens: 500,
+                        responseFormat: OpenAIResponseFormatEnum.Json
+                    );
+
+                    // Parse the analysis
+                    var analysis = JsonSerializer.Deserialize<ScifiAdversaryAnalysis>(analysisJson);
+                    var suggestedCr = analysis?.SuggestedCR ?? 1.0f;
+
+                    // Step 2: Get a base monster from DB with similar CR
+                    var baseMonsterResult = await _monster5eRepository.FindByCrAsync(suggestedCr);
+                    if (baseMonsterResult.IsFailure || !baseMonsterResult.Data.Any())
+                    {
+                        // Fallback to nearest CR
+                        var allMonsters = await _monster5eRepository.GetAllAsync();
+                        if (allMonsters.IsFailure || !allMonsters.Data.Any())
+                            return Result<List<Monster5eDto>>.Failure("No base monsters available", ReasonType.NotFound);
+
+                        baseMonsterResult = Result<List<Monster5eDbEntity>>.Success(
+                            allMonsters.Data.OrderBy(m => Math.Abs(m.Cr - suggestedCr)).Take(5).ToList()
+                        );
+                    }
+
+                    // Select a random base monster
+                    var baseMonster = new RandomSelector<Monster5eDbEntity>()
+                        .SelectOneRandomly(baseMonsterResult.Data.ToArray());
+
+                    // Step 3: Determine which roles to create
+                    var rolesToCreate = new List<CombatRoleEnum>();
+                    if (forcedCombatRole.HasValue)
+                    {
+                        rolesToCreate.Add(forcedCombatRole.Value);
+                    }
+                    else
+                    {
+                        // Create variants for suggested roles from analysis
+                        var suggestedRoles = analysis?.SuggestedRoles ?? new List<string> { "Soldier", "Artillery" };
+                        foreach (var roleStr in suggestedRoles.Take(3)) // Limit to 3 variants
+                        {
+                            if (Enum.TryParse<CombatRoleEnum>(roleStr, true, out var role))
+                                rolesToCreate.Add(role);
+                        }
+
+                        // Ensure at least one role
+                        if (!rolesToCreate.Any())
+                            rolesToCreate.Add(CombatRoleEnum.Soldier);
+                    }
+
+                    // Step 4: Create sci-fi variants for each role
+                    var scifiAdversaries = new List<Monster5eDto>();
+
+                    foreach (var role in rolesToCreate)
+                    {
+                        var scifiVariant = await CreateSingleScifiVariant(
+                            baseMonster,
+                            narrativeDescription,
+                            role,
+                            analysis
+                        );
+
+                        if (scifiVariant.IsSuccess && scifiVariant.Data != null)
+                            scifiAdversaries.Add(scifiVariant.Data);
+                    }
+
+                    if (!scifiAdversaries.Any())
+                        return Result<List<Monster5eDto>>.Failure("Failed to create any sci-fi variants", ReasonType.Failure);
+
+                    return Result<List<Monster5eDto>>.Success(scifiAdversaries);
+                });
+
+        /// <summary>
+        /// Creates a single sci-fi variant for a specific combat role
+        /// </summary>
+        private async Task<Result<Monster5eDto>> CreateSingleScifiVariant(
+            Monster5eDbEntity baseMonster,
+            string narrativeDescription,
+            CombatRoleEnum role,
+            ScifiAdversaryAnalysis analysis)
+                => await Safe.ExecuteAsync(async () =>
+                {
+                    var roleDescription = RoleDescriptionsHelper.GetRoleDescription(role);
+
+                    // Step 1: Generate sci-fi lore based on narrative and role
+                    var lorePrompt = $@"Create a compelling sci-fi lore for an adversary based on:
+            Original narrative: {narrativeDescription}
+            Combat role: {role} - {roleDescription}
+            Tech level: {analysis?.TechLevel ?? "standard"}
+            Weapon preference: {analysis?.WeaponType ?? "energy"}
+            
+            Write 2-3 sentences of lore that:
+            - Explains their origin/faction/purpose
+            - Describes their technology or augmentations
+            - Hints at their combat tactics related to their {role} role
+            Keep it concise and evocative.";
+
+                    var scifiLore = await _openAiInterops.GetChatGptResponseAsync(lorePrompt, temperature: 0.7, maxTokens: 200);
+
+                    // Step 2: Generate sci-fi name
+                    var namePrompt = $@"Create a sci-fi adversary name based on:
+            Lore: {scifiLore}
+            Role: {role}
+            Tech level: {analysis?.TechLevel ?? "standard"}
+            
+            Examples of good sci-fi names:
+            - Plasma Trooper (Soldier)
+            - Stealth Drone MK-7 (Ambusher)
+            - Psionic Controller (Controller)
+            - Heavy Mech Unit (Brute)
+            - Sniper Bot X-99 (Artillery)
+            
+            Provide only the name, nothing else.";
+
+                    var scifiName = await _openAiInterops.GetChatGptResponseAsync(namePrompt, temperature: 0.8, maxTokens: 50);
+
+                    // Step 3: Generate manner/behavior description
+                    var mannerPrompt = $@"Write a very short (10-15 words) behavior/manner description for:
+            {scifiName} - a {role} with this lore: {scifiLore}
+            
+            Focus on how they act in combat. Be concise and evocative.";
+
+                    var scifiManner = await _openAiInterops.GetChatGptResponseAsync(mannerPrompt, temperature: 0.6, maxTokens: 50);
+
+                    // Step 4: Create the new monster entity
+                    var newMonster = new Monster5eDbEntity
+                    {
+                        // Copy base stats
+                        Actions = new List<ActionDbEntity>(), // Will add sci-fi actions later
+                        Alignment = AlignmentEnum.Unaligned, // Most sci-fi adversaries are unaligned
+                        ArmorClass = baseMonster.ArmorClass,
+                        ChallengeRating = baseMonster.ChallengeRating,
+                        Climb = baseMonster.Climb,
+                        Constitution = baseMonster.Constitution,
+                        CreatureSize = baseMonster.CreatureSize,
+                        CreatureSubType = "Construct", // Or "Alien" based on narrative
+                        CreatureType = DetermineScifiCreatureType(analysis),
+                        Cr = baseMonster.Cr,
+                        Equipments = JsonSerializer.Serialize(new List<string> { "Energy Weapon", "Tech Armor" }),
+                        HitDice = baseMonster.HitDice,
+                        HitPoints = baseMonster.HitPoints,
+                        InitiativeBonus = baseMonster.InitiativeBonus,
+                        Intelligence = baseMonster.Intelligence,
+                        Languages = "Binary, Common",
+                        Lore = JsonSerializer.Serialize(new { scifiLore }),
+                        Manner = scifiManner.Trim(),
+                        MinionArmorClass = baseMonster.MinionArmorClass,
+                        MonsterGroup = "Sci-Fi Adversaries",
+                        Name = scifiName.Trim(),
+                        PageSource = 0,
+                        ProficiencyBonus = baseMonster.ProficiencyBonus,
+                        Role = role,
+                        Skills = baseMonster.Skills,
+                        Source = "AI Generated - Sci-Fi",
+                        Speed = baseMonster.Speed,
+                        Strength = baseMonster.Strength,
+                        Swim = baseMonster.Swim,
+                        Traits = new List<TraitDbEntity>(),
+                        Wisdom = baseMonster.Wisdom,
+                        Xp = baseMonster.Xp,
+                        Charisma = baseMonster.Charisma,
+                        DamageImmunities = "poison", // Most sci-fi constructs/robots are immune to poison
+                        DamageResistances = DetermineScifiResistances(analysis),
+                        Senses = "darkvision 60 ft., passive Perception " + (10 + ((baseMonster.Wisdom ?? 10) - 10) / 2),
+                        CrInLair = baseMonster.CrInLair,
+                        DexSavingThrow = baseMonster.DexSavingThrow,
+                        StrSavingThrow = baseMonster.StrSavingThrow,
+                        ConSavingThrow = baseMonster.ConSavingThrow,
+                        IntSavingThrow = baseMonster.IntSavingThrow,
+                        WisSavingThrow = baseMonster.WisSavingThrow,
+                        ChaSavingThrow = baseMonster.ChaSavingThrow,
+                        Fly = baseMonster.Fly,
+                        Dexterity = baseMonster.Dexterity,
+                        Habitats = "Urban, Spacecraft, Alien World",
+                        Symbarum5e = null
+                    };
+
+                    // Step 5: Apply role adaptations
+                    var roleAdapter = new Monster5eRoleAdapterHelpers();
+                    var (roleResult, modifiedMonster) = roleAdapter.AdaptMonsterToRole(newMonster);
+
+                    // Step 6: Generate sci-fi themed actions for the role
+                    var scifiActions = await GenerateScifiActions(modifiedMonster, role, scifiLore, analysis);
+                    foreach (var action in scifiActions)
+                    {
+                        modifiedMonster.Actions.Add(action);
+                    }
+
+                    // Step 7: Add sci-fi traits
+                    var scifiTraits = await GenerateScifiTraits(modifiedMonster, role, analysis);
+                    foreach (var trait in scifiTraits)
+                    {
+                        modifiedMonster.Traits.Add(trait);
+                    }
+
+                    // Save to database
+                    await _monster5eRepository.Insert(modifiedMonster);
+
+                    return Result<Monster5eDto>.Success(modifiedMonster.ToDto());
+                });
+
+        /// <summary>
+        /// Generate sci-fi themed actions based on role
+        /// </summary>
+        private async Task<List<ActionDbEntity>> GenerateScifiActions(
+            Monster5eDbEntity monster,
+            CombatRoleEnum role,
+            string lore,
+            ScifiAdversaryAnalysis analysis)
+        {
+            var actions = new List<ActionDbEntity>();
+            var weaponType = analysis?.WeaponType ?? "energy";
+
+            // Generate primary attack
+            var primaryActionPrompt = $@"Create a sci-fi weapon attack for a {role} adversary.
+    Weapon type: {weaponType}
+    Challenge Rating: {monster.ChallengeRating}
+    Lore context: {lore}
+    
+    Respond in D&D 5e format. Include attack bonus, damage, and special effects.
+    Example: 'Plasma Rifle. Ranged Weapon Attack: +8 to hit, range 150/600 ft., one target. Hit: 14 (2d8 + 5) radiant damage, and the target must succeed on a DC 15 Constitution saving throw or be blinded until the end of their next turn.'
+    
+    Make it thematic for sci-fi and appropriate for the {role} role.";
+
+            var primaryAction = await _openAiInterops.GetChatGptResponseAsync(
+                primaryActionPrompt,
+                temperature: 0.6,
+                maxTokens: 200
+            );
+
+            actions.Add(new ActionDbEntity
+            {
+                Id = Guid.NewGuid(),
+                MonsterId = monster.Id,
+                Name = $"{weaponType.ToCapitalize()} Strike",
+                Type = ActionTypeEnum.Action,
+                AttackType = weaponType == "melee" ? AttackTypeEnum.Melee : AttackTypeEnum.Ranged,
+                Description = primaryAction,
+                IsProhibitedForMinion = false
+            });
+
+            // Generate role-specific special action
+            if (role != CombatRoleEnum.Minion)
+            {
+                var specialActionPrompt = $@"Create a special sci-fi ability for a {role} that fits this description:
+        {RoleDescriptionsHelper.GetRoleDescription(role)}
+        
+        This should be a unique technological or alien ability that reinforces their {role} combat role.
+        Tech level: {analysis?.TechLevel ?? "standard"}
+        
+        Format as a D&D 5e action with clear mechanics. Make it feel futuristic and cool.";
+
+                var specialAction = await _openAiInterops.GetChatGptResponseAsync(
+                    specialActionPrompt,
+                    temperature: 0.7,
+                    maxTokens: 250
+                );
+
+                actions.Add(new ActionDbEntity
+                {
+                    Id = Guid.NewGuid(),
+                    MonsterId = monster.Id,
+                    Name = $"{role} Protocol",
+                    Type = role == CombatRoleEnum.Solo ? ActionTypeEnum.Legendary : ActionTypeEnum.Action,
+                    AttackType = AttackTypeEnum.None,
+                    Description = specialAction,
+                    IsProhibitedForMinion = true,
+                    LimitPerDay = role == CombatRoleEnum.Solo ? null : 1
+                });
+            }
+
+            return actions;
+        }
+
+        /// <summary>
+        /// Generate sci-fi themed traits
+        /// </summary>
+        private async Task<List<TraitDbEntity>> GenerateScifiTraits(
+            Monster5eDbEntity monster,
+            CombatRoleEnum role,
+            ScifiAdversaryAnalysis analysis)
+        {
+            var traits = new List<TraitDbEntity>();
+
+            // Tech Shield trait (common for sci-fi)
+            traits.Add(new TraitDbEntity
+            {
+                Id = Guid.NewGuid(),
+                MonsterId = monster.Id,
+                Title = "Energy Shielding",
+                Description = $"The {monster.Name} has advantage on saving throws against spells and other magical effects. When it takes damage, it can use its reaction to gain resistance to that damage type until the start of its next turn (recharge 5-6).",
+                IsOptional = false
+            });
+
+            // Role-specific trait
+            var roleTraitPrompt = $@"Create a passive sci-fi trait for a {role} adversary.
+    This trait should reinforce their {role} combat role and feel technological.
+    Keep it to 1-2 sentences. Include mechanical benefits.
+    
+    Example: 'Targeting Matrix. The unit has advantage on attack rolls against creatures it damaged on its previous turn.'";
+
+            var roleTraitDesc = await _openAiInterops.GetChatGptResponseAsync(
+                roleTraitPrompt,
+                temperature: 0.6,
+                maxTokens: 150
+            );
+
+            traits.Add(new TraitDbEntity
+            {
+                Id = Guid.NewGuid(),
+                MonsterId = monster.Id,
+                Title = $"{role} Enhancement",
+                Description = roleTraitDesc,
+                IsOptional = false
+            });
+
+            return traits;
+        }
+
+        /// <summary>
+        /// Helper method to determine creature type based on analysis
+        /// </summary>
+        private string DetermineScifiCreatureType(ScifiAdversaryAnalysis analysis)
+        {
+            if (analysis == null) return "Construct";
+
+            return analysis.TechLevel switch
+            {
+                "transcendent" => "Aberration", // For super-advanced alien tech
+                "primitive" => "Humanoid", // For low-tech adversaries
+                _ => "Construct" // Default for robots/drones/mechs
+            };
+        }
+
+        /// <summary>
+        /// Helper method to determine damage resistances based on tech level
+        /// </summary>
+        private string DetermineScifiResistances(ScifiAdversaryAnalysis analysis)
+        {
+            if (analysis == null) return "bludgeoning, piercing, slashing from nonmagical attacks";
+
+            return analysis.TechLevel switch
+            {
+                "transcendent" => "bludgeoning, piercing, slashing from nonmagical attacks; radiant, necrotic",
+                "advanced" => "bludgeoning, piercing, slashing from nonmagical attacks; fire",
+                "standard" => "bludgeoning, piercing, slashing from nonmagical attacks",
+                "primitive" => null,
+                _ => "bludgeoning, piercing, slashing from nonmagical attacks"
+            };
+        }
+
     }
 }

@@ -12,7 +12,7 @@
             => str.IsNotNullOrEmptyOrWhiteSpace() ? char.ToUpper(str[0]) + str.Substring(1) : String.Empty;
         public static bool IsNotNullOrWhiteSpace(this string? str)
             => !String.IsNullOrWhiteSpace(str);
-        
+
         public static bool IsNotNullOrEmpty(this string? str)
             => !String.IsNullOrEmpty(str);
 
