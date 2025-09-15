@@ -807,18 +807,121 @@ Now create the action description:";
                 ""suggestedRoles"": [""<role1>"", ""<role2>""],
                 ""keyTraits"": [""<trait1>"", ""<trait2>""],
                 ""weaponType"": ""<energy/projectile/melee/mixed>"",
-                ""techLevel"": ""<primitive/standard/advanced/transcendent>""
+                ""techLevel"": <0, 1, 2, 3, 4, or 5>
             }}
 
-            Description: {narrativeDescription}
+            Tech Level Guidelines:
+                - TL0: This level covers the entirety of civilized history until 
+                        the early industrial era, stopping before the harnessing of 
+                        electric power, everything from the discovery of the wheel 
+                        to its use in manufacturing. 
+                        Vehicles. Gliders or basic aeroforms. Both ground and 
+                        aircraft are limited to archaic steam power. 
+                        Weapons. All weapons rely on steam or chemical 
+                        propellants with simple loading mechanisms. The blunderbuss 
+                        and musket are examples. 
+                        Medical. Natural healing. TL0 benefi ts more from 
+                        discovered human knowledge about biology than the tools 
+                        that were developed consequently. Surgery can cure most 
+                        wounds, but recovery can last a while.
+                         Similarity. Up to the mid-18th century.
+                - TL1: 
+                     At this level, machines come into their own. Internal 
+                    combustion and steam power have been perfected. Electric 
+                    power and road vehicles are changing the way cities are built. 
+                    Vehicles. Ground vehicles are run off steam or internal 
+                    combustion. Electrical power is in its infancy. The fact they 
+                    are mass-produced is the real achievement. Aircraft are 
+                    flown by manual controls and receive propulsion from 
+                    propellers.  Weapons. Bolt action rifl es and revolvers. Cartridge
+                    fed fi rearms are becoming more common. 
+                    Medical. The implementation of the scientifi c method 
+                    and laboratory research has resulted in vaccines. Drugs are 
+                    becoming commonplace.
+                     Similarity. 19th to early 20th Century.
 
-            Base your CR suggestion on:
-            - Low (CR 0.125-4): Basic troops, drones, minor threats
-            - Medium (CR 5-10): Elite units, specialists, significant threats
-            - High (CR 11-16): Commanders, heavy units, major threats
-            - Extreme (CR 17+): Legendary units, boss-level threats
+                - TL2: 
+                    At this level, almost every form of technology has integrated 
+                    electronics and advanced computer control. Electrifi cation is 
+                    now commonplace, though computers have yet to dominate 
+                    civilization.
+                     Vehicles. Ground vehicles now have electronics; some 
+                    offer climate control. Aircraft now possess fl y-by-wire, 
+                    vectored thrust, and vertical-take-off capacity. 
+                    Weapons. Computer tracking and targeting. Infrared 
+                    and thermal imaging is available, but not standard. Firearms 
+                    haven’t changed but have grown more complicated with 
+                    advanced reloading and higher fi ring rates. Advances in 
+                    construction make them lighter with larger calibers. 
+                    Medical. Computer diagnostic beds, MRIs, and X-Rays.
+                     Similarity. Mid-late 20th century.
+                - TL3: 
+                    Refinements in the manipulation of magnetic fi elds and 
+                    energy levels characterize this stage. Computers now 
+                    control most of civilization and link citizens together.
+                    Vehicles. Vertical take-off fan craft and wingless jets 
+                    keep aircraft aloft, are much more stable, and can fl y rings 
+                    around more primitive craft. Aircraft designs are no longer 
+                    dominated by their massive aeroforms. Ground vehicles still 
+                    use wheels, but now mass transit magnetic vehicles appear 
+                    as an alternative. 
+                    Weapons. There will always be bullets, but the rise 
+                    of both railcannons and self-propelled projectiles offer 
+                    alternatives. Laser weaponry in its infancy. Advanced 
+                    magnetics. Prototype exo-armor appears. 
+                    Medical. Most known diseases are curable. Healing 
+                    time cut to one-third with medical attention. Nanotech 
+                    healing isolated in the laboratory.
+                     Similarity. Early-mid 21st century.
 
-            Valid roles: Brute, Soldier, Controller, Skirmisher, Ambusher, Artillery, Minion, Solo, Support, Leader";
+                - TL4: 
+                    At this level, alternate energy and advanced in nuclear 
+                    power has created an energy surplus. Nanotechnology is 
+                    ubiquitous. Consumer space travel is now frequent.
+                     Vehicles. Robots appear beyond the role of “dumb 
+                    tool.” Exo-armor is mass-produced. Wheeled traffi c 
+                    virtually nonexistent or, if it exists, can traverse any terrain. 
+                    Ramjets shrink and provide massive thrust in small packages, 
+                    revolutionizing transportation outside of magnetic-traffi c. 
+                    Weapons. Laser weapons “tunable.” Plasma weaponry. 
+                    Bolt weapons are outdated.
+                    Medical. Nanotechnology can heal any wounds and 
+                    even regenerate limbs.
+                - TL5: 
+                    Any sufficiently advanced technology would be indistinguishable from magic.
+                     Vehicles. Common antigravity replaces all previous 
+                    transportation. 
+                    Weapons. Disruptors, vapor rifl es, disintegrator 
+                    weaponry. 
+                    Medical. Complete body reconstruction.
+
+                    Application of tech levels
+                         The tech level can affect the diffi culty and cost of crafting, 
+                        repairing, and modifying technology. It can also change its 
+                        rarity.
+                         TL 0 and TL 1. Common. All items with no listed TL 
+                        are TL0.
+                        TL 2. Uncommon
+                         TL 3. Rare
+                         TL 4. Very Rare
+                         TL 5. Legendary
+                         If setting a game at a higher TL, you can shift the rarity 
+                        down to make items more common. Certain items (like 
+                        exo-armor) may be rarer than their listed tech level. They 
+                        may also count as multiple items. Tech levels can also apply 
+                        in other ways depending on the device in question. See the 
+                        item descriptions for details. 
+
+                    Description: {narrativeDescription}
+
+                    Base your CR suggestion on:
+                    - Low (CR 0.125-4): Basic troops, drones, minor threats
+                    - Medium (CR 5-10): Elite units, specialists, significant threats
+                    - High (CR 11-16): Commanders, heavy units, major threats
+                    - Extreme (CR 17+): Legendary units, boss-level threats
+
+                    Base CR on both threat description and tech level.
+                    Valid roles: Brute, Soldier, Controller, Skirmisher, Ambusher, Artillery, Minion, Solo, Support, Leader";
 
                     var analysisJson = await _openAiInterops.GetChatGptResponseAsync(
                         analysisPrompt,
@@ -906,41 +1009,40 @@ Now create the action description:";
 
                     // Step 1: Generate sci-fi lore based on narrative and role
                     var lorePrompt = $@"Create a compelling sci-fi lore for an adversary based on:
-            Original narrative: {narrativeDescription}
-            Combat role: {role} - {roleDescription}
-            Tech level: {analysis?.TechLevel ?? "standard"}
-            Weapon preference: {analysis?.WeaponType ?? "energy"}
+                    Original narrative: {narrativeDescription}
+                    Combat role: {role} - {roleDescription}
+                    Tech level: {analysis?.TechLevel ?? "standard"}
+                    Weapon preference: {analysis?.WeaponType ?? "kinetic"}
             
-            Write 2-3 sentences of lore that:
-            - Explains their origin/faction/purpose
-            - Describes their technology or augmentations
-            - Hints at their combat tactics related to their {role} role
-            Keep it concise and evocative.";
+                    Write 2-3 sentences of lore that:
+                    - Explains their origin/faction/purpose
+                    - Describes their technology or augmentations
+                    - Hints at their combat tactics related to their {role} role
+                    Keep it concise and evocative.";
 
-                    var scifiLore = await _openAiInterops.GetChatGptResponseAsync(lorePrompt, temperature: 0.7, maxTokens: 200);
+                            var scifiLore = await _openAiInterops.GetChatGptResponseAsync(lorePrompt, temperature: 0.7, maxTokens: 200);
 
-                    // Step 2: Generate sci-fi name
-                    var namePrompt = $@"Create a sci-fi adversary name based on:
-            Lore: {scifiLore}
-            Role: {role}
-            Tech level: {analysis?.TechLevel ?? "standard"}
+                            // Step 2: Generate sci-fi name
+                            var namePrompt = $@"Create a sci-fi adversary name based on:
+                            Lore: {scifiLore}
+                            Role: {role}
+                            Tech level: {analysis?.TechLevel ?? "standard"}
             
-            Examples of good sci-fi names:
-            - Shock Trooper (Soldier)
-            - Stealth Drone MK-7 (Ambusher)
-            - Commander (Controller)
-            - Heavy Mech Unit (Brute)
-            - Sniper Bot X-99 (Artillery)
+                            Examples of good sci-fi names:
+                            - Shock Trooper (Soldier)
+                            - Stealth Drone MK-7 (Ambusher)
+                            - Commander (Controller)
+                            - Heavy Mech Unit (Brute)
+                            - Sniper Bot X-99 (Artillery)
             
-            Provide only the name, nothing else.";
+                            Provide only the name, nothing else.";
 
                     var scifiName = await _openAiInterops.GetChatGptResponseAsync(namePrompt, temperature: 0.8, maxTokens: 50);
 
                     // Step 3: Generate manner/behavior description
                     var mannerPrompt = $@"Write a very short (10-15 words) behavior/manner description for:
-            {scifiName} - a {role} with this lore: {scifiLore}
-            
-            Focus on how they act in combat. Be concise and evocative.";
+                                        {scifiName} - a {role} with this lore: {scifiLore} Focus on how they act in combat. 
+                                        Be concise and evocative.";
 
                     var scifiManner = await _openAiInterops.GetChatGptResponseAsync(mannerPrompt, temperature: 0.6, maxTokens: 50);
 
