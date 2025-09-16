@@ -1010,7 +1010,7 @@ Now create the action description:";
                     var lorePrompt = $@"Create a compelling sci-fi lore for an adversary based on:
                     Original narrative: {narrativeDescription}
                     Combat role: {role} - {roleDescription}
-                    Tech level: {analysis?.TechLevel ?? "standard"}
+                    Tech level: {analysis.TechLevel}
                     Weapon preference: {analysis?.WeaponType ?? "kinetic"}
             
                     Write 2-3 sentences of lore that:
@@ -1025,7 +1025,7 @@ Now create the action description:";
                             var namePrompt = $@"Create a sci-fi adversary name based on:
                             Lore: {scifiLore}
                             Role: {role}
-                            Tech level: {analysis?.TechLevel ?? "standard"}
+                            Tech level: {analysis.TechLevel}
             
                             Examples of good sci-fi names:
                             - Shock Trooper (Soldier)
@@ -1045,32 +1045,46 @@ Now create the action description:";
 
                     var scifiManner = await _openAiInterops.GetChatGptResponseAsync(mannerPrompt, temperature: 0.6, maxTokens: 50);
 
+                    var creatureTypePrompt = $@"Figure out the creature main type for:
+                                        {scifiName} with this lore: {scifiLore} {narrativeDescription} Focus on what they are in this lore. 
+                                        Just give the main type, nothing more.";
+
+                    var creatureType = await _openAiInterops.GetChatGptResponseAsync(creatureTypePrompt, temperature: 0.6, maxTokens: 50);
+
                     var creatureSubTypePrompt = $@"Figure out the creature subtype for:
-                                        {scifiName} - a {role} with this lore: {scifiLore} Focus on what they are in this lore. 
-                                        Just give the substype, nothing more.";
+                                        {scifiName} with this lore: {scifiLore} {narrativeDescription} Focus on what they are in this lore. 
+                                        Just give the subtype, nothing more.";
 
                     var creatureSubType = await _openAiInterops.GetChatGptResponseAsync(creatureSubTypePrompt, temperature: 0.6, maxTokens: 50);
 
                     var damageImmunitiesPrompt = $@"Figure out the creature's immunities if any for:
-                                        {scifiName} - a {role} with this lore: {scifiLore} Focus on what they are in this lore. 
+                                        {scifiName} - with this lore: {scifiLore} {narrativeDescription} Focus on what they are in this lore. 
                                         Just give the list of immunities, nothing more. List of Immunities : Blinded, Charmed, Deafened, Exhaustion, Frightened, Grappled, Incapacitated, Invisible, Paralyzed, Petrified, Poisoned, Prone, Restrained, Stunned, Unconscious. 
                                         Keep in mind that the monster might have no immunities. Pick the ones that make the most sense according to the lore.";
 
                     var damageImmunities = await _openAiInterops.GetChatGptResponseAsync(creatureSubTypePrompt, temperature: 0.6, maxTokens: 50);
 
                     var sensoryCapabilitiesPrompt = $@"Figure out the creature's sensory capabilities, if any, for:
-                                                    {scifiName} - a {role} with this lore: {scifiLore} Focus on what they are in this lore. 
+                                                    {scifiName} - with this lore: {scifiLore} {narrativeDescription} Focus on what they are in this lore. 
                                                     Just give the list of senses, nothing more. List of Senses: Blindsight, Darkvision, Tremorsense, Truesight, Low-Light Vision, Thermal Vision, Echolocation, Radar Sense, Cybernetic Vision, Psionic Sense. 
                                                     Keep in mind that the creature might have only normal sight or no special senses at all. Pick the ones that make the most sense according to the lore.";
 
                     var sensoryCapabilities = await _openAiInterops.GetChatGptResponseAsync(sensoryCapabilitiesPrompt, temperature: 0.6, maxTokens: 50);
 
                     var habitatPrompt = $@"Figure out the creature's natural habitats, if any, for:
-                                {scifiName} - a {role} with this lore: {scifiLore} Focus on where this creature would most likely be found based on the lore. 
+                                {scifiName} - with this lore: {scifiLore} {narrativeDescription} Focus on where this creature would most likely be found based on the lore. 
                                 Just give the list of habitats, nothing more. List of Habitats: Any, Arctic, Coastal, Desert, Forest, Grassland, Hill, Mountain, Swamp, Underground, Underwater, Urban.
                                 Keep in mind that the creature might thrive in multiple or only one specific habitat. Pick the ones that make the most sense according to the lore.";
 
                     var habitats = await _openAiInterops.GetChatGptResponseAsync(habitatPrompt, temperature: 0.6, maxTokens: 50);
+
+                    var damageResistancesPrompt = $@"Figure out the creature's damage resistances, if any, for:
+                    {scifiName} - with this lore: {scifiLore} {narrativeDescription} Focus on what they are in this lore. 
+                    Just give the list of resistances, nothing more. List of Resistances: Acid, Bludgeoning, Cold, Fire, Force, Lightning, Necrotic, Piercing, Poison, Psychic, Radiant, Slashing, Thunder.
+                    Keep in mind that the creature might have no resistances. Pick the ones that make the most sense according to the lore.";
+
+                    var damageResistances = await _openAiInterops.GetChatGptResponseAsync(damageResistancesPrompt, temperature: 0.6, maxTokens: 50);
+
 
                     // Step 4: Create the new monster entity
                     var newMonster = new Monster5eDbEntity
@@ -1084,7 +1098,7 @@ Now create the action description:";
                         Constitution = baseMonster.Constitution,
                         CreatureSize = baseMonster.CreatureSize,
                         CreatureSubType = creatureSubType,
-                        CreatureType = DetermineScifiCreatureType(analysis),
+                        CreatureType = creatureType,
                         Cr = baseMonster.Cr,
                         Equipments = null,
                         HitDice = baseMonster.HitDice,
@@ -1110,7 +1124,7 @@ Now create the action description:";
                         Xp = baseMonster.Xp,
                         Charisma = baseMonster.Charisma,
                         DamageImmunities = damageImmunities,
-                        DamageResistances = DetermineScifiResistances(analysis),
+                        DamageResistances = damageResistances,
                         Senses = sensoryCapabilities,
                         CrInLair = baseMonster.CrInLair,
                         DexSavingThrow = baseMonster.DexSavingThrow,
@@ -1196,7 +1210,7 @@ Now create the action description:";
         {RoleDescriptionsHelper.GetRoleDescription(role)}
         
         This should be a unique technological or alien ability that reinforces their {role} combat role.
-        Tech level: {analysis?.TechLevel ?? "standard"}
+        Tech level: {analysis.TechLevel}
         
         Format as a D&D 5e action with clear mechanics. Make it feel futuristic and cool.";
 
@@ -1269,46 +1283,6 @@ Now create the action description:";
             });
 
             return traits;
-        }
-
-
-
-        ///TODO : Refine traits based on role and tech level
-
-        /// <summary>
-        /// Helper method to determine creature type based on analysis
-        /// </summary>
-        private string DetermineScifiCreatureType(ScifiAdversaryAnalysis analysis)
-        {
-            if (analysis == null) return "Construct";
-
-            return analysis.TechLevel switch
-            {
-                "transcendent" => "Aberration", // For super-advanced alien tech
-                "primitive" => "Humanoid", // For low-tech adversaries
-                _ => "Construct" // Default for robots/drones/mechs
-            };
-        }
-
-
-
-        ///TODO : Refine traits based on role and tech level
-
-        /// <summary>
-        /// Helper method to determine damage resistances based on tech level
-        /// </summary>
-        private string DetermineScifiResistances(ScifiAdversaryAnalysis analysis)
-        {
-            if (analysis == null) return "bludgeoning, piercing, slashing from nonmagical attacks";
-
-            return analysis.TechLevel switch
-            {
-                "transcendent" => "bludgeoning, piercing, slashing from nonmagical attacks; radiant, necrotic",
-                "advanced" => "bludgeoning, piercing, slashing from nonmagical attacks; fire",
-                "standard" => "bludgeoning, piercing, slashing from nonmagical attacks",
-                "primitive" => null,
-                _ => "bludgeoning, piercing, slashing from nonmagical attacks"
-            };
         }
 
     }

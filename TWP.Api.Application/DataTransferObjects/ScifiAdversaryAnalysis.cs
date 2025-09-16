@@ -23,6 +23,6 @@ namespace TWP.Api.Application.DataTransferObjects
         public string WeaponType { get; set; }
 
         [JsonPropertyName("techLevel")]
-        public string TechLevel { get; set; }
+        public int TechLevel { get; set; }
     }
 }
