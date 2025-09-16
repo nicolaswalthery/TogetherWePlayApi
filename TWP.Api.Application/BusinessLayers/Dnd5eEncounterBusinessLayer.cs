@@ -791,7 +791,7 @@ Now create the action description:";
         /// <param name="narrativeDescription">The narrative/descriptive text about the sci-fi adversary</param>
         /// <param name="forcedCombatRole">Optional: Force a specific combat role, otherwise it will be selected based on narrative</param>
         /// <returns>A list of sci-fi adversaries, one for each combat role</returns>
-        public async Task<Result<List<Monster5eDto>>> CreateScifiAdversary(
+        public async Task<Result<List<Monster5eDto>>> CreateScifiAdversaries(
             string narrativeDescription,
             CombatRoleEnum? forcedCombatRole = null)
                 => await Safe.ExecuteAsync(async () =>
@@ -801,116 +801,116 @@ Now create the action description:";
 
                     // Step 1: Analyze narrative to determine appropriate CR and suggested roles
                     var analysisPrompt = $@"Analyze this sci-fi adversary description and provide a JSON response with the following structure:
-            {{
-                ""suggestedCR"": <number between 0.125 and 30>,
-                ""threatLevel"": ""<low/medium/high/extreme>"",
-                ""suggestedRoles"": [""<role1>"", ""<role2>""],
-                ""keyTraits"": [""<trait1>"", ""<trait2>""],
-                ""weaponType"": ""<energy/projectile/melee/mixed>"",
-                ""techLevel"": <0, 1, 2, 3, 4, or 5>
-            }}
+                    {{
+                        ""suggestedCR"": <number between 0.125 and 30>,
+                        ""threatLevel"": ""<low/medium/high/extreme>"",
+                        ""suggestedRoles"": [""<role1>"", ""<role2>""],
+                        ""keyTraits"": [""<trait1>"", ""<trait2>""],
+                        ""weaponType"": ""<energy/projectile/melee/mixed>"",
+                        ""techLevel"": <0, 1, 2, 3, 4, or 5>
+                    }}
 
-            Tech Level Guidelines:
-                - TL0: This level covers the entirety of civilized history until 
-                        the early industrial era, stopping before the harnessing of 
-                        electric power, everything from the discovery of the wheel 
-                        to its use in manufacturing. 
-                        Vehicles. Gliders or basic aeroforms. Both ground and 
-                        aircraft are limited to archaic steam power. 
-                        Weapons. All weapons rely on steam or chemical 
-                        propellants with simple loading mechanisms. The blunderbuss 
-                        and musket are examples. 
-                        Medical. Natural healing. TL0 benefi ts more from 
-                        discovered human knowledge about biology than the tools 
-                        that were developed consequently. Surgery can cure most 
-                        wounds, but recovery can last a while.
-                         Similarity. Up to the mid-18th century.
-                - TL1: 
-                     At this level, machines come into their own. Internal 
-                    combustion and steam power have been perfected. Electric 
-                    power and road vehicles are changing the way cities are built. 
-                    Vehicles. Ground vehicles are run off steam or internal 
-                    combustion. Electrical power is in its infancy. The fact they 
-                    are mass-produced is the real achievement. Aircraft are 
-                    flown by manual controls and receive propulsion from 
-                    propellers.  Weapons. Bolt action rifl es and revolvers. Cartridge
-                    fed fi rearms are becoming more common. 
-                    Medical. The implementation of the scientifi c method 
-                    and laboratory research has resulted in vaccines. Drugs are 
-                    becoming commonplace.
-                     Similarity. 19th to early 20th Century.
+                    Tech Level Guidelines:
+                        - TL0: This level covers the entirety of civilized history until 
+                                the early industrial era, stopping before the harnessing of 
+                                electric power, everything from the discovery of the wheel 
+                                to its use in manufacturing. 
+                                Vehicles. Gliders or basic aeroforms. Both ground and 
+                                aircraft are limited to archaic steam power. 
+                                Weapons. All weapons rely on steam or chemical 
+                                propellants with simple loading mechanisms. The blunderbuss 
+                                and musket are examples. 
+                                Medical. Natural healing. TL0 benefi ts more from 
+                                discovered human knowledge about biology than the tools 
+                                that were developed consequently. Surgery can cure most 
+                                wounds, but recovery can last a while.
+                                 Similarity. Up to the mid-18th century.
+                        - TL1: 
+                             At this level, machines come into their own. Internal 
+                            combustion and steam power have been perfected. Electric 
+                            power and road vehicles are changing the way cities are built. 
+                            Vehicles. Ground vehicles are run off steam or internal 
+                            combustion. Electrical power is in its infancy. The fact they 
+                            are mass-produced is the real achievement. Aircraft are 
+                            flown by manual controls and receive propulsion from 
+                            propellers.  Weapons. Bolt action rifl es and revolvers. Cartridge
+                            fed fi rearms are becoming more common. 
+                            Medical. The implementation of the scientifi c method 
+                            and laboratory research has resulted in vaccines. Drugs are 
+                            becoming commonplace.
+                             Similarity. 19th to early 20th Century.
 
-                - TL2: 
-                    At this level, almost every form of technology has integrated 
-                    electronics and advanced computer control. Electrifi cation is 
-                    now commonplace, though computers have yet to dominate 
-                    civilization.
-                     Vehicles. Ground vehicles now have electronics; some 
-                    offer climate control. Aircraft now possess fl y-by-wire, 
-                    vectored thrust, and vertical-take-off capacity. 
-                    Weapons. Computer tracking and targeting. Infrared 
-                    and thermal imaging is available, but not standard. Firearms 
-                    haven’t changed but have grown more complicated with 
-                    advanced reloading and higher fi ring rates. Advances in 
-                    construction make them lighter with larger calibers. 
-                    Medical. Computer diagnostic beds, MRIs, and X-Rays.
-                     Similarity. Mid-late 20th century.
-                - TL3: 
-                    Refinements in the manipulation of magnetic fi elds and 
-                    energy levels characterize this stage. Computers now 
-                    control most of civilization and link citizens together.
-                    Vehicles. Vertical take-off fan craft and wingless jets 
-                    keep aircraft aloft, are much more stable, and can fl y rings 
-                    around more primitive craft. Aircraft designs are no longer 
-                    dominated by their massive aeroforms. Ground vehicles still 
-                    use wheels, but now mass transit magnetic vehicles appear 
-                    as an alternative. 
-                    Weapons. There will always be bullets, but the rise 
-                    of both railcannons and self-propelled projectiles offer 
-                    alternatives. Laser weaponry in its infancy. Advanced 
-                    magnetics. Prototype exo-armor appears. 
-                    Medical. Most known diseases are curable. Healing 
-                    time cut to one-third with medical attention. Nanotech 
-                    healing isolated in the laboratory.
-                     Similarity. Early-mid 21st century.
+                        - TL2: 
+                            At this level, almost every form of technology has integrated 
+                            electronics and advanced computer control. Electrifi cation is 
+                            now commonplace, though computers have yet to dominate 
+                            civilization.
+                             Vehicles. Ground vehicles now have electronics; some 
+                            offer climate control. Aircraft now possess fl y-by-wire, 
+                            vectored thrust, and vertical-take-off capacity. 
+                            Weapons. Computer tracking and targeting. Infrared 
+                            and thermal imaging is available, but not standard. Firearms 
+                            haven’t changed but have grown more complicated with 
+                            advanced reloading and higher fi ring rates. Advances in 
+                            construction make them lighter with larger calibers. 
+                            Medical. Computer diagnostic beds, MRIs, and X-Rays.
+                             Similarity. Mid-late 20th century.
+                        - TL3: 
+                            Refinements in the manipulation of magnetic fi elds and 
+                            energy levels characterize this stage. Computers now 
+                            control most of civilization and link citizens together.
+                            Vehicles. Vertical take-off fan craft and wingless jets 
+                            keep aircraft aloft, are much more stable, and can fl y rings 
+                            around more primitive craft. Aircraft designs are no longer 
+                            dominated by their massive aeroforms. Ground vehicles still 
+                            use wheels, but now mass transit magnetic vehicles appear 
+                            as an alternative. 
+                            Weapons. There will always be bullets, but the rise 
+                            of both railcannons and self-propelled projectiles offer 
+                            alternatives. Laser weaponry in its infancy. Advanced 
+                            magnetics. Prototype exo-armor appears. 
+                            Medical. Most known diseases are curable. Healing 
+                            time cut to one-third with medical attention. Nanotech 
+                            healing isolated in the laboratory.
+                             Similarity. Early-mid 21st century.
 
-                - TL4: 
-                    At this level, alternate energy and advanced in nuclear 
-                    power has created an energy surplus. Nanotechnology is 
-                    ubiquitous. Consumer space travel is now frequent.
-                     Vehicles. Robots appear beyond the role of “dumb 
-                    tool.” Exo-armor is mass-produced. Wheeled traffi c 
-                    virtually nonexistent or, if it exists, can traverse any terrain. 
-                    Ramjets shrink and provide massive thrust in small packages, 
-                    revolutionizing transportation outside of magnetic-traffi c. 
-                    Weapons. Laser weapons “tunable.” Plasma weaponry. 
-                    Bolt weapons are outdated.
-                    Medical. Nanotechnology can heal any wounds and 
-                    even regenerate limbs.
-                - TL5: 
-                    Any sufficiently advanced technology would be indistinguishable from magic.
-                     Vehicles. Common antigravity replaces all previous 
-                    transportation. 
-                    Weapons. Disruptors, vapor rifl es, disintegrator 
-                    weaponry. 
-                    Medical. Complete body reconstruction.
+                        - TL4: 
+                            At this level, alternate energy and advanced in nuclear 
+                            power has created an energy surplus. Nanotechnology is 
+                            ubiquitous. Consumer space travel is now frequent.
+                             Vehicles. Robots appear beyond the role of “dumb 
+                            tool.” Exo-armor is mass-produced. Wheeled traffi c 
+                            virtually nonexistent or, if it exists, can traverse any terrain. 
+                            Ramjets shrink and provide massive thrust in small packages, 
+                            revolutionizing transportation outside of magnetic-traffi c. 
+                            Weapons. Laser weapons “tunable.” Plasma weaponry. 
+                            Bolt weapons are outdated.
+                            Medical. Nanotechnology can heal any wounds and 
+                            even regenerate limbs.
+                        - TL5: 
+                            Any sufficiently advanced technology would be indistinguishable from magic.
+                             Vehicles. Common antigravity replaces all previous 
+                            transportation. 
+                            Weapons. Disruptors, vapor rifl es, disintegrator 
+                            weaponry. 
+                            Medical. Complete body reconstruction.
 
-                    Application of tech levels
-                         The tech level can affect the diffi culty and cost of crafting, 
-                        repairing, and modifying technology. It can also change its 
-                        rarity.
-                         TL 0 and TL 1. Common. All items with no listed TL 
-                        are TL0.
-                        TL 2. Uncommon
-                         TL 3. Rare
-                         TL 4. Very Rare
-                         TL 5. Legendary
-                         If setting a game at a higher TL, you can shift the rarity 
-                        down to make items more common. Certain items (like 
-                        exo-armor) may be rarer than their listed tech level. They 
-                        may also count as multiple items. Tech levels can also apply 
-                        in other ways depending on the device in question. See the 
-                        item descriptions for details. 
+                            Application of tech levels
+                                 The tech level can affect the diffi culty and cost of crafting, 
+                                repairing, and modifying technology. It can also change its 
+                                rarity.
+                                 TL 0 and TL 1. Common. All items with no listed TL 
+                                are TL0.
+                                TL 2. Uncommon
+                                 TL 3. Rare
+                                 TL 4. Very Rare
+                                 TL 5. Legendary
+                                 If setting a game at a higher TL, you can shift the rarity 
+                                down to make items more common. Certain items (like 
+                                exo-armor) may be rarer than their listed tech level. They 
+                                may also count as multiple items. Tech levels can also apply 
+                                in other ways depending on the device in question. See the 
+                                item descriptions for details. 
 
                     Description: {narrativeDescription}
 
@@ -949,8 +949,7 @@ Now create the action description:";
                     }
 
                     // Select a random base monster
-                    var baseMonster = new RandomSelector<Monster5eDbEntity>()
-                        .SelectOneRandomly(baseMonsterResult.Data.ToArray());
+                    var baseMonster = new RandomSelector<Monster5eDbEntity>().SelectOneRandomly(baseMonsterResult.Data.ToArray());
 
                     // Step 3: Determine which roles to create
                     var rolesToCreate = new List<CombatRoleEnum>();
@@ -1046,6 +1045,33 @@ Now create the action description:";
 
                     var scifiManner = await _openAiInterops.GetChatGptResponseAsync(mannerPrompt, temperature: 0.6, maxTokens: 50);
 
+                    var creatureSubTypePrompt = $@"Figure out the creature subtype for:
+                                        {scifiName} - a {role} with this lore: {scifiLore} Focus on what they are in this lore. 
+                                        Just give the substype, nothing more.";
+
+                    var creatureSubType = await _openAiInterops.GetChatGptResponseAsync(creatureSubTypePrompt, temperature: 0.6, maxTokens: 50);
+
+                    var damageImmunitiesPrompt = $@"Figure out the creature's immunities if any for:
+                                        {scifiName} - a {role} with this lore: {scifiLore} Focus on what they are in this lore. 
+                                        Just give the list of immunities, nothing more. List of Immunities : Blinded, Charmed, Deafened, Exhaustion, Frightened, Grappled, Incapacitated, Invisible, Paralyzed, Petrified, Poisoned, Prone, Restrained, Stunned, Unconscious. 
+                                        Keep in mind that the monster might have no immunities. Pick the ones that make the most sense according to the lore.";
+
+                    var damageImmunities = await _openAiInterops.GetChatGptResponseAsync(creatureSubTypePrompt, temperature: 0.6, maxTokens: 50);
+
+                    var sensoryCapabilitiesPrompt = $@"Figure out the creature's sensory capabilities, if any, for:
+                                                    {scifiName} - a {role} with this lore: {scifiLore} Focus on what they are in this lore. 
+                                                    Just give the list of senses, nothing more. List of Senses: Blindsight, Darkvision, Tremorsense, Truesight, Low-Light Vision, Thermal Vision, Echolocation, Radar Sense, Cybernetic Vision, Psionic Sense. 
+                                                    Keep in mind that the creature might have only normal sight or no special senses at all. Pick the ones that make the most sense according to the lore.";
+
+                    var sensoryCapabilities = await _openAiInterops.GetChatGptResponseAsync(sensoryCapabilitiesPrompt, temperature: 0.6, maxTokens: 50);
+
+                    var habitatPrompt = $@"Figure out the creature's natural habitats, if any, for:
+                                {scifiName} - a {role} with this lore: {scifiLore} Focus on where this creature would most likely be found based on the lore. 
+                                Just give the list of habitats, nothing more. List of Habitats: Any, Arctic, Coastal, Desert, Forest, Grassland, Hill, Mountain, Swamp, Underground, Underwater, Urban.
+                                Keep in mind that the creature might thrive in multiple or only one specific habitat. Pick the ones that make the most sense according to the lore.";
+
+                    var habitats = await _openAiInterops.GetChatGptResponseAsync(habitatPrompt, temperature: 0.6, maxTokens: 50);
+
                     // Step 4: Create the new monster entity
                     var newMonster = new Monster5eDbEntity
                     {
@@ -1057,15 +1083,15 @@ Now create the action description:";
                         Climb = baseMonster.Climb,
                         Constitution = baseMonster.Constitution,
                         CreatureSize = baseMonster.CreatureSize,
-                        CreatureSubType = "Construct", // Or "Alien" based on narrative
+                        CreatureSubType = creatureSubType,
                         CreatureType = DetermineScifiCreatureType(analysis),
                         Cr = baseMonster.Cr,
-                        Equipments = JsonSerializer.Serialize(new List<string> { "Energy Weapon", "Tech Armor" }),
+                        Equipments = null,
                         HitDice = baseMonster.HitDice,
                         HitPoints = baseMonster.HitPoints,
                         InitiativeBonus = baseMonster.InitiativeBonus,
                         Intelligence = baseMonster.Intelligence,
-                        Languages = "Binary, Common",
+                        Languages = "Common",
                         Lore = JsonSerializer.Serialize(new { scifiLore }),
                         Manner = scifiManner.Trim(),
                         MinionArmorClass = baseMonster.MinionArmorClass,
@@ -1083,9 +1109,9 @@ Now create the action description:";
                         Wisdom = baseMonster.Wisdom,
                         Xp = baseMonster.Xp,
                         Charisma = baseMonster.Charisma,
-                        DamageImmunities = "poison", // Most sci-fi constructs/robots are immune to poison
+                        DamageImmunities = damageImmunities,
                         DamageResistances = DetermineScifiResistances(analysis),
-                        Senses = "darkvision 60 ft., passive Perception " + (10 + ((baseMonster.Wisdom ?? 10) - 10) / 2),
+                        Senses = sensoryCapabilities,
                         CrInLair = baseMonster.CrInLair,
                         DexSavingThrow = baseMonster.DexSavingThrow,
                         StrSavingThrow = baseMonster.StrSavingThrow,
@@ -1095,7 +1121,7 @@ Now create the action description:";
                         ChaSavingThrow = baseMonster.ChaSavingThrow,
                         Fly = baseMonster.Fly,
                         Dexterity = baseMonster.Dexterity,
-                        Habitats = "Urban, Spacecraft, Alien World",
+                        Habitats = habitats,
                         Symbarum5e = null
                     };
 
