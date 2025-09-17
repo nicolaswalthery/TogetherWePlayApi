@@ -1151,7 +1151,7 @@ Now create the action description:";
                     }
 
                     // Step 7: Add sci-fi traits
-                    var scifiTraits = await GenerateScifiTraits(modifiedMonster, role, analysis);
+                    var scifiTraits = await GenerateScifiTraits(modifiedMonster, role, scifiLore, analysis);
                     foreach (var trait in scifiTraits)
                     {
                         modifiedMonster.Traits.Add(trait);
@@ -1173,117 +1173,288 @@ Now create the action description:";
             ScifiAdversaryAnalysis analysis)
         {
             var actions = new List<ActionDbEntity>();
-            var weaponType = analysis?.WeaponType ?? "energy";
-
-            // Generate primary attack
-            var primaryActionPrompt = $@"Create a sci-fi weapon attack for a {role} adversary.
-    Weapon type: {weaponType}
-    Challenge Rating: {monster.ChallengeRating}
-    Lore context: {lore}
-    
-    Respond in D&D 5e format. Include attack bonus, damage, and special effects.
-    Example: 'Plasma Rifle. Ranged Weapon Attack: +8 to hit, range 150/600 ft., one target. Hit: 14 (2d8 + 5) radiant damage, and the target must succeed on a DC 15 Constitution saving throw or be blinded until the end of their next turn.'
-    
-    Make it thematic for sci-fi and appropriate for the {role} role.";
 
             var primaryAction = await _openAiInterops.GetChatGptResponseAsync(
-                primaryActionPrompt,
+                $"Create the main action of this monster. {promptAction(monster)}",
                 temperature: 0.6,
-                maxTokens: 200
-            );
+                maxTokens: 200,
+                responseFormat: OpenAIResponseFormatEnum.Json);
 
-            actions.Add(new ActionDbEntity
-            {
-                Id = Guid.NewGuid(),
-                MonsterId = monster.Id,
-                Name = $"{weaponType.ToCapitalize()} Strike",
-                Type = ActionTypeEnum.Action,
-                AttackType = weaponType == "melee" ? AttackTypeEnum.Melee : AttackTypeEnum.Ranged,
-                Description = primaryAction,
-                IsProhibitedForMinion = false
-            });
+            // Parse the analysis
+            var primaryActionDbEntity = JsonSerializer.Deserialize<ActionDbEntity>(primaryAction);
+
+            actions.Add(primaryActionDbEntity);
 
             // Generate role-specific special action
             if (role != CombatRoleEnum.Minion)
             {
-                var specialActionPrompt = $@"Create a special sci-fi ability for a {role} that fits this description:
-        {RoleDescriptionsHelper.GetRoleDescription(role)}
-        
-        This should be a unique technological or alien ability that reinforces their {role} combat role.
-        Tech level: {analysis.TechLevel}
-        
-        Format as a D&D 5e action with clear mechanics. Make it feel futuristic and cool.";
-
-                var specialAction = await _openAiInterops.GetChatGptResponseAsync(
-                    specialActionPrompt,
+                var roleAction = await _openAiInterops.GetChatGptResponseAsync(
+                    $"Create the role specific action of this monster which have the combat role : {role}. {promptAction(monster)}",
                     temperature: 0.7,
-                    maxTokens: 250
-                );
+                    maxTokens: 250,
+                    responseFormat: OpenAIResponseFormatEnum.Json
+                    );
 
-                actions.Add(new ActionDbEntity
-                {
-                    Id = Guid.NewGuid(),
-                    MonsterId = monster.Id,
-                    Name = $"{role} Protocol",
-                    Type = role == CombatRoleEnum.Solo ? ActionTypeEnum.Legendary : ActionTypeEnum.Action,
-                    AttackType = AttackTypeEnum.None,
-                    Description = specialAction,
-                    IsProhibitedForMinion = true,
-                    LimitPerDay = role == CombatRoleEnum.Solo ? null : 1
-                });
+                var roleActionDbEntity = JsonSerializer.Deserialize<ActionDbEntity>(roleAction);
+
+                actions.Add(roleActionDbEntity);
             }
 
             return actions;
         }
 
-
-
-        ///TODO : Refine traits based on role and tech level
-
         /// <summary>
-        /// Generate sci-fi themed traits
+        /// Generate sci-fi themed traits based on role
         /// </summary>
         private async Task<List<TraitDbEntity>> GenerateScifiTraits(
             Monster5eDbEntity monster,
             CombatRoleEnum role,
+            string lore,
             ScifiAdversaryAnalysis analysis)
         {
             var traits = new List<TraitDbEntity>();
 
-            // Tech Shield trait (common for sci-fi)
-            traits.Add(new TraitDbEntity
-            {
-                Id = Guid.NewGuid(),
-                MonsterId = monster.Id,
-                Title = "Energy Shielding",
-                Description = $"The {monster.Name} has advantage on saving throws against spells and other magical effects. When it takes damage, it can use its reaction to gain resistance to that damage type until the start of its next turn (recharge 5-6).",
-                IsOptional = false
-            });
-
-            // Role-specific trait
-            var roleTraitPrompt = $@"Create a passive sci-fi trait for a {role} adversary.
-    This trait should reinforce their {role} combat role and feel technological.
-    Keep it to 1-2 sentences. Include mechanical benefits.
-    
-    Example: 'Targeting Matrix. The unit has advantage on attack rolls against creatures it damaged on its previous turn.'";
-
-            var roleTraitDesc = await _openAiInterops.GetChatGptResponseAsync(
-                roleTraitPrompt,
+            // Generate primary defensive/survival trait
+            var primaryTrait = await _openAiInterops.GetChatGptResponseAsync(
+                $"Create the main defensive or survival trait of this monster. {GenerateTraitPrompt(monster)}",
                 temperature: 0.6,
-                maxTokens: 150
-            );
+                maxTokens: 200,
+                responseFormat: OpenAIResponseFormatEnum.Json);
 
-            traits.Add(new TraitDbEntity
+            var primaryTraitDbEntity = JsonSerializer.Deserialize<TraitDbEntity>(primaryTrait);
+            traits.Add(primaryTraitDbEntity);
+
+            // Generate role-specific trait
+            if (role != CombatRoleEnum.Minion)
             {
-                Id = Guid.NewGuid(),
-                MonsterId = monster.Id,
-                Title = $"{role} Enhancement",
-                Description = roleTraitDesc,
-                IsOptional = false
-            });
+                var roleSpecificPrompt = role switch
+                {
+                    CombatRoleEnum.Brute =>
+                        $"Create an aggressive trait (damage bonus when wounded, cleave attacks, or brutal critical) for this {role} monster. {GenerateTraitPrompt(monster)}",
+
+                    CombatRoleEnum.Soldier =>
+                        $"Create a defensive trait (armor, shields, damage reduction, or formation tactics) for this {role} monster. {GenerateTraitPrompt(monster)}",
+
+                    CombatRoleEnum.Controller =>
+                        $"Create a control trait (area denial, debuff aura, or movement restriction) for this {role} monster. {GenerateTraitPrompt(monster)}",
+
+                    CombatRoleEnum.Skirmisher =>
+                        $"Create a mobility trait (hit-and-run, enhanced movement, or escape ability) for this {role} monster. {GenerateTraitPrompt(monster)}",
+
+                    CombatRoleEnum.Ambusher =>
+                        $"Create a stealth or surprise trait (first strike, camouflage, or ambush bonus) for this {role} monster. {GenerateTraitPrompt(monster)}",
+
+                    CombatRoleEnum.Artillery =>
+                        $"Create a ranged combat trait (extended range, piercing shots, or targeting systems) for this {role} monster. {GenerateTraitPrompt(monster)}",
+
+                    CombatRoleEnum.Solo =>
+                        $"Create a legendary trait (multiple reactions, legendary resistance, or action recovery) for this {role} boss monster. {GenerateTraitPrompt(monster)}",
+
+                    CombatRoleEnum.Support =>
+                        $"Create a support trait (healing allies, providing buffs, or shielding) for this {role} monster. {GenerateTraitPrompt(monster)}",
+
+                    CombatRoleEnum.Leader =>
+                        $"Create a leadership trait (command aura, tactical coordination, or morale boost) for this {role} monster. {GenerateTraitPrompt(monster)}",
+
+                    _ => $"Create a tactical trait appropriate for this {role} monster. {GenerateTraitPrompt(monster)}"
+                };
+
+                var roleTrait = await _openAiInterops.GetChatGptResponseAsync(
+                    roleSpecificPrompt,
+                    temperature: 0.7,
+                    maxTokens: 250,
+                    responseFormat: OpenAIResponseFormatEnum.Json);
+
+                var roleTraitDbEntity = JsonSerializer.Deserialize<TraitDbEntity>(roleTrait);
+                traits.Add(roleTraitDbEntity);
+            }
+
+            // Add additional traits based on role and CR
+            if (monster.Cr >= 10 && role != CombatRoleEnum.Minion)
+            {
+                // Solo monsters get extra traits
+                if (role == CombatRoleEnum.Solo)
+                {
+                    var legendaryTrait = await _openAiInterops.GetChatGptResponseAsync(
+                        $"Create a powerful legendary resistance or recovery trait for this CR {monster.Cr} solo boss. {GenerateTraitPrompt(monster)}",
+                        temperature: 0.8,
+                        maxTokens: 250,
+                        responseFormat: OpenAIResponseFormatEnum.Json);
+
+                    var legendaryTraitDbEntity = JsonSerializer.Deserialize<TraitDbEntity>(legendaryTrait);
+                    traits.Add(legendaryTraitDbEntity);
+                }
+
+                // Leaders get command traits
+                if (role == CombatRoleEnum.Leader)
+                {
+                    var commandTrait = await _openAiInterops.GetChatGptResponseAsync(
+                        $"Create a tactical command trait that affects allies for this CR {monster.Cr} leader. {GenerateTraitPrompt(monster)}",
+                        temperature: 0.7,
+                        maxTokens: 250,
+                        responseFormat: OpenAIResponseFormatEnum.Json);
+
+                    var commandTraitDbEntity = JsonSerializer.Deserialize<TraitDbEntity>(commandTrait);
+                    traits.Add(commandTraitDbEntity);
+                }
+
+                // High CR non-minions get an optional special trait
+                var specialTrait = await _openAiInterops.GetChatGptResponseAsync(
+                    $"Create a unique trait befitting a CR {monster.Cr} {role} monster. This should be thematic and balanced. {GenerateTraitPrompt(monster)}",
+                    temperature: 0.8,
+                    maxTokens: 250,
+                    responseFormat: OpenAIResponseFormatEnum.Json);
+
+                var specialTraitDbEntity = JsonSerializer.Deserialize<TraitDbEntity>(specialTrait);
+                specialTraitDbEntity.IsOptional = true;
+                traits.Add(specialTraitDbEntity);
+            }
 
             return traits;
         }
+
+        private string promptAction(Monster5eDbEntity monster) =>
+            @$"Crée une action pour un monstre D&D 5e avec les paramètres suivants :
+
+INFORMATIONS DE BASE :
+- Nom du monstre : {monster.Name}
+- CR (Challenge Rating) : {monster.Cr}
+- Type de créature : {monster.CreatureType} {monster.CreatureSubType}
+- Rôle tactique : {monster.Role}
+- Thème/concept : [crée une description brève bésé sur {monster.Lore}]
+
+ACTION À CRÉER :
+- Type d'action : [Choisi un : Action/Action Bonus/Réaction/Légendaire]
+- Objectif tactique : [Choisi un : dégâts/contrôle/mobilité/débuff/autre]
+- Fréquence : [Choisi un : à volonté/recharge/X fois par jour]
+
+FORMAT DE SORTIE :
+Retourne un objet JSON pour l'entité ActionDbEntity avec les propriétés suivantes :
+- MonsterId : GUID (utilise ""00000000-0000-0000-0000-000000000000"" comme placeholder)
+- Name : string (nom de l'action)
+- Type : enum (Action=0, Bonus=1, Reaction=2, Legendary=3, Movement=4, Lair=5, Special=6)
+- AttackType : enum (MeleeWeaponAttack=0, RangedWeaponAttack=1, MeleeSpellAttack=2, RangedSpellAttack=3, SavingThrow=4, Automatic=5)
+- Description : string (description complète de l'action au format D&D 5e)
+- ShortRange : string? (portée courte en pieds, null si non applicable)
+- LongRange : string? (portée longue en pieds, null si non applicable)
+- AttackBonus : int? (bonus d'attaque, null si jet de sauvegarde)
+- DamageBonus : int? (bonus aux dégâts fixes)
+- DamageDice : enum? (D4=4, D6=6, D8=8, D10=10, D12=12, D20=20, D100=100)
+- NumberDamageDice : int? (nombre de dés de dégâts)
+- DamageType : enum? (Acid=0, Bludgeoning=1, Cold=2, Fire=3, Force=4, Lightning=5, Necrotic=6, Piercing=7, Poison=8, Psychic=9, Radiant=10, Slashing=11, Thunder=12)
+- LimitPerDay : int? (null pour à volonté, nombre pour X/jour)
+- IsProhibitedForMinion : bool (true si l'action est trop puissante pour une version minion)
+- actionTrigger : string? (condition de déclenchement pour les réactions, null sinon)
+- advantageCondition : string? (condition donnant l'avantage sur cette action)
+- disadvantageCondition : string? (condition donnant le désavantage sur cette action)
+
+CONTRAINTES :
+- Bonus d'attaque = Bonus de maîtrise + Modificateur de caractéristique
+- DD de sauvegarde = 8 + Bonus de maîtrise + Modificateur
+- Dégâts appropriés au CR
+- Description doit suivre le format standard D&D 5e
+- Les valeurs null doivent être explicites dans le JSON
+
+CONTRAINTES RÉALISTES :
+- PAS de magie, pouvoirs psychiques, télépathie, ou ""space magic""
+- Uniquement : armes à feu, explosifs, armes de mêlée, technologie plausible
+- Effets basés sur : physique, chimie, biologie, technologie crédible
+- Les ""conditions"" doivent être réalistes : aveuglé (flash/fumée), étourdi (commotion), ralenti (blessure), etc.
+- Portées réalistes pour les armes (pistolet 30/120 ft, fusil 150/600 ft, etc.)
+
+
+EXEMPLE DE SORTIE JSON :
+{{
+  ""MonsterId"": ""00000000-0000-0000-0000-000000000000"",
+  ""Name"": ""Fire Breath"",
+  ""Type"": 0,
+  ""AttackType"": 4,
+  ""Description"": ""Fire Breath (Recharge 5-6). Dexterity Saving Throw: DC 17, each creature in a 30-foot Cone. Failure: 56 (16d6) Fire damage. Success: Half damage."",
+  ""ShortRange"": ""30"",
+  ""LongRange"": null,
+  ""AttackBonus"": null,
+  ""DamageBonus"": null,
+  ""DamageDice"": 6,
+  ""NumberDamageDice"": 16,
+  ""DamageType"": 3,
+  ""LimitPerDay"": null,
+  ""IsProhibitedForMinion"": true,
+  ""actionTrigger"": null,
+  ""advantageCondition"": null,
+  ""disadvantageCondition"": null
+}}";
+
+        /// <summary>
+        /// Generate the trait prompt based on monster stats
+        /// </summary>
+        private string GenerateTraitPrompt(Monster5eDbEntity monster) =>
+            @$"Crée un trait de monstre D&D 5e et retourne le résultat en JSON pour l'objet TraitDbEntity suivant :
+
+**CONTEXTE DU MONSTRE**
+- Nom : {monster.Name}
+- Type de créature : {monster.CreatureType} {monster.CreatureSubType}
+- CR (Challenge Rating) : {monster.Cr}
+- Taille : {monster.CreatureSize}
+- Rôle au combat : {monster.Role}
+- Classe d'armure : {monster.ArmorClass}
+- Points de vie : {monster.HitPoints}
+- Thème/concept : [crée une description brève basé sur {monster.Lore}]
+
+**TYPE DE TRAIT SOUHAITÉ** (choisis-en un approprié au CR et au rôle)
+- Pour CR 1-5 : Traits simples (Pack Tactics, Keen Senses, Amphibious)
+- Pour CR 6-10 : Traits modérés (Resistance, Regeneration limitée, Auras simples)
+- Pour CR 11-16 : Traits complexes (Legendary Resistance, Auras puissantes)
+- Pour CR 17+ : Traits légendaires (Resistances multiples, Régénération majeure)
+
+**FORMAT DE SORTIE : JSON**
+{{
+    ""monsterId"": ""00000000-0000-0000-0000-000000000000"",
+    ""title"": ""Nom du Trait"",
+    ""description"": ""Description complète du trait selon le format D&D 5e"",
+    ""attackBonus"": null,
+    ""damageBonus"": null,
+    ""damageDice"": null,
+    ""numberDamageDice"": null,
+    ""damageType"": null,
+    ""traitTrigger"": null,
+    ""advantageCondition"": null,
+    ""disadvantageCondition"": null,
+    ""isOptional"": false
+}}
+
+**ENUMS DE RÉFÉRENCE:**
+DiceTypeEnum: d2=2, d3=3, d4=4, d5=5, d6=6, d7=7, d8=8, d9=9, d10=10, d11=11, d12=12, d13=13, d14=14, d15=15, d16=16, d17=17, d18=18, d19=19, d20=20, d66=66, d100=100
+
+DamageTypeEnum: 1=Acid, 2=Bludgeoning, 3=Cold, 4=Fire, 5=Force, 6=Lightning, 7=Necrotic, 8=Piercing, 9=Poison, 10=Psychic, 11=Radiant, 12=Slashing, 13=Thunder
+
+**CONTRAINTES:**
+- Le trait doit être équilibré pour le CR du monstre
+- Les dégâts doivent être appropriés (1d6 par tranche de CR 5 environ)
+- DD de sauvegarde = 8 + Bonus de maîtrise + Modificateur de caractéristique
+- Description au format standard D&D 5e
+- Les valeurs null doivent être explicites dans le JSON
+
+**CONTRAINTES RÉALISTES (SCI-FI):**
+- PAS de magie, uniquement technologie et biologie avancée
+- Effets basés sur : technologie, mutations, cybernétique, nanotechnologie
+- Conditions réalistes : aveuglé (flash), étourdi (EMP), ralenti (gel cryogénique)
+- Résistances technologiques plutôt que magiques
+
+**EXEMPLE DE SORTIE JSON:**
+{{
+  ""monsterId"": ""00000000-0000-0000-0000-000000000000"",
+  ""title"": ""Adaptive Armor"",
+  ""description"": ""When the creature takes damage, it gains resistance to that damage type until the start of its next turn."",
+  ""attackBonus"": null,
+  ""damageBonus"": null,
+  ""damageDice"": null,
+  ""numberDamageDice"": null,
+  ""damageType"": null,
+  ""traitTrigger"": ""when taking damage"",
+  ""advantageCondition"": null,
+  ""disadvantageCondition"": null,
+  ""isOptional"": false
+}}";
 
     }
 }
