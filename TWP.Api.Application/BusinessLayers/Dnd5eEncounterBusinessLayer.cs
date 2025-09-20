@@ -1075,7 +1075,7 @@ Now create the action description:";
                                         Just give the list of immunities, nothing more. List of Immunities : Blinded, Charmed, Deafened, Exhaustion, Frightened, Grappled, Incapacitated, Invisible, Paralyzed, Petrified, Poisoned, Prone, Restrained, Stunned, Unconscious. 
                                         Keep in mind that the monster might have no immunities. Pick the ones that make the most sense according to the lore.";
 
-                    var damageImmunities = await _openAiInterops.GetChatGptResponseAsync(creatureSubTypePrompt, temperature: 0.6, maxTokens: 50);
+                    var damageImmunities = await _openAiInterops.GetChatGptResponseAsync(damageImmunitiesPrompt, temperature: 0.6, maxTokens: 50);
 
                     var sensoryCapabilitiesPrompt = $@"Figure out the creature's sensory capabilities, if any, for:
                                                     {scifiName} - with this lore: {scifiLore} {narrativeDescription} Focus on what they are in this lore. 
