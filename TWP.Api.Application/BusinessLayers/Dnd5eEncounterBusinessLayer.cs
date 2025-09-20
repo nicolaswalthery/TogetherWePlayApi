@@ -1177,7 +1177,7 @@ Now create the action description:";
             var primaryAction = await _openAiInterops.GetChatGptResponseAsync(
                 $"Create the main action of this monster. {promptAction(monster)}",
                 temperature: 0.6,
-                maxTokens: 200,
+                maxTokens: 1000,
                 responseFormat: OpenAIResponseFormatEnum.Json);
 
             // Parse the analysis
@@ -1191,7 +1191,7 @@ Now create the action description:";
                 var roleAction = await _openAiInterops.GetChatGptResponseAsync(
                     $"Create the role specific action of this monster which have the combat role : {role}. {promptAction(monster)}",
                     temperature: 0.7,
-                    maxTokens: 250,
+                    maxTokens: 1000,
                     responseFormat: OpenAIResponseFormatEnum.Json
                     );
 
@@ -1218,10 +1218,10 @@ Now create the action description:";
             var primaryTrait = await _openAiInterops.GetChatGptResponseAsync(
                 $"Create the main defensive or survival trait of this monster. {GenerateTraitPrompt(monster)}",
                 temperature: 0.6,
-                maxTokens: 200,
+                maxTokens: 1000,
                 responseFormat: OpenAIResponseFormatEnum.Json);
 
-            var primaryTraitDbEntity = JsonSerializer.Deserialize<TraitDbEntity>(primaryTrait);
+            var primaryTraitDbEntity = JsonSerializer.Deserialize<TraitDbEntity>(primaryTrait, new JsonSerializerOptions{  PropertyNameCaseInsensitive = true });
             traits.Add(primaryTraitDbEntity);
 
             // Generate role-specific trait
@@ -1262,10 +1262,10 @@ Now create the action description:";
                 var roleTrait = await _openAiInterops.GetChatGptResponseAsync(
                     roleSpecificPrompt,
                     temperature: 0.7,
-                    maxTokens: 250,
+                    maxTokens: 1000,
                     responseFormat: OpenAIResponseFormatEnum.Json);
 
-                var roleTraitDbEntity = JsonSerializer.Deserialize<TraitDbEntity>(roleTrait);
+                var roleTraitDbEntity = JsonSerializer.Deserialize<TraitDbEntity>(roleTrait, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
                 traits.Add(roleTraitDbEntity);
             }
 
