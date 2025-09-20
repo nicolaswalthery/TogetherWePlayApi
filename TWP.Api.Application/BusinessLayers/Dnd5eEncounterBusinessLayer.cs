@@ -1047,13 +1047,26 @@ Now create the action description:";
 
                     var creatureTypePrompt = $@"Figure out the creature main type for:
                                         {scifiName} with this lore: {scifiLore} {narrativeDescription} Focus on what they are in this lore. 
-                                        Just give the main type, nothing more.";
+                                        Just give the main type, nothing more. Ex: Aberration - Créatures étranges et alien (mind flayers, beholders)
+                                        Beast - Animaux naturels non-magiques (ours, loups, aigles)
+                                        Celestial - Êtres des plans supérieurs (anges, pégases)
+                                        Construct - Créatures artificielles animées (golems, modrons)
+                                        Dragon - Dragons vrais et créatures draconiques (wyverns, drakes)
+                                        Elemental - Êtres des plans élémentaires (élémentaires de feu, génies)
+                                        Fey - Créatures du Feywild (pixies, dryades, satyres)
+                                        Fiend - Êtres des plans inférieurs (démons, diables)
+                                        Giant - Géants et créatures apparentées (ogres, trolls)
+                                        Humanoid - Créatures bipèdes civilisées (humains, elfes, orcs, gobelins)
+                                        Monstrosity - Monstres naturels mais inhabituels (griffons, minotaures)
+                                        Ooze - Créatures gélatineuses (gelées, vases)
+                                        Plant - Végétation animée (treants, blights)
+                                        Undead - Morts-vivants (zombies, vampires, liches).";
 
                     var creatureType = await _openAiInterops.GetChatGptResponseAsync(creatureTypePrompt, temperature: 0.6, maxTokens: 50);
 
                     var creatureSubTypePrompt = $@"Figure out the creature subtype for:
                                         {scifiName} with this lore: {scifiLore} {narrativeDescription} Focus on what they are in this lore. 
-                                        Just give the subtype, nothing more.";
+                                        Just give the subtype, nothing more. Ex: Specific Name of the race or the species.";
 
                     var creatureSubType = await _openAiInterops.GetChatGptResponseAsync(creatureSubTypePrompt, temperature: 0.6, maxTokens: 50);
 
