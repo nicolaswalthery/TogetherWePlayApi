@@ -86,7 +86,6 @@ namespace TWP.Api.Application.BusinessLayers
         /// <summary>
         /// Reskin a Dnd Monster by changing its role, name, lore and actions using AI
         /// </summary>
-        /// <param name="challengeRating">CR that the monster to reskin will have</param>
         /// <param name="experience">experience budget remaining after builder an encounter</param>
         /// <returns></returns>
         public async Task<Result<Monster5eDto>> ReskinDndMonster(int experience, string monsterName, CombatRoleEnum? combatRoleEnum = null)
