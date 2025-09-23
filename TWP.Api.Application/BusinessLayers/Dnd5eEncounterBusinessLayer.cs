@@ -184,9 +184,13 @@ namespace TWP.Api.Application.BusinessLayers
                     var actionType = EnumExtensions.GetRandomElementOfEnum<ActionTypeEnum>();
                     var attackType = EnumExtensions.GetRandomElementOfEnum<AttackTypeEnum>();
 
+                    var guidline = await _monsterBuildingGuidelineRepository.GetByNumericCRAsync(monsterBuildingGuideLines.Data.CRNumeric);
+                    if(guidline.IsFailure)
+                        return Result<Monster5eDto>.Failure("No guidlines found for the given CR", ReasonType.NotFound);
+
                     string roleBasedActions = String.Empty;
                     if (randomRole != CombatRoleEnum.Minion)
-                        roleBasedActions = await _openAiInterops.ChatGptResponseAsync(CreateRoleActionPrompt(baseMonster, randomRole, originalLore, roleDescription, actionType, attackType));
+                        roleBasedActions = await _openAiInterops.ChatGptResponseAsync(CreateRoleActionPrompt(baseMonster, guidline.Data!, randomRole, originalLore, roleDescription, actionType, attackType));
 
                     var newAction = new ActionDto
                     {
@@ -539,10 +543,16 @@ namespace TWP.Api.Application.BusinessLayers
             }
         }
 
-        private static string CreateRoleActionPrompt(Monster5eDbEntity baseMonster, CombatRoleEnum role, string originalLore, string roleDescription, ActionTypeEnum actionType, AttackTypeEnum attackTypeEnum)
+        private static string CreateRoleActionPrompt(Monster5eDbEntity baseMonster, MonsterBuildingGuidelineDbEntity monsterBuildingGuidelineDbEntity, CombatRoleEnum role, string originalLore, string roleDescription, ActionTypeEnum actionType, AttackTypeEnum attackTypeEnum)
         {
             // Instructions spécifiques selon le rôle
             var roleSpecificGuidelines = GetRoleSpecificActionGuidelines(role, baseMonster.Cr);
+
+            var actions = new List<string>();
+            foreach (var action in baseMonster.Actions)
+            {
+                actions.Add($"{action.Name} : damage output = {action.NumberDamageDice}{action.DamageDice}+{action.DamageBonus} and damage type {action.DamageType}");
+            }
 
             return $@"You are a D&D 5e game designer. You MUST respond with ONLY the action description text, no other formatting or explanation.
 
@@ -555,7 +565,16 @@ MONSTER CONTEXT:
 - Proficiency Bonus: {baseMonster.ProficiencyBonus}
 - Existing Actions: {string.Join("; ", baseMonster.Actions.Select(a => a.Description))}
 
-TASK: Create ONE special action that PERFECTLY embodies the {role} combat role.
+TASK: Create ONE special action that PERFECTLY embodies the {role} combat role and respecting the guidelines for the monster of CR {baseMonster.ChallengeRating} below :
+Usual Attack Bonus :{monsterBuildingGuidelineDbEntity.AttackBonus}
+Usual Damage per round :{monsterBuildingGuidelineDbEntity.DamagePerRound} 
+Usual Multi-attack count :{monsterBuildingGuidelineDbEntity.MultiAttackCount}
+Usual Save DC :{monsterBuildingGuidelineDbEntity.SaveDC}
+Total Damage Average :{monsterBuildingGuidelineDbEntity.TotalDamageAvg}
+
+Keep in mind that the monster alredy does these actions and already deal damages : 
+{string.Join('/', actions)} 
+So adapt the dame output of the special action that PERFECTLY embodies the {role} combat role to not go above the usual Damage per round :{monsterBuildingGuidelineDbEntity.DamagePerRound} 
 
 ROLE-SPECIFIC REQUIREMENTS FOR {role.ToString().ToUpper()}:
 {roleSpecificGuidelines}

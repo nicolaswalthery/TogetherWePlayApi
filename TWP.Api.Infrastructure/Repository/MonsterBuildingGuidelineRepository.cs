@@ -36,18 +36,14 @@ namespace TWP.Api.Infrastructure.Repository.Interfaces
             });
 
         public async Task<Result<MonsterBuildingGuidelineDbEntity>> GetByNumericCRAsync(float crNumeric)
-        {
-            return await Safe.ExecuteAsync(async () =>
+            => await Safe.ExecuteAsync(async () =>
             {
-                var guideline = await _context.Set<MonsterBuildingGuidelineDbEntity>()
-                    .FirstOrDefaultAsync(g => Math.Abs(g.CRNumeric - crNumeric) < 0.001 && g.IsActive);
-
+                var guideline = await _context.Set<MonsterBuildingGuidelineDbEntity>().FirstOrDefaultAsync(g => g.CRNumeric == crNumeric && g.IsActive);
                 if (guideline == null)
                     return Result<MonsterBuildingGuidelineDbEntity>.Failure($"No guideline found for CR value {crNumeric}", ReasonType.NotFound);
 
                 return Result<MonsterBuildingGuidelineDbEntity>.Success(guideline);
             });
-        }
 
         public async Task<Result<List<MonsterBuildingGuidelineDbEntity>>> GetAllActiveAsync()
         {
