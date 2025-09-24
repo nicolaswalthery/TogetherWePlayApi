@@ -45,7 +45,7 @@ namespace TWP.Api.Application.BusinessLayers
                     if (monsterDbEntities.Data.HasNoElement())
                         return Result<Dnd5eEncounterGeneratedDto>.Failure("No Monsters found for the given CR or less", ReasonType.NotFound);
 
-                    var monsters = monsterDbEntities.Data.Select(m => m.ToDto()).ToList();
+                    var monsters = monsterDbEntities.Data.Where(m => m.Source.Contains("Monster Manual 2024")).Select(m => m.ToDto()).ToList();
                     var filtered = monsters.Where(m => m.Habitats != null && m.Habitats.Contains(monsterHabitat.ToString())).ToList();
 
                     var creatureType = new RandomSelector<Monster5eDto>().SelectOneRandomly(filtered.ToArray()).CreatureType;
