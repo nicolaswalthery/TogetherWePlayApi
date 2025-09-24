@@ -38,10 +38,11 @@ namespace TWP.Api.Application.BusinessLayers
                 {
                     if (playerLevels.HasNoElement())
                         return Result<Dnd5eEncounterGeneratedDto>.Failure("No Elements", ReasonType.BadParameter);
+                    
                     var cr = playerLevels.Min();
                     var expEncounterBudget = ComputeExpBudget(encounterDifficulty, playerLevels);
 
-                    var monsterDbEntities = await _monster5eRepository.FindByCrOrLessAsync(cr + 1);
+                    var monsterDbEntities = await _monster5eRepository.FindByCrOrLessAsync(cr+1);
                     if (monsterDbEntities.Data.HasNoElement())
                         return Result<Dnd5eEncounterGeneratedDto>.Failure("No Monsters found for the given CR or less", ReasonType.NotFound);
 
@@ -117,11 +118,21 @@ namespace TWP.Api.Application.BusinessLayers
                 var results = await _monster5eRepository.FindByCrAsync(monsterBuildingGuideLines.Data.CRNumeric);
                 var monsterCarac = results.Data.Shuffle().FirstOrDefault();
 
-                //Generate monster lore from base monster
-                var originalLore = await _openAiInterops.GetChatGptResponseAsync($"Take the base lore of {baseMonster.Name} and use it to create a original lore for {baseMonster.Name} that has the role {randomRole} : {roleDescription}. Create what this {randomRole} variation has more, what set it appart !");
-                var originalName = await _openAiInterops.GetChatGptResponseAsync($"Take the base name of {baseMonster.Name} and use it to create a original name for a monster that has the role {randomRole} : {roleDescription} and this lore {originalLore}");
+                var originalLoreTask = _openAiInterops.GetChatGptResponseAsync($"Take the base lore of {baseMonster.Name} and use it to create an original lore for {baseMonster.Name} that has the role {randomRole}: {roleDescription}. Describe what this {randomRole} variant adds and what sets it apart.");
+                var originalMannerTask = _openAiInterops.GetChatGptResponseAsync($"Take the base lore of {baseMonster.Name} and create a very short (10–15 words) manner description for {baseMonster.Name} with the role {randomRole}: {roleDescription}.");
+                var originalNameTask = originalLoreTask
+                    .ContinueWith(t =>
+                        _openAiInterops.GetChatGptResponseAsync(
+                            $"Take the base name of {baseMonster.Name} and create an original name for a monster with the role {randomRole}: {roleDescription} and this lore: {t.Result}"
+                        ),
+                        TaskContinuationOptions.OnlyOnRanToCompletion | TaskContinuationOptions.ExecuteSynchronously
+                    ).Unwrap();
 
-                var originalManner = await _openAiInterops.GetChatGptResponseAsync($"Take the base lore of {baseMonster.Name} and use it to create a very short (10 to 15 words) manner description for {baseMonster.Name} that has the role {randomRole} : {roleDescription}.");
+                await Task.WhenAll(originalMannerTask, originalNameTask);
+
+                var originalLore = await originalLoreTask;   
+                var originalManner = await originalMannerTask;
+                var originalName = await originalNameTask;
 
                 var newMonster = new Monster5eDbEntity
                 {
