@@ -5,6 +5,7 @@ using TWP.Api.Application.Helpers.Mappers;
 using TWP.Api.Core.DataTransferObjects;
 using TWP.Api.Core.DbEntities;
 using TWP.Api.Core.Enums;
+using TWP.Api.Core.Interface.Infrastructure;
 using TWP.Api.Infrastructure.Interops.Interfaces;
 using TWP.Api.Infrastructure.Repository.Interfaces;
 

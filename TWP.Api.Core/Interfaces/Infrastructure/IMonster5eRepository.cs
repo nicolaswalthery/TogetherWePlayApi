@@ -1,7 +1,7 @@
 ﻿using Common.ResultPattern;
 using TWP.Api.Core.DbEntities;
 
-namespace TWP.Api.Infrastructure.Repository.Interfaces
+namespace TWP.Api.Core.Interface.Infrastructure
 {
     public interface IMonster5eRepository
     {

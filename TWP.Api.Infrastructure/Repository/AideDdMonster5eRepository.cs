@@ -2,6 +2,7 @@
 using Common.ResultPattern;
 using Microsoft.EntityFrameworkCore;
 using TWP.Api.Core.DbEntities;
+using TWP.Api.Core.Interface.Infrastructure;
 
 namespace TWP.Api.Infrastructure.Repository.Interfaces
 {

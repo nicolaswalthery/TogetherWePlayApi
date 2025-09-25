@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using System.Linq.Expressions;
 using TWP.Api.Core.DbEntities;
-using TWP.Api.Infrastructure.Repository.Interfaces;
+using TWP.Api.Core.Interface.Infrastructure;
 
 namespace TWP.Api.Infrastructure.Repository
 {

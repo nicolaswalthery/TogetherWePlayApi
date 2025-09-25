@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Query;
 using System.Linq.Expressions;
 using TWP.Api.Core.DbEntities;
 
-namespace TWP.Api.Infrastructure.Repository.Interfaces
+namespace TWP.Api.Core.Interface.Infrastructure
 {
     public interface IRepositoryBase<TEntity> where TEntity : DbEntity
     {

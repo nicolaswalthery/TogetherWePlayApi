@@ -130,4 +130,5 @@
 
                     Base CR on both threat description and tech level.
                     Valid roles: Brute, Soldier, Controller, Skirmisher, Ambusher, Artillery, Minion, Solo, Support, Leader";
+    }
 }
