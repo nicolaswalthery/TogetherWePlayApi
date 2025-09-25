@@ -1,8 +1,8 @@
 ﻿using System.Text.Json;
+using TWP.Api.Application.Interfaces.Services;
 using TWP.Api.Core.DataTransferObjects;
 using TWP.Api.Core.DbEntities;
 using TWP.Api.Core.Enums;
-using TWP.Api.Infrastructure.Interops.Interfaces;
 
 namespace TWP.Api.Application.ETL.Services
 {

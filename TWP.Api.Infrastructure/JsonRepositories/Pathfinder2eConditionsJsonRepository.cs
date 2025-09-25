@@ -1,7 +1,7 @@
 ﻿using Common.Extensions;
 using TWP.Api.Core.DataTransferObjects;
 using TWP.Api.Core.Enums;
-using TWP.Api.Infrastructure.JsonRepositories.Interfaces;
+using TWP.Api.Core.Interfaces.Infrastructure.JsonRepositories;
 
 namespace TWP.Api.Infrastructure.JsonRepositories
 {

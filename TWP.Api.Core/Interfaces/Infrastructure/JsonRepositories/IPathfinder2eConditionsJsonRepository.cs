@@ -1,6 +1,6 @@
 ﻿using TWP.Api.Core.DataTransferObjects;
 
-namespace TWP.Api.Infrastructure.JsonRepositories.Interfaces
+namespace TWP.Api.Core.Interfaces.Infrastructure.JsonRepositories
 {
     public interface IPathfinder2eConditionsJsonRepository
     {

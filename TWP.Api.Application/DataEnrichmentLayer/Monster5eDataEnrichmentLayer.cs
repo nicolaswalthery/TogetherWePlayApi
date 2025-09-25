@@ -1,13 +1,8 @@
-﻿using Common.Extensions;
-using Common.ResultPattern;
-using System.Text.Json;
+﻿using Common.ResultPattern;
 using TWP.Api.Application.DataEnrichmentLayer.Interfaces;
-using TWP.Api.Application.Helpers.Mappers;
-using TWP.Api.Core.Helpers;
+using TWP.Api.Application.Helpers;
+using TWP.Api.Application.Interfaces.Services;
 using TWP.Api.Core.Interface.Infrastructure;
-using TWP.Api.Infrastructure.Helpers;
-using TWP.Api.Infrastructure.Interops.Interfaces;
-using TWP.Api.Infrastructure.Repository.Interfaces;
 
 namespace TWP.Api.Application.DataEnrichmentLayer
 {

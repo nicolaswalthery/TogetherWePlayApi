@@ -1,7 +1,7 @@
 ﻿using Common.Extensions;
 using TWP.Api.Core.Enums;
 
-namespace TWP.Api.Infrastructure.Helpers
+namespace TWP.Api.Application.Helpers
 {
     public static class RoleDescriptionsHelper
     {

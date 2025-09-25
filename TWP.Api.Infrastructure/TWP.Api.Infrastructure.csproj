@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TWP.Api.Application\TWP.Api.Application.csproj" />
     <ProjectReference Include="..\TWP.Api.Core\TWP.Api.Core.csproj" />
   </ItemGroup>
 

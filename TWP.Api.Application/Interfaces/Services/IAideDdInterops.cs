@@ -1,6 +1,6 @@
 ﻿using TWP.Api.Core.DataTransferObjects;
 
-namespace TWP.Api.Infrastructure.Interops.Interfaces
+namespace TWP.Api.Application.Interfaces.Services
 {
     public interface IAideDdInterops
     {

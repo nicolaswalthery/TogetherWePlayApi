@@ -3,8 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
+using TWP.Api.Application.Interfaces.Services;
 using TWP.Api.Core.Enums;
-using TWP.Api.Infrastructure.Interops.Interfaces;
 
 namespace TWP.Api.Infrastructure.Interops
 {

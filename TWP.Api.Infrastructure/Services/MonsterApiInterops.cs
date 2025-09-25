@@ -1,8 +1,7 @@
 ﻿using Common.Extensions;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using TWP.Api.Application.Interfaces.Services;
 using TWP.Api.Core.DataTransferObjects;
-using TWP.Api.Infrastructure.Interops.Interfaces;
 
 namespace TWP.Api.Infrastructure.Interops
 {

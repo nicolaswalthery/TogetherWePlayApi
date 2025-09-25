@@ -1,8 +1,8 @@
 ﻿using Common.Randomizer;
+using Common.ResultPattern;
 using TWP.Api.Application.BusinessLayers.Interfaces;
 using TWP.Api.Core.DataTransferObjects;
-using TWP.Api.Infrastructure.JsonRepositories.Interfaces;
-using Common.ResultPattern;
+using TWP.Api.Core.Interfaces.Infrastructure.JsonRepositories;
 
 namespace TWP.Api.Application.BusinessLayers
 {

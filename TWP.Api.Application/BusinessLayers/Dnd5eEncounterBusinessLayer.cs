@@ -6,13 +6,12 @@ using TWP.Api.Application.BusinessLayers.Interfaces;
 using TWP.Api.Application.DataTransferObjects;
 using TWP.Api.Application.Helpers;
 using TWP.Api.Application.Helpers.Mappers;
+using TWP.Api.Application.Interfaces.Services;
 using TWP.Api.Application.Prompts;
 using TWP.Api.Core.DataTransferObjects;
 using TWP.Api.Core.DbEntities;
 using TWP.Api.Core.Enums;
 using TWP.Api.Core.Interface.Infrastructure;
-using TWP.Api.Infrastructure.Helpers;
-using TWP.Api.Infrastructure.Interops.Interfaces;
 
 namespace TWP.Api.Application.BusinessLayers
 {

@@ -10,14 +10,14 @@ using TWP.Api.Application.DataEnrichmentLayer;
 using TWP.Api.Application.DataEnrichmentLayer.Interfaces;
 using TWP.Api.Application.ETL;
 using TWP.Api.Application.ETL.Services;
+using TWP.Api.Application.Interfaces.Services;
 using TWP.Api.Controllers.Interfaces;
 using TWP.Api.Core.Interface.Infrastructure;
+using TWP.Api.Core.Interfaces.Infrastructure.JsonRepositories;
 using TWP.Api.Infrastructure.CsvRepositories;
 using TWP.Api.Infrastructure.CsvRepositories.Interfaces;
 using TWP.Api.Infrastructure.Interops;
-using TWP.Api.Infrastructure.Interops.Interfaces;
 using TWP.Api.Infrastructure.JsonRepositories;
-using TWP.Api.Infrastructure.JsonRepositories.Interfaces;
 using TWP.Api.Infrastructure.Repository.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);

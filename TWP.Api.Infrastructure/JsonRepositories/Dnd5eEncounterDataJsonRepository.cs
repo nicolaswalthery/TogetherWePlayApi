@@ -1,6 +1,6 @@
 using TWP.Api.Core.DataTransferObjects;
 using TWP.Api.Core.Enums;
-using TWP.Api.Infrastructure.JsonRepositories.Interfaces;
+using TWP.Api.Core.Interfaces.Infrastructure.JsonRepositories;
 using TWP.Api.Infrastructure.JsonRepositories.Mappers;
 using TWP.Api.Infrastructure.JsonRepositories.RepositoryBases;
 

@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TWP.Api.Application\TWP.Api.Application.csproj" />
+    <ProjectReference Include="..\TWP.Api.Infrastructure\TWP.Api.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using TWP.Api.Core.DataTransferObjects;
 
-namespace TWP.Api.Infrastructure.JsonRepositories.Interfaces
+namespace TWP.Api.Core.Interfaces.Infrastructure.JsonRepositories
 {
     public interface IDnd5eEncounterDataJsonRepository
     {

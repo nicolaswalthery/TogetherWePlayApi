@@ -1,7 +1,6 @@
-// TWP.Api.Infrastructure/Interops/Interfaces/IOpenAiInterops.cs
 using TWP.Api.Core.Enums;
 
-namespace TWP.Api.Infrastructure.Interops.Interfaces
+namespace TWP.Api.Application.Interfaces.Services
 {
     public interface IOpenAiInterops
     {
