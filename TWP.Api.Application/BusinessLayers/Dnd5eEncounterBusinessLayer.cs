@@ -778,22 +778,22 @@ namespace TWP.Api.Application.BusinessLayers
                     - Hints at their combat tactics related to their {role} role
                     Keep it concise and evocative.";
 
-                            var scifiLore = await _openAiInterops.GetChatGptResponseAsync(lorePrompt, temperature: 0.7, maxTokens: 200);
+                    var scifiLore = await _openAiInterops.GetChatGptResponseAsync(lorePrompt, temperature: 0.7, maxTokens: 200);
 
-                            // Step 2: Generate sci-fi name
-                            var namePrompt = $@"Create a sci-fi adversary name based on:
-                            Lore: {scifiLore}
-                            Role: {role}
-                            Tech level: {analysis.TechLevel}
+                    // Step 2: Generate sci-fi name
+                    var namePrompt = $@"Create a sci-fi adversary name based on:
+                    Lore: {scifiLore}
+                    Role: {role}
+                    Tech level: {analysis.TechLevel}
             
-                            Examples of good sci-fi names:
-                            - Shock Trooper (Soldier)
-                            - Stealth Drone MK-7 (Ambusher)
-                            - Commander (Controller)
-                            - Heavy Mech Unit (Brute)
-                            - Sniper Bot X-99 (Artillery)
+                    Examples of good sci-fi names:
+                    - Shock Trooper (Soldier)
+                    - Stealth Drone MK-7 (Ambusher)
+                    - Commander (Controller)
+                    - Heavy Mech Unit (Brute)
+                    - Sniper Bot X-99 (Artillery)
             
-                            Provide only the name, nothing else.";
+                    Provide only the name, nothing else.";
 
                     var scifiName = await _openAiInterops.GetChatGptResponseAsync(namePrompt, temperature: 0.8, maxTokens: 50);
 
