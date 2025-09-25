@@ -2,7 +2,7 @@ using TWP.Api.Core.Enums;
 
 namespace TWP.Api.Application.Interfaces.Services
 {
-    public interface IOpenAiInterops
+    public interface IOpenAiServices
     {
         Task<string> ChatGptResponseAsync(string message, string? systemPrompt = null, double temperature = 0.1, int maxTokens = 1000, OpenAIResponseFormatEnum responseFormat = OpenAIResponseFormatEnum.Text);
         Task<string> GetChatGptResponseAsync(string message, double temperature = 0.1, int maxTokens = 1000, string? systemPrompt = null, OpenAIResponseFormatEnum responseFormat = OpenAIResponseFormatEnum.Text);

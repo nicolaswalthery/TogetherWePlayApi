@@ -18,7 +18,7 @@ namespace TWP.Api.Application.ETL
         private readonly IActionMapperService _actionMapperService;
         private readonly ITraitMapperService _traitMapperService;
         private readonly IMonster5eRepository _monster5eRepository;
-        private readonly IOpenAiInterops _openAiInterops;
+        private readonly IOpenAiServices _openAiInterops;
 
         public ExtractTransformLoad(
             IAideDdMonster5eRepository aideDdMonster5ERepository,
@@ -26,7 +26,7 @@ namespace TWP.Api.Application.ETL
             IActionMapperService actionMapperService,
             ITraitMapperService traitMapperService,
             IMonster5eRepository monster5eRepository,
-            IOpenAiInterops openAiInterops)
+            IOpenAiServices openAiInterops)
         {
             _aideDdMonster5ERepository = aideDdMonster5ERepository;
             _aideDdInterops = aideDdInterops;

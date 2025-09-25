@@ -21,9 +21,9 @@ namespace TWP.Api.Application.BusinessLayers
         private readonly IDnd2024AllMonsterStatsCsvRepository _csvRepository;
         private readonly IMonster5eRepository _monster5ERepository;
         private readonly IMonsterBuildingGuidelineRepository _monsterBuildingGuidelineRepository;
-        private readonly IOpenAiInterops _openAiInterops;
+        private readonly IOpenAiServices _openAiInterops;
 
-        public Dnd5eMonsterBusinessLayer(IDnd2024AllMonsterStatsCsvRepository csvRepository, IMonster5eRepository monster5ERepository, IMonsterBuildingGuidelineRepository monsterBuildingGuidelineRepository, IOpenAiInterops openAiInterops)
+        public Dnd5eMonsterBusinessLayer(IDnd2024AllMonsterStatsCsvRepository csvRepository, IMonster5eRepository monster5ERepository, IMonsterBuildingGuidelineRepository monsterBuildingGuidelineRepository, IOpenAiServices openAiInterops)
         {
             _csvRepository = csvRepository;
             _monster5ERepository = monster5ERepository;

@@ -8,9 +8,9 @@ namespace TWP.Api.Application.ETL.Services
 {
     public class TraitMapperService : ITraitMapperService
     {
-        private readonly IOpenAiInterops _openAiInterops;
+        private readonly IOpenAiServices _openAiInterops;
 
-        public TraitMapperService(IOpenAiInterops openAiInterops)
+        public TraitMapperService(IOpenAiServices openAiInterops)
         {
             _openAiInterops = openAiInterops;
         }

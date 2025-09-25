@@ -18,10 +18,10 @@ namespace TWP.Api.Application.BusinessLayers
     public class Dnd5eEncounterBusinessLayer : IDndEncounterBusinessLayer
     {
         private readonly IMonster5eRepository _monster5eRepository;
-        private readonly IOpenAiInterops _openAiInterops;
+        private readonly IOpenAiServices _openAiInterops;
         private readonly IMonsterBuildingGuidelineRepository _monsterBuildingGuidelineRepository;
 
-        public Dnd5eEncounterBusinessLayer(IMonster5eRepository monster5eRepository, IOpenAiInterops openAiInterops, IMonsterBuildingGuidelineRepository monsterBuildingGuidelineRepository)
+        public Dnd5eEncounterBusinessLayer(IMonster5eRepository monster5eRepository, IOpenAiServices openAiInterops, IMonsterBuildingGuidelineRepository monsterBuildingGuidelineRepository)
         {
             _monster5eRepository = monster5eRepository;
             _openAiInterops = openAiInterops;

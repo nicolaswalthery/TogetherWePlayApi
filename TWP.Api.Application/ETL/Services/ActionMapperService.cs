@@ -8,9 +8,9 @@ namespace TWP.Api.Application.ETL.Services
 {
     public class ActionMapperService : IActionMapperService
     {
-        private readonly IOpenAiInterops _openAiInterops;
+        private readonly IOpenAiServices _openAiInterops;
 
-        public ActionMapperService(IOpenAiInterops openAiInterops)
+        public ActionMapperService(IOpenAiServices openAiInterops)
         {
             _openAiInterops = openAiInterops;
         }

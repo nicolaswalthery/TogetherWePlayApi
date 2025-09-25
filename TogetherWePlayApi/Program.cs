@@ -153,7 +153,7 @@ builder.Services.AddTransient<IDnd2024AllMonsterStatsCsvRepository, Dnd2024AllMo
 builder.Services.AddTransient<IDnd5eEncounterDataJsonRepository, Dnd5eEncounterDataJsonRepository>();
 
 // Add Interops Services
-builder.Services.AddTransient<IOpenAiInterops, OpenAiInterops>();
+builder.Services.AddTransient<IOpenAiServices, OpenAiServices>();
 builder.Services.AddHttpClient<IMonsterApiInterops, MonsterApiInterops>();
 builder.Services.AddHttpClient<IAideDdInterops, AideDdInterops>();
 // Mapper Services

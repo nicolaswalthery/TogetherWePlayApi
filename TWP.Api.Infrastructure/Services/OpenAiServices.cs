@@ -8,14 +8,14 @@ using TWP.Api.Core.Enums;
 
 namespace TWP.Api.Infrastructure.Interops
 {
-    public class OpenAiInterops : IOpenAiInterops
+    public class OpenAiServices : IOpenAiServices
     {
         private readonly Kernel _kernel;
         private readonly IChatCompletionService _chatCompletionService;
         private readonly string _modelName;
         private readonly string _visionModelName; // Ajout pour le modèle vision
 
-        public OpenAiInterops(IConfiguration configuration)
+        public OpenAiServices(IConfiguration configuration)
         {
             var apiKey = configuration["OpenAI:ApiKey"]
                 ?? throw new ArgumentNullException("OpenAI:ApiKey configuration is missing");
