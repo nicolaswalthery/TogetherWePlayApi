@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
@@ -15,13 +16,13 @@ namespace TWP.Api.Infrastructure.Interops
         private readonly string _modelName;
         private readonly string _visionModelName;
 
-        public OpenAiServices(IConfiguration configuration)
+        public OpenAiServices(string apiKey, string modelName, string visionModelName, ILogger<OpenAiServices>? logger = null)
         {
-            var apiKey = configuration["OpenAI:ApiKey"]
-                ?? throw new ArgumentNullException("OpenAI:ApiKey configuration is missing");
+            if (string.IsNullOrEmpty(apiKey))
+                throw new ArgumentNullException(nameof(apiKey));
 
-            _modelName = configuration["OpenAI:ModelName"] ?? configuration["OpenAI:DefaultModelName"];
-            _visionModelName = configuration["OpenAI:VisionModelName"] ?? "gpt-4o"; // Default to gpt-4o qui supporte vision
+            _modelName = modelName;
+            _visionModelName = visionModelName;
 
             var builder = Kernel.CreateBuilder();
             builder.AddOpenAIChatCompletion(_modelName, apiKey);

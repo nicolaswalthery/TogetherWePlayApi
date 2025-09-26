@@ -153,7 +153,16 @@ builder.Services.AddTransient<IDnd2024AllMonsterStatsCsvRepository, Dnd2024AllMo
 builder.Services.AddTransient<IDnd5eEncounterDataJsonRepository, Dnd5eEncounterDataJsonRepository>();
 
 // Add Interops Services
-builder.Services.AddTransient<IOpenAiServices, OpenAiServices>();
+builder.Services.AddTransient<IOpenAiServices>(sp =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+    return new OpenAiServices(
+        apiKey: config["OpenAI:ApiKey"] ?? throw new Exception("No OpenAI Api Key !"),
+        modelName: config["OpenAI:ModelName"] ?? throw new Exception("No OpenAI Model Name !"),
+        visionModelName: config["OpenAI:VisionModelName"] ?? throw new Exception("No OpenAI Vision Model Name !"),
+        logger: sp.GetService<ILogger<OpenAiServices>>()
+    );
+});
 builder.Services.AddHttpClient<IMonsterApiInterops, Dnd5eApiMonstersServices>();
 builder.Services.AddHttpClient<IAideDdInterops, AideDdInterops>();
 // Mapper Services
