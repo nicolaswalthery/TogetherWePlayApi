@@ -11,6 +11,8 @@ using TWP.Api.Application.DataEnrichmentLayer.Interfaces;
 using TWP.Api.Application.ETL;
 using TWP.Api.Application.ETL.Services;
 using TWP.Api.Application.Interfaces.Services;
+using TWP.Api.Application.UseCases;
+using TWP.Api.Application.UseCases.Interfaces;
 using TWP.Api.Controllers.Interfaces;
 using TWP.Api.Core.Interface.Infrastructure;
 using TWP.Api.Core.Interfaces.Infrastructure.JsonRepositories;
@@ -175,6 +177,9 @@ builder.Services.AddTransient<IUltraModern5eBusinessLayer, UltraModern5eBusiness
 builder.Services.AddTransient<IPathfinder2eBusinessLayer, Pathfinder2eBusinessLayer>();
 builder.Services.AddTransient<IDnd5eMonsterBusinessLayer, Dnd5eMonsterBusinessLayer>();
 
+// ===== AGENT USE CASES =====
+builder.Services.AddTransient<IGameMasterAgentUseCase, GameMasterAgentUseCase>();
+
 //Data Enrichment Layer
 builder.Services.AddTransient<IMonster5eDataEnrichmentLayer, Monster5eDataEnrichmentLayer>();
 
@@ -187,6 +192,7 @@ builder.Services.AddTransient<IUltraModern5eController, UltraModern5eController>
 builder.Services.AddTransient<IPathfinder2eController, Pathfinder2eController>();
 builder.Services.AddTransient<IDnd5eMonsterController, Dnd5eMonsterController>();
 builder.Services.AddTransient<IEnrichmentDataController, EnrichmentDataController>();
+builder.Services.AddTransient<IAgentController, AgentController>();
 
 builder.Services.AddControllers()
                 .AddJsonOptions(options =>
