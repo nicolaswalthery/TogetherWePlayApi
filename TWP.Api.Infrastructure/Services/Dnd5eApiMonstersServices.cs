@@ -5,11 +5,11 @@ using TWP.Api.Core.DataTransferObjects;
 
 namespace TWP.Api.Infrastructure.Interops
 {
-    public class MonsterApiInterops : IMonsterApiInterops
+    public class Dnd5eApiMonstersServices : IMonsterApiInterops
     {
         private readonly HttpClient _httpClient;
 
-        public MonsterApiInterops(HttpClient httpClient)
+        public Dnd5eApiMonstersServices(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }

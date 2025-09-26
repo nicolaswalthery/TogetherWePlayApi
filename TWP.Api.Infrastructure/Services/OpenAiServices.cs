@@ -13,7 +13,7 @@ namespace TWP.Api.Infrastructure.Interops
         private readonly Kernel _kernel;
         private readonly IChatCompletionService _chatCompletionService;
         private readonly string _modelName;
-        private readonly string _visionModelName; // Ajout pour le modèle vision
+        private readonly string _visionModelName;
 
         public OpenAiServices(IConfiguration configuration)
         {

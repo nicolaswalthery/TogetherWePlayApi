@@ -154,7 +154,7 @@ builder.Services.AddTransient<IDnd5eEncounterDataJsonRepository, Dnd5eEncounterD
 
 // Add Interops Services
 builder.Services.AddTransient<IOpenAiServices, OpenAiServices>();
-builder.Services.AddHttpClient<IMonsterApiInterops, MonsterApiInterops>();
+builder.Services.AddHttpClient<IMonsterApiInterops, Dnd5eApiMonstersServices>();
 builder.Services.AddHttpClient<IAideDdInterops, AideDdInterops>();
 // Mapper Services
 builder.Services.AddTransient<IActionMapperService, ActionMapperService>();
