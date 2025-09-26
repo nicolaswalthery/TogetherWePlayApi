@@ -6,9 +6,9 @@ using TWP.Api.Core.Interface.Infrastructure;
 
 namespace TWP.Api.Infrastructure.Repository.Interfaces
 {
-    public class AideDdMonster5eRepository : RepositoryBase<MonsterAideddDbEntity>, IAideDdMonster5eRepository
+    public class AideDndMonster5eRepository : RepositoryBase<MonsterAideddDbEntity>, IAideDdMonster5eRepository
     {
-        public AideDdMonster5eRepository(DataContext context) : base(context)
+        public AideDndMonster5eRepository(DataContext context) : base(context)
         {
         }
 
