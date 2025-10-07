@@ -1,6 +1,6 @@
 ﻿[build]
 builder = "dockerfile"
-dockerfilePath = "./TogetherWePlayApi/Dockerfile"
+dockerfilePath = "./TogetherWePlayApi/TogetherWePlayApi/Dockerfile"
 
 [deploy]
 startCommand = "dotnet TWP.Api.dll"
