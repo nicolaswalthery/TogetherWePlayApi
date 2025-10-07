@@ -49,16 +49,20 @@ builder.Services.AddSingleton(sp =>
     var options = new ApiKeyOptions();
     builder.Configuration.GetSection(ApiKeyOptions.SectionName).Bind(options);
 
-    var envApiKey = Environment.GetEnvironmentVariable("API_KEY");
+    var envApiKey = Environment.GetEnvironmentVariable("API_KEYS");
     if (envApiKey.IsNotNullOrEmptyOrWhiteSpace())
     {
+        var apiKeys = envApiKey!.Split(',');
         options.ApiKeys.Clear();
-        options.ApiKeys.Add(new ApiKeyConfiguration
+        foreach (var apiKey in apiKeys)
         {
-            Key = envApiKey!,
-            Name = "Production",
-            IsActive = true
-        });
+            options.ApiKeys.Add(new ApiKeyConfiguration
+            {
+                Key = apiKey,
+                Name = "Production",
+                IsActive = true
+            });
+        }
     }
 
     return options;
@@ -158,13 +162,23 @@ builder.Services.AddTransient<IDnd5eEncounterDataJsonRepository, Dnd5eEncounterD
 builder.Services.AddTransient<IOpenAiServices>(sp =>
 {
     var config = sp.GetRequiredService<IConfiguration>();
+
+    // Récupérer la clé API depuis la variable d'environnement
+    var apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY")
+                 ?? config["OpenAI:ApiKey"]
+                 ?? throw new Exception("No OpenAI Api Key !");
+
+    var modelName = config["OpenAI:ModelName"] ?? throw new Exception("No OpenAI Model Name !");
+    var visionModelName = config["OpenAI:VisionModelName"] ?? throw new Exception("No OpenAI Vision Model Name !");
+
     return new OpenAiServices(
-        apiKey: config["OpenAI:ApiKey"] ?? throw new Exception("No OpenAI Api Key !"),
-        modelName: config["OpenAI:ModelName"] ?? throw new Exception("No OpenAI Model Name !"),
-        visionModelName: config["OpenAI:VisionModelName"] ?? throw new Exception("No OpenAI Vision Model Name !"),
+        apiKey: apiKey,
+        modelName: modelName,
+        visionModelName: visionModelName,
         logger: sp.GetService<ILogger<OpenAiServices>>()
     );
 });
+
 builder.Services.AddHttpClient<IMonsterApiInterops, Dnd5eApiMonstersServices>();
 builder.Services.AddHttpClient<IAideDdInterops, AideDdInterops>();
 // Mapper Services
