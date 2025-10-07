@@ -1,0 +1,8 @@
+﻿[build]
+builder = "dockerfile"
+dockerfilePath = "./TogetherWePlayApi/Dockerfile"
+
+[deploy]
+startCommand = "./TWP.Api.dll"
+restartPolicyType = "always"
+healthcheckPath = "/health"
