@@ -15,9 +15,13 @@ namespace TogetherWePlayApi.Controllers
             _monsterBusinessLayer = monsterBusinessLayer;
         }
 
-        [HttpGet("AllMonsterStatsCsv")]
-        public async Task<IActionResult> GetAllMonsterStatsCsv()
-            => HandleResult(await _monsterBusinessLayer.GetAllMonsterStatsCsv());
+        [HttpPost("CreateOriginalDndMonster")]
+        public async Task<IActionResult> CreateOriginalDndMonster([FromQuery] float challengeRating)
+            => HandleResult(await _monsterBusinessLayer.CreateOriginalDndMonster(challengeRating));
+
+        [HttpGet("GetAll5eMonsters")]
+        public async Task<IActionResult> GetAll5eMonsters()
+            => HandleResult(await _monsterBusinessLayer.GetAll5eMonsters());
 
         [HttpGet("AllMonsterStatsByCr")]
         public async Task<IActionResult> GetAllMonsterStatsByCr([FromQuery] int cr)

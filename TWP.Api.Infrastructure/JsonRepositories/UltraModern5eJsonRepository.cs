@@ -1,6 +1,6 @@
 ﻿using TWP.Api.Core.Enums;
+using TWP.Api.Core.Interfaces.Infrastructure.JsonRepositories;
 using TWP.Api.Infrastructure.DataTransferObjects;
-using TWP.Api.Infrastructure.JsonRepositories.Interfaces;
 using TWP.Api.Infrastructure.JsonRepositories.Mappers;
 using static TWP.Api.Infrastructure.JsonRepositories.Mappers.ShootAndLootCompanyDataJsonFileMapper;
 

@@ -22,7 +22,8 @@ namespace TogetherWePlayApi.Controllers
             [FromQuery] EncounterDifficultyEnum encounterDifficulty,
             [FromQuery] IList<int> playerLevels,
             [FromQuery] string encounterNarrativeContext,
-            [FromQuery] IList<MonsterHabitatEnum> monsterHabitats)
-            => HandleResult(await Safe.ExecuteAsync(() => _dndEncounterBusinessLayer.EncounterRandomGenerator(encounterDifficulty, playerLevels, encounterNarrativeContext, monsterHabitats)));
+            [FromQuery] MonsterHabitatEnum monsterHabitat,
+            [FromQuery] bool generateWithEncounterTemplate)
+            => HandleResult(await Safe.ExecuteAsync(() => _dndEncounterBusinessLayer.EncounterRandomGenerator(encounterDifficulty, playerLevels, encounterNarrativeContext, monsterHabitat, generateWithEncounterTemplate)));
     }
 }

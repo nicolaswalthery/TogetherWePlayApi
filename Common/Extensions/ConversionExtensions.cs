@@ -33,6 +33,9 @@ namespace Common.Extensions
         public static int ToInt(this string str) 
             => int.TryParse(str, out int result) ? result : throw new ConversionException("Can't parse string to int");
 
+        public static double ToDouble(this string str)
+            => double.TryParse(str, out double result) ? result : throw new ConversionException("Can't parse string to double");
+
         /// <summary>
         /// Deserialize a json into an object
         /// </summary>

@@ -1,0 +1,13 @@
+﻿using TWP.Api.Infrastructure.DataTransferObjects;
+
+namespace TWP.Api.Core.Interfaces.Infrastructure.JsonRepositories
+{
+    public interface IJsonRepository
+    {
+        /// <summary>
+        /// Get a roll table.
+        /// </summary>
+        /// <returns>The RollTableDto representing a random table</returns>
+        RollTableDto GetRollTable();
+    }
+}
