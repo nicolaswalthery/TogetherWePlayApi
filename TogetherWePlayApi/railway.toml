@@ -1,9 +1,8 @@
 ﻿[build]
 builder = "dockerfile"
-dockerfilePath = "./TogetherWePlayApi/TogetherWePlayApi/Dockerfile"
+dockerfilePath = "./TogetherWePlayApi/Dockerfile"
 
 [deploy]
-# Remove the startCommand since Docker will handle it
-# startCommand = "dotnet TWP.Api.dll"
+startCommand = "dotnet TWP.Api.dll"
 restartPolicyType = "always"
 healthcheckPath = "/health"
