@@ -113,7 +113,7 @@ builder.Services.AddDbContext<DataContext>(options =>
     // Récupérer la connection string depuis les variables d'environnement en priorité
     var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL")
                           ?? builder.Configuration.GetConnectionString("DefaultConnection");
-    Console.WriteLine("DATABASE_URL : {connectionString}");
+    Console.WriteLine($"DATABASE_URL : {connectionString}");
     if (string.IsNullOrEmpty(connectionString))
         throw new InvalidOperationException("Connection string 'DATABASE_URL' or 'DefaultConnection' not found.");
 
