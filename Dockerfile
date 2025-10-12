@@ -2,7 +2,8 @@
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 WORKDIR /app
 # Pas besoin de USER $APP_UID ici
-EXPOSE 8080  # facultatif, juste informatif
+EXPOSE 8080  
+# facultatif, juste informatif
 
 # Étape 2 : Build du projet
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
