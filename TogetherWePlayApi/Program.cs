@@ -2,6 +2,7 @@
 using Common.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using System.Security.AccessControl;
 using System.Text.Json;
 using TogetherWePlayApi.Controllers;
 using TWP.Api.Application.BusinessLayers;
@@ -113,9 +114,17 @@ builder.Services.AddDbContext<DataContext>(options =>
     // Récupérer la connection string depuis les variables d'environnement en priorité
     var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL")
                           ?? builder.Configuration.GetConnectionString("DefaultConnection");
-    Console.WriteLine($"DATABASE_URL : {connectionString}");
     if (string.IsNullOrEmpty(connectionString))
         throw new InvalidOperationException("Connection string 'DATABASE_URL' or 'DefaultConnection' not found.");
+
+    if (builder.Environment.IsProduction() && connectionString.StartsWith("postgres://") || connectionString.StartsWith("postgresql://"))
+    {
+        Console.WriteLine("Using production database configuration");
+        var uri = new Uri(connectionString);
+        var userInfo = uri.UserInfo.Split(':');
+        connectionString =
+            $"Host={uri.Host};Port={uri.Port};Database={uri.AbsolutePath.TrimStart('/')};Username={userInfo[0]};Password={userInfo[1]};SSL Mode=Prefer;Trust Server Certificate=True;";
+    }
 
     // Configuration PostgreSQL
     options.UseNpgsql(connectionString, npgsqlOptions =>
