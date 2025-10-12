@@ -1,3 +1,4 @@
+using Common.Security;
 using Microsoft.AspNetCore.Mvc;
 using TWP.Api.Application.BusinessLayers.Interfaces;
 using TWP.Api.Controllers.Interfaces;
@@ -6,6 +7,7 @@ namespace TogetherWePlayApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [RequiredApiKey]
     public class Dnd5eMonsterController : ControllerBase<Dnd5eMonsterController>, IDnd5eMonsterController
     {
         private readonly IDnd5eMonsterBusinessLayer _monsterBusinessLayer;

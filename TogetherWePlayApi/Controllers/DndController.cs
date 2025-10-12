@@ -1,4 +1,5 @@
 using Common.ResultPattern;
+using Common.Security;
 using Microsoft.AspNetCore.Mvc;
 using TWP.Api.Application.BusinessLayers.Interfaces;
 using TWP.Api.Controllers.Interfaces;
@@ -8,6 +9,7 @@ namespace TogetherWePlayApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [RequiredApiKey]
     public class DndController : ControllerBase<DndController>, IDndController
     {
         private readonly IDndEncounterBusinessLayer _dndEncounterBusinessLayer;

@@ -1,4 +1,5 @@
 using Common.ResultPattern;
+using Common.Security;
 using Microsoft.AspNetCore.Mvc;
 using TWP.Api.Application.DataEnrichmentLayer.Interfaces;
 using TWP.Api.Controllers.Interfaces;
@@ -7,6 +8,7 @@ namespace TogetherWePlayApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [RequiredApiKey]
     public class EnrichmentDataController : ControllerBase<EnrichmentDataController>, IEnrichmentDataController
     {
         private readonly IMonster5eDataEnrichmentLayer _monster5eDataEnrichmentLayer;

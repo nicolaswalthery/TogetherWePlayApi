@@ -1,4 +1,5 @@
 using Common.ResultPattern;
+using Common.Security;
 using Microsoft.AspNetCore.Mvc;
 using TWP.Api.Application.ETL;
 using TWP.Api.Controllers.Interfaces;
@@ -7,6 +8,7 @@ namespace TogetherWePlayApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [RequiredApiKey]
     public class EtlController : ControllerBase<EtlController>, IEtlController
     {
         private readonly IExtractTransformLoad _extractTransformLoad;
