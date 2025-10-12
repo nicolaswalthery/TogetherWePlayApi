@@ -113,7 +113,7 @@ builder.Services.AddDbContext<DataContext>(options =>
     // Récupérer la connection string depuis les variables d'environnement en priorité
     var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL")
                           ?? builder.Configuration.GetConnectionString("DefaultConnection");
-
+    Console.WriteLine("DATABASE_URL : {connectionString}");
     if (string.IsNullOrEmpty(connectionString))
         throw new InvalidOperationException("Connection string 'DATABASE_URL' or 'DefaultConnection' not found.");
 
@@ -312,8 +312,7 @@ using (var scope = app.Services.CreateScope())
             if (pendingMigrations.Any())
             {
                 loggerService.LogWarning($"⚠️ There are {pendingMigrations.Count()} pending migrations");
-                // En production, vous pourriez vouloir les appliquer automatiquement ou non
-                // await context.Database.MigrateAsync();
+                await context.Database.MigrateAsync();
             }
         }
     }
