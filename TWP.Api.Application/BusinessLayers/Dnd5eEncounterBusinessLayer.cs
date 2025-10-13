@@ -689,7 +689,7 @@ namespace TWP.Api.Application.BusinessLayers
                     );
 
                     // Parse the analysis
-                    var analysis = JsonSerializer.Deserialize<ScifiAdversaryAnalysis>(analysisJson);
+                    var analysis = JsonSerializer.Deserialize<ScifiAdversaryAnalysisDto>(analysisJson);
                     var suggestedCr = analysis?.SuggestedCR ?? 1.0f;
 
                     // Step 2: Get a base monster from DB with similar CR
@@ -759,7 +759,7 @@ namespace TWP.Api.Application.BusinessLayers
             Monster5eDbEntity baseMonster,
             string narrativeDescription,
             CombatRoleEnum role,
-            ScifiAdversaryAnalysis analysis)
+            ScifiAdversaryAnalysisDto analysisDto)
                 => await Safe.ExecuteAsync(async () =>
                 {
                     var roleDescription = RoleDescriptionsHelper.GetRoleDescription(role);
@@ -768,8 +768,8 @@ namespace TWP.Api.Application.BusinessLayers
                     var lorePrompt = $@"Create a compelling sci-fi lore for an adversary based on:
                     Original narrative: {narrativeDescription}
                     Combat role: {role} - {roleDescription}
-                    Tech level: {analysis.TechLevel}
-                    Weapon preference: {analysis?.WeaponType ?? "kinetic"}
+                    Tech level: {analysisDto.TechLevel}
+                    Weapon preference: {analysisDto?.WeaponType ?? "kinetic"}
             
                     Write 2-3 sentences of lore that:
                     - Explains their origin/faction/purpose
@@ -783,7 +783,7 @@ namespace TWP.Api.Application.BusinessLayers
                     var namePrompt = $@"Create a sci-fi adversary name based on:
                     Lore: {scifiLore}
                     Role: {role}
-                    Tech level: {analysis.TechLevel}
+                    Tech level: {analysisDto.TechLevel}
             
                     Examples of good sci-fi names:
                     - Shock Trooper (Soldier)
@@ -915,14 +915,14 @@ namespace TWP.Api.Application.BusinessLayers
                     var (roleResult, modifiedMonster) = roleAdapter.AdaptMonsterToRole(newMonster);
 
                     // Step 6: Generate sci-fi themed actions for the role
-                    var scifiActions = await GenerateScifiActions(modifiedMonster, role, scifiLore, analysis);
+                    var scifiActions = await GenerateScifiActions(modifiedMonster, role, scifiLore, analysisDto);
                     foreach (var action in scifiActions)
                     {
                         modifiedMonster.Actions.Add(action);
                     }
 
                     // Step 7: Add sci-fi traits
-                    var scifiTraits = await GenerateScifiTraits(modifiedMonster, role, scifiLore, analysis);
+                    var scifiTraits = await GenerateScifiTraits(modifiedMonster, role, scifiLore, analysisDto);
                     foreach (var trait in scifiTraits)
                     {
                         modifiedMonster.Traits.Add(trait);
@@ -941,7 +941,7 @@ namespace TWP.Api.Application.BusinessLayers
             Monster5eDbEntity monster,
             CombatRoleEnum role,
             string lore,
-            ScifiAdversaryAnalysis analysis)
+            ScifiAdversaryAnalysisDto analysisDto)
         {
             var actions = new List<ActionDbEntity>();
 
@@ -981,7 +981,7 @@ namespace TWP.Api.Application.BusinessLayers
             Monster5eDbEntity monster,
             CombatRoleEnum role,
             string lore,
-            ScifiAdversaryAnalysis analysis)
+            ScifiAdversaryAnalysisDto analysisDto)
         {
             var traits = new List<TraitDbEntity>();
 

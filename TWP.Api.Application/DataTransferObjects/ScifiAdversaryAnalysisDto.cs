@@ -5,7 +5,7 @@ namespace TWP.Api.Application.DataTransferObjects
     /// <summary>
     /// DTO for sci-fi adversary analysis
     /// </summary>
-    public class ScifiAdversaryAnalysis
+    public class ScifiAdversaryAnalysisDto
     {
         [JsonPropertyName("suggestedCR")]
         public float SuggestedCR { get; set; }
