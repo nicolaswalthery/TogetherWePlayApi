@@ -317,12 +317,11 @@ namespace TWP.Api.Application.BusinessLayers
             template ??= EncounterTemplateHelpers.GetRandomTemplate(difficulty);
 
             var encounter = new List<Monster5eDto>();
-            var remainingBudget = expEncounterBudget;
 
             // Apply template multiplier to budget (templates with synergies are harder)
             var templateMultiplier = EncounterTemplateHelpers.GetCRBudgetMultiplier(template);
             var adjustedBudget = (int)(expEncounterBudget / templateMultiplier);
-            remainingBudget = adjustedBudget;
+            var remainingBudget = adjustedBudget;
 
             // Group monsters by role
             var monstersByRole = monsters
