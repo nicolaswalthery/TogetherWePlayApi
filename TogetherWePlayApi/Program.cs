@@ -484,6 +484,5 @@ if (builder.Environment.IsProduction())
     app.MapGet("/", () => "🚀 Hello from Railway + TogetherWePlay!");
 }
 
-
 // Run the application
 app.Run();
