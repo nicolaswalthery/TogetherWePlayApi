@@ -475,11 +475,15 @@ else
 
 logger.LogInformation($"🐉 Ready for D&D adventures!");
 
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-app.Urls.Add($"http://*:{port}");
+if (builder.Environment.IsProduction())
+{
+    var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+    app.Urls.Add($"http://*:{port}");
 
-// ✅ Route simple pour test de vie
-app.MapGet("/", () => "🚀 Hello from Railway + TogetherWePlay!");
+    // ✅ Route simple pour test de vie
+    app.MapGet("/", () => "🚀 Hello from Railway + TogetherWePlay!");
+}
+
 
 // Run the application
 app.Run();
