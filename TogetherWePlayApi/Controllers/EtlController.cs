@@ -18,7 +18,7 @@ namespace TogetherWePlayApi.Controllers
             _extractTransformLoad = extractTransformLoad;
         }
 
-        [HttpGet(Name = "AideDdMonstersEtl")]
+        [HttpPost(Name = "AideDdMonstersEtl")]
         public async Task<IActionResult> AideDdMonstersEtl()
             => HandleResult(await Safe.ExecuteAsync(() => _extractTransformLoad.RunAideDdMonster5eEtl()));
 
